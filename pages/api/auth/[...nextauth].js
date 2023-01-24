@@ -42,6 +42,17 @@ const authOptions = {
       }
       return "/testingg"
     },
+    jwt({ token, user }) {
+      console.log("JWT --", { token }, user.role)
+
+      if (user.role) {
+        //update token
+        token.role = user.role
+        console.log({ TOKEn: token }, user.role)
+      }
+
+      return token
+    },
   },
 }
 

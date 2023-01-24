@@ -1,6 +1,7 @@
 import Head from "next/head"
 import Features from "../components/Home/features"
 import Button from "../components/ui/Button"
+import NavBar from "../src/components/NavBar"
 
 export default function MainPage() {
   return (
@@ -20,41 +21,7 @@ export default function MainPage() {
       <main className=''>
         <div>
           <div class='bg-black'>
-            <nav className='flex space-x-6 md:space-x-96 px-10 py-5 text-white font-bold mx-[100px]'>
-              <div>
-                <a href='' class=''>
-                  HCS
-                </a>
-              </div>
-
-              <div className='flex'>
-                <ul className='flex space-x-3 md:space-x-10'>
-                  <li class=''>
-                    <a href='' class=''>
-                      Home
-                    </a>
-                  </li>
-
-                  <li class=''>
-                    <a href='/about-us' class=''>
-                      About
-                    </a>
-                  </li>
-
-                  <li class=''>
-                    <a href='/info-dynamic' class=''>
-                      Information
-                    </a>
-                  </li>
-
-                  <li class=''>
-                    <a href='/register' class=''>
-                      Sign In/Log In
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </nav>
+            <NavBar />
 
             <div className='px-28 py-28'>
               <div className='text-center font-bold text-white'>
