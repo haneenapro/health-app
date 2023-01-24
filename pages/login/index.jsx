@@ -1,15 +1,34 @@
-import axios from "axios"
-import React, { useState } from "react"
+import { useState } from "react"
 import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
 import { signIn, useSession } from "next-auth/react"
+import { useRouter } from "next/router"
+
+function Login() {
+  const { status, data: session } = useSession()
+  const router = useRouter()
+
+  if (status === "loading") {
+    return <div>Loading...</div>
+  }
+
+  if (status === "authenticated") {
+    session.user.role === "doctor" && void router.push("/Doctor")
+    session.user.role === "patient" && void router.push("/Patients")
+    return null
+  }
+
+  return <LoginForm />
+}
 
 function LoginForm() {
-  const { status, data: session } = useSession()
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    role: "patient",
+  })
 
-  console.log(status, session)
-
-  const [formData, setFormData] = useState({ email: "", password: "" })
+  const router = useRouter()
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -26,10 +45,12 @@ function LoginForm() {
       email: formData.email,
       password: formData.password,
       redirect: true,
-      callbackUrl: "/Doctor",
+      callbackUrl: "/" + formData.role,
     })
 
-    console.log(formData)
+    console.log(res)
+
+    router.push(res.url)
   }
 
   return (
@@ -79,4 +100,4 @@ function LoginForm() {
   )
 }
 
-export default LoginForm
+export default Login

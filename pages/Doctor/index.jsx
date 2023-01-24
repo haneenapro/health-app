@@ -1,7 +1,10 @@
 import Head from "next/head"
 import Button from "../../components/ui/Button"
+import { useSession, signOut } from "next-auth/react"
 
 export default function MainPage() {
+  const { data: session } = useSession()
+
   return (
     <>
       <Head>
@@ -28,9 +31,7 @@ export default function MainPage() {
             <div className='flex'>
               <ul className='flex space-x-3 md:space-x-10'>
                 <li class=''>
-                  <a href='' class=''>
-                    Log Out
-                  </a>
+                  <button onClick={() => signOut()}>Log Out</button>
                 </li>
               </ul>
             </div>
