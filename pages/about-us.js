@@ -24,17 +24,20 @@ export default function Home() {
 
             <div className='flex flex-col py-5 px-10 sec-leader md:flex-row'>
               <div className='basis-1/2 '>
-                <img src='images/man.jpg' alt='man' className='w-full'></img>
+                <img src='images/iccha.png' alt='man' className='w-full'></img>
               </div>
 
-              <div className='basis-1/2 text-center bg-[#C4BBDF] px-5 py-3 '>
-                <h2 className='font-bold text-2xl '> Adam Jonas </h2>
+              <div className='basis-1/2 text-center bg-[#ccc7da] px-5 py-3 '>
+                <h2 className='font-bold text-2xl '> Iccha Pandey </h2>
                 <p className='text-left my-5 '>
-                  Adam is the CEO of our company. He is a hardworking and
-                  talented person. He has double bachelors degree.He is a
-                  hardworking and talented person. He has double bachelors
-                  degree.He is a hardworking and talented person. He has double
-                  bachelors degree.
+                  Iccha is the CEO of our company. She is a hardworking and
+                  talented person. She has double bachelors degree.She is a
+                  hardworking and talented person. She has a degree in Business
+                  Administration. She also has two years experience in the
+                  health field. She wanted to work in the health sector since
+                  early childhood. Her mother used to be ill sometimes. At that
+                  point in time she thought to found an organisation and work
+                  for the good cause of the people.
                 </p>
               </div>
             </div>

@@ -5,10 +5,10 @@ import Input from "../../../components/ui/Input"
 import NavBar from "../../../src/components/NavBar"
 import { useRouter } from "next/router"
 
-function QuestionForm() {
+function ReportForm() {
   const [formData, setFormData] = useState({
     title: "",
-    question: "",
+    desc: "",
   })
 
   function handleChange(event) {
@@ -27,14 +27,14 @@ function QuestionForm() {
     console.log(formData)
 
     const result = await axios.post(
-      "http://localhost:3000/api/question",
+      "http://localhost:3000/api/report",
       formData
     )
     console.log(result)
-    alert("Question Added successful!")
+    alert("Report Added successful!")
 
     if ((result.status = 201)) {
-      router.push(`/Patients/question`)
+      router.push(`/Patients/Report`)
     }
   }
 
@@ -50,7 +50,7 @@ function QuestionForm() {
               alt='Your Company'
             />
             <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
-              Ask A Question ??
+              Upload a Report
             </h2>
             <div className=' flex items-center justify-left gap-x-6'>
               <a
@@ -78,15 +78,24 @@ function QuestionForm() {
 
               <div className='pt-6'>
                 <Input
-                  label={"Question"}
-                  name='question'
-                  value={formData.question}
+                  label={"Description"}
+                  name='desc'
+                  value={formData.desc}
                   onChange={handleChange}
+                />
+              </div>
+
+              <div className='pt-6'>
+                <Input
+                  label={"Upload Image"}
+                  name='Image'
+                  value='Upload +'
+                  disabled
                 />
               </div>
             </div>
 
-            <Button type='submit'> Add Question </Button>
+            <Button type='submit'> Add Report </Button>
           </form>
         </div>
       </div>
@@ -94,4 +103,4 @@ function QuestionForm() {
   )
 }
 
-export default QuestionForm
+export default ReportForm

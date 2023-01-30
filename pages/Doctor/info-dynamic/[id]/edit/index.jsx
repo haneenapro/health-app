@@ -1,9 +1,37 @@
 import React, { useState, useEffect } from "react"
-import Input from "../../../../components/ui/Input"
-import Button from "../../../../components/ui/Button"
-import QuillText from "../../../../components/Home/QuillText"
+import Input from "../../../../../components/ui/Input"
+import Button from "../../../../../components/ui/Button"
+import QuillText from "../../../../../components/Home/QuillText"
 import axios from "axios"
-import NavBar from "../../../../src/components/NavBar"
+import NavBar from "../../../../../src/components/NavBar"
+import { useRouter } from "next/router"
+
+function Edit() {
+  const router = useRouter()
+  const id = router.query.id
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [information, setInformation] = useState({})
+
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+    const getInformations = async () => {
+      const res = await axios.get(`http://localhost:3000/api/information/${id}`)
+      setInformation(res.data)
+      console.log(res.data)
+      setIsLoading(false)
+    }
+
+    setIsLoading(true)
+    getInformations()
+  }, [id])
+
+  if (isLoading) return <p>Loading ... </p>
+
+  return <UpdateForm id={id} information={information} />
+}
 
 const UpdateForm = (props) => {
   const [formData, setFormData] = useState({
@@ -70,7 +98,7 @@ const UpdateForm = (props) => {
                 <Input
                   label={"Health Professional Name"}
                   name='name'
-                  value={information.name}
+                  value={formData.name}
                   onChange={handleChange}
                 />
               </div>
@@ -114,4 +142,4 @@ const UpdateForm = (props) => {
   )
 }
 
-export default UpdateForm
+export default Edit

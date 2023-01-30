@@ -75,3 +75,11 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Report {
+  id        String   @id @default(cuid())
+  title     String
+  desc      String
+  image     String?
+  createdAt DateTime @default(now())
+}

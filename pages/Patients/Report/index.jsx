@@ -11,7 +11,7 @@ const ReportsList = () => {
 
   useEffect(() => {
     const getReports = async () => {
-      const res = await axios.get("/api/question")
+      const res = await axios.get("/api/report")
       setReports(res.data)
       setIsLoading(false)
     }
@@ -27,15 +27,17 @@ const ReportsList = () => {
     <>
       <NavBar />
       <div className='m-4 py-10'>
-        <h1>Your Repojhj
-        {reports.map((question, i) => {
+        <h1>Reports List</h1>
+
+        {/* plural */}
+        {reports.map((report, i) => {
           return (
             <a
-              href={`question/${question.id}`}
+              href={`Report/${report.id}`}
               key={i}
               className='block mx-5 my-2 shadow border text-xl p-4'
             >
-              {question.title}
+              {report.title}
             </a>
           )
         })}
@@ -47,4 +49,4 @@ const ReportsList = () => {
   )
 }
 
-export default QuestionsList
+export default ReportsList

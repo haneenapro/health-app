@@ -15,7 +15,7 @@ const features = [
   {
     image: (
       <img
-        src='images/q-a.jpg'
+        src='images/qa.png'
         alt='img'
         className='h-[440px] w-[300px] rounded-l-lg'
       />
@@ -26,7 +26,7 @@ const features = [
   {
     image: (
       <img
-        src='images/chart.jpg'
+        src='images/line-chart.png'
         alt='img'
         className='h-[440px] w-[300px] rounded-l-lg'
       />
