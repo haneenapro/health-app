@@ -30,7 +30,7 @@ model Answer {
   answer     String
   questionId String
   createdAt  DateTime @default(now())
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Information {

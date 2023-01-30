@@ -57,9 +57,9 @@ export default Members
 
 const Card = ({ name, position, image }) => {
   return (
-    <div class='py-10'>
+    <div className='py-10'>
       <div className=' py-3'> {image} </div>
-      <div class='font-bold'>{name}</div>
+      <div className='font-bold'>{name}</div>
       <div> {position} </div>
     </div>
   )

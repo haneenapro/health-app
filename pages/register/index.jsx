@@ -60,6 +60,14 @@ function RegisterForm() {
           <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
             Sign in to your account
           </h2>
+          <div className=' flex items-center justify-left gap-x-6'>
+            <a
+              href='/'
+              className='text-base font-semibold leading-7 text-gray-900'
+            >
+              <span aria-hidden='true'>←</span> Back
+            </a>
+          </div>
         </div>
 
         <form

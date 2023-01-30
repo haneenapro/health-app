@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const quest = await prisma.information.create({
+    const information = await prisma.information.create({
       data: {
         title: req.body.title,
         information: req.body.information,
@@ -18,7 +18,9 @@ export default async function handler(req, res) {
       },
     })
 
-    return res.status(201).send("Information Added Successfully")
+    return res
+      .status(201)
+      .send({ message: "Information Added Successfully", information })
   }
 
   return res.status(400).send("Not allowed")

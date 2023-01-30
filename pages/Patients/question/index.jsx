@@ -2,6 +2,7 @@
 
 import axios from "axios"
 import React, { useEffect, useState } from "react"
+import NavBar from "../../../src/components/NavBar"
 
 const QuestionsList = () => {
   // api route -- get all questions
@@ -23,21 +24,27 @@ const QuestionsList = () => {
 
   console.log(questions)
   return (
-    <div className='m-4 py-10'>
-      <h1>QuestionsList</h1>
+    <>
+      <NavBar />
+      <div className='m-4 py-10'>
+        <h1>QuestionsList</h1>
 
-      {questions.map((question, i) => {
-        return (
-          <a
-            href={`/question/${question.id}`}
-            key={i}
-            className='block mx-5 my-2 shadow border text-xl p-4'
-          >
-            {question.title}
-          </a>
-        )
-      })}
-    </div>
+        {questions.map((question, i) => {
+          return (
+            <a
+              href={`question/${question.id}`}
+              key={i}
+              className='block mx-5 my-2 shadow border text-xl p-4'
+            >
+              {question.title}
+            </a>
+          )
+        })}
+        <a href='/Patients' className='underline underline-offset-8'>
+          Back
+        </a>
+      </div>
+    </>
   )
 }
 

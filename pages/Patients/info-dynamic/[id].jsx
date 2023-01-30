@@ -3,7 +3,7 @@
 import axios from "axios"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import Button from "../../components/ui/Button"
+import Button from "../../../components/ui/Button"
 
 const SingleInformation = () => {
   // api route -- get all questions
@@ -40,7 +40,10 @@ const SingleInformation = () => {
         <div>{information.fullInfo}</div>
       </div>
       <div>
-        <a href='/info-dynamic' className='underline underline-offset-8'>
+        <a
+          href='/Patients/info-dynamic'
+          className='underline underline-offset-8'
+        >
           Back{" "}
         </a>
       </div>

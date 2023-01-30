@@ -17,6 +17,14 @@ export default async function handler(req, res) {
     return res.send(question)
   }
 
+  if (req.method === "DELETE") {
+    const question = await prisma.question.delete({
+      where: { id: id },
+    })
+
+    return res.send({ message: "Deleted question successfully" })
+  }
+
   //   if (req.method === "POST") {
   //     const quest = await prisma.question.create({
   //       data: {

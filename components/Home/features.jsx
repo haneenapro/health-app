@@ -59,9 +59,9 @@ export default Features
 
 const Card = ({ image, name, desc }) => {
   return (
-    <div class='py-10'>
+    <div className='py-10'>
       <div className=' py-3'> {image} </div>
-      <div class='font-bold'>{name}</div>
+      <div className='font-bold'>{name}</div>
       <div> {desc} </div>
     </div>
   )

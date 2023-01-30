@@ -3,7 +3,7 @@
 import axios from "axios"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import Button from "../../components/ui/Button"
+import Button from "../../../components/ui/Button"
 
 const SingleQuestion = () => {
   // api route -- get all questions
@@ -42,7 +42,7 @@ const SingleQuestion = () => {
         question.answers.map((question, i) => {
           return (
             <a
-              href={`/question/${question.id}`}
+              href={`question/${question.id}`}
               key={i}
               className='block mx-5 my-2 shadow border text-xl p-4'
             >
@@ -51,6 +51,9 @@ const SingleQuestion = () => {
           )
         })
       )}
+      <div>
+        <a href='/Patients/question'> Back </a>
+      </div>
 
       {/* Form component to add answers */}
     </div>

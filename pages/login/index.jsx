@@ -25,7 +25,7 @@ function LoginForm() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "patient",
+    role: "Patients",
   })
 
   const router = useRouter()
@@ -50,7 +50,7 @@ function LoginForm() {
 
     console.log(res)
 
-    router.push(res.url)
+    // router.push(res.url)
   }
 
   return (
@@ -65,6 +65,14 @@ function LoginForm() {
           <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
             Log in to your account
           </h2>
+          <div className=' flex items-center justify-left gap-x-6'>
+            <a
+              href='/'
+              className='text-base font-semibold leading-7 text-gray-900'
+            >
+              <span aria-hidden='true'>←</span> Back
+            </a>
+          </div>
         </div>
 
         <form
@@ -90,6 +98,30 @@ function LoginForm() {
                 value={formData.password}
                 onChange={handleChange}
               />
+            </div>
+
+            <div className='pt-6'>
+              <label> Choose your Role </label>
+              <br></br>
+              <input
+                label={"Enter password"}
+                type='radio'
+                id='doctor'
+                name='role'
+                value={"Doctor"}
+                onChange={handleChange}
+              />
+              <label htmlFor='doctor'>Doctor</label>
+              <br></br>
+              <input
+                label={"Enter password"}
+                type='radio'
+                id='Patients'
+                name='role'
+                value={"Patients"}
+                onChange={handleChange}
+              />
+              <label htmlFor='Patients'>Patient</label>
             </div>
           </div>
 

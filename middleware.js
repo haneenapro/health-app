@@ -4,16 +4,16 @@ import { NextResponse } from "next/server"
 export default withAuth(
   function middleware(req) {
     //   //return NextResponse
-    console.warn("In midle ware")
+    // console.warn("In midle ware")
 
-    console.log(req.nextauth, req.nextUrl, req.url)
+    // console.log(req.nextauth, req.nextUrl, req.url)
     //
     return NextResponse.rewrite(new URL(req.url))
   },
   {
     callbacks: {
       authorize({ req, token }) {
-        console.log("Authotize -- with Auth", req.url, token)
+        // console.log("Authotize -- with Auth", req.url, token)
 
         if (!token) return false
 
@@ -22,11 +22,22 @@ export default withAuth(
         if (req.nextUrl.pathname === "/Patients")
           return token.role === "patient"
 
-        console.log(role)
+        // console.log(role)
         return false
       },
     },
   }
 )
 
-export const config = { matcher: ["/Patients", "/Doctor"] }
+export const config = {
+  matcher: [
+    "/Patients",
+    "/Doctor",
+    "/Doctor/info-dynamic",
+    "/Doctor/info-dynamic/new",
+    "/Doctor/question",
+    // `/Doctor/question/${question.id}`,
+    "/Patients/question/new",
+    "/Patients/question",
+  ],
+}
