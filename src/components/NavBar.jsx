@@ -4,6 +4,7 @@ import { Dialog } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import { useSession, signOut } from "next-auth/react"
 import { useState } from "react"
+import Image from "next/image"
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -26,7 +27,13 @@ const NavBar = () => {
         <div className='flex lg:flex-1'>
           <a href='/' className='-m-1.5 p-1.5'>
             <span className='sr-only'>Health Consultation System </span>
-            <img className='h-12' src='images/logo.png' alt='HCS' />
+            <Image
+              className='h-12'
+              width={48}
+              height={48}
+              src='/images/logo.png'
+              alt='HCS'
+            />
           </a>
         </div>
         <div className='flex lg:hidden'>

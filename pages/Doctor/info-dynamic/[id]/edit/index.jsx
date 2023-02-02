@@ -68,6 +68,9 @@ const UpdateForm = (props) => {
       updatedInformation
     )
     alert("Information updated successfully")
+    setTimeout(() => {
+      window.location.href = `/Doctor/info-dynamic/${props.information.id}`
+    }, 1000)
   }
 
   return (
