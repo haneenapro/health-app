@@ -24,7 +24,13 @@ export default function Home() {
 
             <div className='flex flex-col py-5 px-10 sec-leader md:flex-row'>
               <div className='basis-1/2 '>
-                <img src='images/iccha.png' alt='man' className='w-full'></img>
+                <img
+                  src='images/asmita.jpg'
+                  alt='man'
+                  className='w-full'
+                  max-height='200px'
+                  width='auto'
+                ></img>
               </div>
 
               <div className='basis-1/2 text-center bg-[#ccc7da] px-5 py-3 '>

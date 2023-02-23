@@ -1,0 +1,14 @@
+import React from "react"
+import { render } from "@testing-library/react"
+import MainPage from "./MainPage"
+
+test("renders main page content", () => {
+  const { getByText } = render(<MainPage />)
+  const titleElement = getByText(/Health Consultation System/)
+  const descriptionElement = getByText(/This system is a health based system./)
+  const learnMoreElement = getByText(/Learn more/)
+
+  expect(titleElement).toBeInTheDocument()
+  expect(descriptionElement).toBeInTheDocument()
+  expect(learnMoreElement).toBeInTheDocument()
+})

@@ -51,8 +51,14 @@ const SingleQuestion = () => {
           )
         })
       )}
-      <div>
-        <a href='/Patients/question'> Back </a>
+
+      <div className='pl-10 pt-10 flex items-center justify-left gap-x-6'>
+        <a
+          href='/Patients/question'
+          className='text-base font-semibold leading-7 text-gray-900'
+        >
+          <span aria-hidden='true'>←</span> Back
+        </a>
       </div>
 
       {/* Form component to add answers */}

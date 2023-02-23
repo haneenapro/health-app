@@ -39,5 +39,8 @@ export const config = {
     // `/Doctor/question/${question.id}`,
     "/Patients/question/new",
     "/Patients/question",
+    "/Patients/info-dynamic",
+    "/Patients/report-next",
+    "/Patients/report-next/img-get",
   ],
 }

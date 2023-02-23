@@ -33,16 +33,21 @@ const SingleInformation = () => {
   return (
     <>
       <div className='m-4 py-10'>
-        <h1 className='text-xl'>Information page ... </h1>
-        <h1>{information.name}</h1>
-        <div>{information.title}</div>
-        <div>{information.desc}</div>
-        <div>{information.fullInfo}</div>
+        {/* <h1 className='text-xl'>Information page </h1> */}
+        <h2 className='font-bold'>{information.title}</h2>
+        <div className='italic'>{information.name}</div>
+        <div className='font-semibold w-[800px] text-gray-600 text-justify'>
+          {information.desc}
+        </div>
+        <div
+          className='font-semibold w-[800px] text-gray-300'
+          dangerouslySetInnerHTML={{ __html: information.fullInfo }}
+        />
       </div>
-      <div>
+      <div className='mb-10'>
         <a
-          href='/Patients/info-dynamic'
-          className='underline underline-offset-8'
+          href='/info-dynamic'
+          className='mx-[30px] rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
         >
           Back{" "}
         </a>

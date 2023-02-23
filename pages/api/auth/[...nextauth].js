@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "../../../src/db/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
+// describe("AuthOptions", () => {
 const authOptions = {
   session: { strategy: "jwt" },
   adapter: PrismaAdapter(prisma),
@@ -32,15 +33,8 @@ const authOptions = {
   pages: {
     signIn: "/login",
     error: "/login",
-    //   error: '/auth/error', // Error code passed in query string as ?error=
-    //  signOut: '/auth/signout',
-    //   verifyRequest: '/auth/verify-request', // (used for check email message)
-    //   newUser: '/auth/new-user' //
   },
   callbacks: {
-    // async redirect({ url, baseUrl }) {
-    //   return baseUrl
-    // },
     async session({ session, token, user }) {
       return Promise.resolve({ ...session, user: token })
     },
@@ -66,4 +60,27 @@ const authOptions = {
   },
 }
 
+// Test codes
+
+// it("should have session strategy set to jwt", () => {
+//   expect(authOptions.session.strategy).toBe("jwt")
+// })
+
+// it("should have correct pages", () => {
+//   expect(authOptions.pages.signIn).toBe("/login")
+//   expect(authOptions.pages.error).toBe("/login")
+// })
+
+// it("should have a session callback", () => {
+//   expect(typeof authOptions.callbacks.session).toBe("function")
+// })
+
+// it("should have a jwt callback", () => {
+//   expect(typeof authOptions.callbacks.jwt).toBe("function")
+// })
+
+// it("should have a signIn callback", () => {
+//   expect(typeof authOptions.callbacks.signIn).toBe("function")
+// })
+// })
 export default NextAuth(authOptions)

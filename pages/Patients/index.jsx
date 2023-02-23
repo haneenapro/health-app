@@ -44,7 +44,7 @@ function Page() {
           <h1> Welcome User!!! </h1>
         </div>
 
-        <h2> Dashboard </h2>
+        <h2 className='pl-8'> Dashboard </h2>
 
         <div className='flex gap-1 m-7'>
           <a
@@ -73,7 +73,7 @@ function Page() {
 
           <a
             className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='/Patients/Report/new'
+            href='/Patients/report-next'
           >
             {" "}
             Add Report
@@ -81,10 +81,10 @@ function Page() {
 
           <a
             className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='/Patients/Report'
+            href='/Patients/report-next/img-get'
           >
             {" "}
-            View Report
+            View Reports
           </a>
         </div>
       </main>
