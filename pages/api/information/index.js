@@ -15,6 +15,7 @@ export default async function handler(req, res) {
         name: req.body.name,
         desc: req.body.desc,
         fullInfo: req.body.fullInfo,
+        // userId: req.body.userId,
       },
     })
 

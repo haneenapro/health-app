@@ -6,21 +6,43 @@ import Image from "next/image"
 import Button from "../../../components/ui/Button"
 import images from "../../data/images.json"
 import styles from "../../../styles/Home.module.scss"
-// import styles from "../../styles/Home.module.scss"
+import { getSession } from "next-auth/react"
+// import prisma from "../../../src/db/prisma"
+import { authOptions } from "../../api/auth/[...nextauth]"
+import { unstable_getServerSession } from "next-auth"
+import prisma from "../../../src/db/prisma"
 
-export default function Home({ images }) {
-  console.log("images", images)
+import NavBar from "../../../src/components/NavBar"
+
+export async function getServerSideProps({ req, res }) {
+  const session = await unstable_getServerSession(req, res, authOptions)
+
+  const reports = await prisma.report.findMany({
+    where: { userId: session.user.id },
+    // select: {},
+  })
+  ///////////
+  return {
+    props: {
+      reports: JSON.stringify(reports),
+    },
+  }
+}
+
+export default function Home({ reports }) {
+  console.log(JSON.parse(reports))
   return (
     <div>
       <Head>
-        <title>My Images</title>
+        <title>Reports</title>
         <meta name='description' content='All of my images.' />
       </Head>
 
+      <NavBar />
       <div className='m-10'>
-        <h1 className='sr-only'>My Images</h1>
+        <h1 className='sr-only'>My Report Cards </h1>
 
-        <h2 className='text-[40px] font-bold pl-10'>Report Cards </h2>
+        <h2 className='text-[40px] font-bold pl-10'> Report Cards </h2>
         <div className='pl-10 flex items-center justify-left gap-x-6'>
           <a
             href='/Patients'
@@ -30,57 +52,18 @@ export default function Home({ images }) {
           </a>
         </div>
 
-        <ul className=''>
-          {images.map((image) => {
+        <div className='flex-col mt-4'>
+          {JSON.parse(reports).map((report) => {
             return (
-              <li key={image.id} className='m-10 mb-20'>
-                <a href={image.link} rel='noreferrer'>
-                  <div className=''>
-                    <Image
-                      width={image.width}
-                      height={image.height}
-                      src={image.image}
-                      alt=''
-                    />
-                  </div>
-                  <h3 className='text-2xl font-bold'>{image.id}</h3>
-                </a>
-              </li>
+              <div className='max-w-2xl rounded shadow-sm bg-white p-4 mt-10'>
+                <img src={report.image} />
+                <h4 className='text-2xl'>{report.title}</h4>
+                <p>{report.desc}</p>
+              </div>
             )
           })}
-        </ul>
+        </div>
       </div>
     </div>
   )
-}
-
-export async function getStaticProps() {
-  const results = await fetch(
-    `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image`,
-    {
-      headers: {
-        Authorization: `Basic ${Buffer.from(
-          process.env.CLOUDINARY_API_KEY +
-            ":" +
-            process.env.CLOUDINARY_API_SECRET
-        ).toString("base64")}`,
-      },
-    }
-  ).then((r) => r.json())
-
-  const { resources } = results
-
-  const images = resources.map((resource) => {
-    const { width, height } = resource
-    return {
-      id: resource.asset_id,
-      title: resource.public_id,
-      image: resource.secure_url,
-      width,
-      height,
-    }
-  })
-  return {
-    props: { images },
-  }
 }

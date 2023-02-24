@@ -4,6 +4,7 @@ import Button from "../../../components/ui/Button"
 import Input from "../../../components/ui/Input"
 import NavBar from "../../../src/components/NavBar"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 
 function QuestionForm() {
   const [formData, setFormData] = useState({
@@ -20,16 +21,17 @@ function QuestionForm() {
   }
 
   const router = useRouter()
+  const { data: session } = useSession()
 
   async function handleSubmit(event) {
     event.preventDefault()
     // Send the form data to your server for registration
     console.log(formData)
 
-    const result = await axios.post(
-      "http://localhost:3000/api/question",
-      formData
-    )
+    const result = await axios.post("http://localhost:3000/api/question", {
+      ...formData,
+      userId: session.user.id,
+    })
     console.log(result)
     alert("Question Added successful!")
 

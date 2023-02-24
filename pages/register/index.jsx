@@ -1,4 +1,5 @@
 import axios from "axios"
+import { signIn } from "next-auth/react"
 import React, { useState } from "react"
 import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
@@ -27,25 +28,35 @@ function RegisterForm() {
     if (!name | !email | !password | !role)
       return window.alert("Fill out all fields")
 
-    const result = await axios.post(
-      "http://localhost:3000/api/register",
-      formData
-    )
-    console.log(result.data)
+    // const result = await axios.post(
+    //   "http://localhost:3000/api/register",
+    //   formData
+    // )
+    // console.log(result.data)
 
-    if (result.status === 201) {
-      alert(result.data.message)
+    // if (result.status === 201) {
+    //   alert(result.data.message)
 
-      const user = result.data.user
-      console.log(user.role)
+    //   const user = result.data.user
+    //   console.log(user.role)
 
-      setTimeout(() => {
-        window.location.href = user.role === "patient" ? "/Patients" : "/Doctor"
-      }, 2000)
-    } else {
-      // error -- failed to save ...
-      console.log(result)
-    }
+    //   setTimeout(() => {
+    //     window.location.href = user.role === "patient" ? "/Patients" : "/Doctor"
+    //   }, 2000)
+    // } else {
+    //   // error -- failed to save ...
+    //   console.log(result)
+    // }
+
+    await signIn("credentials", {
+      name,
+      email,
+      password,
+      role,
+      register: true,
+      redirect: true,
+      callbackUrl: formData.role === "patient" ? "/Patients" : "/Doctor",
+    })
   }
 
   return (

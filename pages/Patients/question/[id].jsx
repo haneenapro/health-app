@@ -1,9 +1,6 @@
-// to fetch and display all quesions
-
 import axios from "axios"
 import { useRouter } from "next/router"
-import React, { useEffect, useState } from "react"
-import Button from "../../../components/ui/Button"
+import { useEffect, useState } from "react"
 
 const SingleQuestion = () => {
   // api route -- get all questions
@@ -36,18 +33,21 @@ const SingleQuestion = () => {
 
       <h2>{question.question}</h2>
 
+      <p className='capitalize'>Asked by: {question.User?.name}</p>
+
       {question.answers.length === 0 ? (
         <p>No answers yet ... </p>
       ) : (
         question.answers.map((question, i) => {
           return (
-            <a
-              href={`question/${question.id}`}
-              key={i}
-              className='block mx-5 my-2 shadow border text-xl p-4'
-            >
-              {question.answer}
-            </a>
+            <div key={i} className=' mx-5 my-2 shadow-sm border p-4'>
+              <a href={`question/${question.id}`} className='block text-xl'>
+                {question.answer}
+              </a>
+              {question.User?.name && (
+                <p> Answered By: {question.User?.name} </p>
+              )}
+            </div>
           )
         })
       )}

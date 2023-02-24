@@ -12,6 +12,7 @@ export default async function handler(req, res) {
       data: {
         title: req.body.title,
         question: req.body.question,
+        userId: req.body.userId,
       },
     })
 

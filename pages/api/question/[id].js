@@ -8,9 +8,24 @@ export default async function handler(req, res) {
       where: { id: id },
       select: {
         id: true,
-        answers: true,
-        question: true,
         title: true,
+        question: true,
+        User: {
+          select: {
+            name: true,
+          },
+        },
+        answers: {
+          select: {
+            answer: true,
+            id: true,
+            User: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     })
 

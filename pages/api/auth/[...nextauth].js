@@ -3,9 +3,10 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "../../../src/db/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import bcrypt from "bcrypt"
 
 // describe("AuthOptions", () => {
-const authOptions = {
+export const authOptions = {
   session: { strategy: "jwt" },
   adapter: PrismaAdapter(prisma),
 
@@ -14,19 +15,45 @@ const authOptions = {
       type: "credentials",
       credentials: {},
       async authorize(credentials) {
+        if (credentials.register) {
+          // REGISTERRR
+          const { name, email, password, role } = credentials
+
+          if (!name | !email | !password | !role)
+            return res.status(400).send("Fill out all fields")
+
+          const pw = await bcrypt.hash(password, 10)
+          const user = await prisma.user.create({
+            data: { name, email, role, password: pw },
+          })
+
+          return {
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            id: user.id,
+          }
+        }
+
+        // SIGN INN
         const { email, password } = credentials
 
         const user = await prisma.user.findFirst({ where: { email } })
 
         if (!user) throw new Error("No such user ... ")
 
-        const passwordMatch = user.password === password
+        const passwordMatch = await bcrypt.compare(password, user.password)
 
         if (!passwordMatch)
           throw new Error("Password incorrect or user not found")
 
         console.log("User sign in success", user)
-        return { name: user.name, email: user.email, role: user.role }
+        return {
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          id: user.id,
+        }
       },
     }),
   ],

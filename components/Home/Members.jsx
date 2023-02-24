@@ -2,10 +2,10 @@ import React from "react"
 
 const members = [
   {
-    name: "Sandhya Oli",
+    name: "Jack Wilson",
     image: (
       <img
-        src='images/sandhya.png'
+        src='images/roshan.png'
         alt='img'
         className='h-[440px] rounded-l-lg'
       />
@@ -15,9 +15,13 @@ const members = [
       "Ali is the Co-CEO of this organisation. He is a software engineer. He is enthuiastic and concerned about health and fitness.",
   },
   {
-    name: "Jack Wilson",
+    name: "Asmita Dangal",
     image: (
-      <img src='images/roshan.png' alt='img' className='h-[440px] rounded-lg' />
+      <img
+        src='images/asmita (2).jpg'
+        alt='img'
+        className='h-[440px] rounded-lg'
+      />
     ),
     position: "Manager",
     description:
@@ -27,7 +31,7 @@ const members = [
     name: "Haneena Zainab",
     image: (
       <img
-        src='images/haneena.png'
+        src='images/haneena.jpg'
         alt='img'
         className='h-[440px] rounded-r-lg'
       />

@@ -85,10 +85,10 @@ export default function Footer() {
                   {" "}
                   Information{" "}
                 </a>
-                <a className='hover:opacity-75' href='question'>
+                <a className='hover:opacity-75' href='login'>
                   Q/A
                 </a>
-                <a className='hover:opacity-75' href>
+                <a className='hover:opacity-75' href='register'>
                   Register
                 </a>
               </nav>
@@ -97,10 +97,10 @@ export default function Footer() {
             <div>
               <p className='font-medium'>Helpful Links</p>
               <nav className='flex flex-col mt-4 space-y-2 text-sm text-gray-500'>
-                <a className='hover:opacity-75' href>
+                <a className='hover:opacity-75' href='/'>
                   Home
                 </a>
-                <a className='hover:opacity-75' href>
+                <a className='hover:opacity-75' href='about-us'>
                   Learn More
                 </a>
               </nav>

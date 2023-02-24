@@ -8,13 +8,19 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
+  id       String @id @default(cuid())
   name     String
-  email    String
+  email    String @unique
   password String
   role     String
-  Account  Account[]
-  Session  Session[]
+
+  question    Question[]
+  answer      Answer[]
+  report      Report[]
+  information Information[]
+
+  Account Account[]
+  Session Session[]
 }
 
 model Question {
@@ -23,6 +29,9 @@ model Question {
   question  String
   createdAt DateTime @default(now())
   answers   Answer[]
+
+  User   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId String?
 }
 
 model Answer {
@@ -30,6 +39,8 @@ model Answer {
   answer     String
   questionId String
   createdAt  DateTime @default(now())
+  User       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId     String?
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
@@ -39,6 +50,8 @@ model Information {
   title     String
   desc      String
   fullInfo  String
+  User      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
   createdAt DateTime @default(now())
 }
 
@@ -81,5 +94,7 @@ model Report {
   title     String
   desc      String
   image     String?
+  User      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
   createdAt DateTime @default(now())
 }

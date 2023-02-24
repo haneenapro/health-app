@@ -1,6 +1,7 @@
 // to fetch and display all quesions
 
 import axios from "axios"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import Button from "../../../components/ui/Button"
@@ -47,6 +48,9 @@ const SingleQuestion = () => {
               className='block mx-5 my-2 shadow border text-xl p-4'
             >
               {question.answer}
+              <span className='block text-sm text-gray-400'>
+                {question.User?.name}
+              </span>
             </a>
           )
         })
@@ -66,8 +70,14 @@ export default SingleQuestion
 const AnswerForm = ({ questionId }) => {
   const [answer, setAnswer] = useState("")
 
+  const { data: session } = useSession()
   const handleSubmit = async (e) => {
-    const res = await axios.post("/api/answer", { answer, questionId })
+    const res = await axios.post("/api/answer", {
+      answer,
+      questionId,
+      userId: session.user.id,
+    })
+
     console.log(res.data)
     window.location.reload()
   }
