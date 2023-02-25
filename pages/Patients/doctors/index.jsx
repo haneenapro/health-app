@@ -20,7 +20,7 @@ const DoctorsList = ({ doctors }) => {
     <>
       <NavBar />
       <div className='mt-[30px] ml-[30px]'>
-        <h1 className='text-4xl'>DoctorsList</h1>
+        <h1 className='text-4xl'>Doctors Details </h1>
 
         <div className='flex flex-col gap-4      '>
           {doctors.map((doc) => {

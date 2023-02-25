@@ -4,6 +4,16 @@ import { NextPage } from "next"
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/router"
 import NavBar from "../../src/components/NavBar"
+import {
+  Book,
+  Contact,
+  FilePlus2,
+  HelpCircle,
+  Pencil,
+  User,
+  File,
+  Syringe,
+} from "lucide-react"
 
 export default function MainPage() {
   const router = useRouter()
@@ -41,61 +51,68 @@ function Page() {
         <div className=''>
           <NavBar />
         </div>
-
-        <div className='p-10 '>
-          <h1 className='text-4xl'> Welcome {session.user.name}!!! </h1>
+        <div className='m-7'>
+          <a
+            className='text-center w-32 h-32 font-bold justify-self-center flex flex-col items-center px-4 py-4 border drop-shadow-xl rounded-full text-black bg-gray-50 hover:bg-gray-200'
+            href='Patients/profile'
+          >
+            <User className='text-center h-16 capitalize' />
+            {session.user.name}
+          </a>
         </div>
 
-        <h2 className='pl-8'> Dashboard </h2>
-        <a className='pl-[30px]' href='Patients/profile'>
-          View Profile{" "}
-        </a>
-
-        <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
-          <a
-            className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='Patients/question/new'
-          >
-            {" "}
-            Consult a Doctor
-          </a>
-
-          <a
-            className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='Patients/question'
-          >
-            {" "}
-            View Question/Answer
-          </a>
-
-          <a
-            className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='/Patients/info-dynamic'
-          >
-            {" "}
-            View Blog Information
-          </a>
-
-          <a
-            className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='/Patients/report-next'
-          >
-            Add Report
-          </a>
-
-          <a
-            className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='/Patients/report-next/img-get'
-          >
-            View Reports
-          </a>
-
-          <a
-            className='group relative flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-            href='/Patients/doctors'
-          >
-            Doctorrs Contact
-          </a>
+        {/* Dashboard */}
+        <div className='mt-10'>
+          <h2 className='m-7 text-2xl font-bold'> Dashboard </h2>{" "}
+          <h2 className='text-xl font-bold pl-6'> Function Section </h2>
+          <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
+            <a
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='Patients/question/new'
+            >
+              <Syringe className='text-center' />
+              Consult Doctor
+            </a>
+            <a
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Patients/report-next'
+            >
+              <FilePlus2 className='text-center' />
+              Add Report
+            </a>
+            <a
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Patients/doctors'
+            >
+              <Contact className='text-center' />
+              Doctors Contact
+            </a>
+          </div>
+          {/* Next Line */}
+          <h2 className='text-xl font-bold pl-6 mt-6'> Information Section </h2>
+          <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
+            <a
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='Patients/question'
+            >
+              <HelpCircle className='text-center' />
+              View Q/A
+            </a>
+            <a
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Patients/report-next/img-get'
+            >
+              <File className='text-center' />
+              View Reports
+            </a>
+            <a
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Patients/info-dynamic'
+            >
+              <Book className='text-center' />
+              View Blog
+            </a>
+          </div>
         </div>
       </main>
     </>

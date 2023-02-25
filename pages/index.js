@@ -101,14 +101,14 @@ export default function MainPage() {
           <div className='px-28 py-28 bg-blue-200 '>
             <div className='text-center font-bold'>
               <h1 className='text-xl font-bold md:text-2xl text-center'>
-                Professionals here advertise the best one they know
+                Professionals here are ready to provide you more Health
+                Information
               </h1>
               <h2 className='text-sm md:text-xl pt-4'>
                 In this world where it is difficult to trust professionals, here
                 you can ask professionals suggestions and international
-                suggestion for the cure and not just temporary recovary. In this
-                world where it is difficult to trust professionals ask
-                professionals
+                suggestion for the cure and not just temporary recovary. You can
+                save your report cards for future.
               </h2>
             </div>
           </div>
@@ -127,8 +127,8 @@ export default function MainPage() {
             <h3 className='font-bold text-2xl'> Are you Ready? </h3>
             <p className=''>
               Get to explore the world of accurate information in Health and
-              Science. Make the right decison for your health or for the health
-              of someone you really care.
+              Fitness. Ask Doctors and Professionals in Health Field about your
+              queries.
             </p>
 
             <div className='w-[165px] md:w-[230px] lg:w-[500px]'>

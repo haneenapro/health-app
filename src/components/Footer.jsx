@@ -13,7 +13,7 @@ export default function Footer() {
             <div className='flex mt-8 space-x-6 text-gray-600'>
               <a
                 className='hover:opacity-75'
-                href
+                href='https://www.facebook.com'
                 target='_blank'
                 rel='noreferrer'
               >
@@ -33,7 +33,7 @@ export default function Footer() {
               </a>
               <a
                 className='hover:opacity-75'
-                href
+                href='https://www.instagram.com'
                 target='_blank'
                 rel='noreferrer'
               >
@@ -53,7 +53,7 @@ export default function Footer() {
               </a>
               <a
                 className='hover:opacity-75'
-                href
+                href='https://www.dribble.com'
                 target='_blank'
                 rel='noreferrer'
               >

@@ -10,7 +10,7 @@ const features = [
       />
     ),
     name: "Information Section",
-    desc: "In this section there is detail info about health.",
+    desc: "You can view information about health.",
   },
   {
     image: (
@@ -21,7 +21,7 @@ const features = [
       />
     ),
     name: "Q/A Section",
-    desc: "In this section there is detail info about health.",
+    desc: "You can ask question about health.",
   },
   {
     image: (
@@ -32,7 +32,7 @@ const features = [
       />
     ),
     name: "Report Section",
-    desc: "In this section there is detail info about health.",
+    desc: "You can save your Report Cards securely here.",
   },
 ]
 
