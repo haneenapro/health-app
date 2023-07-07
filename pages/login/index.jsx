@@ -41,6 +41,10 @@ function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    const { email, password, role } = formData
+
+    if (!email | !password | !role) return window.alert("Fill out all fields")
+
     const res = await signIn("credentials", {
       email: formData.email,
       password: formData.password,
@@ -49,6 +53,18 @@ function LoginForm() {
     })
 
     console.log(res)
+
+    // const { error } = await signIn("credentials", {
+    //   email: email,
+    //   password: password,
+    //   redirect: false,
+    // })
+
+    // if (error) {
+    //   // handle error
+    // } else {
+    //   router.push(callbackUrl)
+    // }
 
     // router.push(res.url)
   }

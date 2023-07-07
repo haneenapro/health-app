@@ -108,15 +108,9 @@ export default function Footer() {
             <div>
               <p className='font-medium'>Contact Us</p>
               <nav className='flex flex-col mt-4 space-y-2 text-sm text-gray-500'>
-                <a className='hover:opacity-75' href>
-                  Phone: 01-448272
-                </a>
-                <a className='hover:opacity-75' href>
-                  zhaneena@gmail.com
-                </a>
-                <a className='hover:opacity-75' href>
-                  Mobile: 9817817288
-                </a>
+                <a className='hover:opacity-75'>Phone: 01-448272</a>
+                <a className='hover:opacity-75'>zhaneena@gmail.com</a>
+                <a className='hover:opacity-75'>Mobile: 9817817288</a>
               </nav>
             </div>
           </div>
