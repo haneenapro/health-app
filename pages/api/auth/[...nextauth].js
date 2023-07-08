@@ -5,10 +5,12 @@ import { prisma } from "../../../src/db/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import bcrypt from "bcrypt"
 
+import GoogleProvider from "next-auth/providers/google"
+
 // describe("AuthOptions", () => {
 export const authOptions = {
   session: { strategy: "jwt" },
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
 
   providers: [
     CredentialsProvider({
@@ -56,6 +58,10 @@ export const authOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET_KEY,
+    }),
   ],
   pages: {
     signIn: "/login",
@@ -69,22 +75,47 @@ export const authOptions = {
       if (user) {
         token = { ...user }
       }
-      console.log("token", token)
       return token
     },
-    signIn({ token, user, ...rest }) {
+    async signIn({ token, user, ...rest }) {
       const { role } = user
-      console.log(role, rest)
-
-      if (role === "patient") {
-        return { token, user, redirect: "/Patient" }
+      if (rest?.account?.provider && rest?.account?.provider === "google") {
+        const { email, name } = user
+        const findUser = await prisma.user.findFirst({ where: { email } })
+        const _role = "patient"
+        const pw = await bcrypt.hash("test123", 10)
+        if (!findUser) {
+          const _newUSer = await prisma.user.create({
+            data: { name, email, role: _role, password: pw },
+          })
+          const _newData = {
+            name: _newUSer.name,
+            email: _newUSer.email,
+            role: _newUSer.role,
+            id: _newUSer.id,
+          }
+          return { token, ..._newData, redirect: "/Patient" }
+        } else {
+          if (findUser.role === "patient") {
+            return { token, user, redirect: "/Patient" }
+          } else if (findUser.role === "doctor") {
+            return { token, user, redirect: "/Doctor" }
+          } else {
+            return
+          }
+        }
+      } else {
+        if (role === "patient") {
+          return { token, user, redirect: "/Patient" }
+        } else if (role === "doctor") {
+          return { token, user, redirect: "/Doctor" }
+        } else {
+          return
+        }
       }
-      if (role === "doctor") {
-        return { token, user, redirect: "/Doctor" }
-      }
-      return
     },
   },
+  secret: process.env.NEXTAUTH_SECRET
 }
 
 // Test codes

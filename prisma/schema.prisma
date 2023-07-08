@@ -8,19 +8,17 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  name     String
-  email    String @unique
-  password String
-  role     String
-
-  question    Question[]
+  id          String        @id @default(cuid())
+  name        String
+  email       String        @unique
+  password    String
+  role        String
+  Account     Account[]
   answer      Answer[]
-  report      Report[]
   information Information[]
-
-  Account Account[]
-  Session Session[]
+  question    Question[]
+  report      Report[]
+  Session     Session[]
 }
 
 model Question {
@@ -28,10 +26,9 @@ model Question {
   title     String
   question  String
   createdAt DateTime @default(now())
+  userId    String?
   answers   Answer[]
-
-  User   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId String?
+  User      User?    @relation(fields: [userId], references: [id])
 }
 
 model Answer {
@@ -39,9 +36,9 @@ model Answer {
   answer     String
   questionId String
   createdAt  DateTime @default(now())
-  User       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId     String?
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  User       User?    @relation(fields: [userId], references: [id])
 }
 
 model Information {
@@ -50,9 +47,9 @@ model Information {
   title     String
   desc      String
   fullInfo  String
-  User      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?
   createdAt DateTime @default(now())
+  User      User?    @relation(fields: [userId], references: [id])
 }
 
 model Account {
@@ -94,7 +91,13 @@ model Report {
   title     String
   desc      String
   image     String?
-  User      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?
   createdAt DateTime @default(now())
+  User      User?    @relation(fields: [userId], references: [id])
+}
+
+model Hospital {
+  id    String @id @default(cuid())
+  title String
+  desc  String
 }

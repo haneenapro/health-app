@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       data: {
         title: req.body.title,
         desc: req.body.desc,
-      },
+      },  
     })
 
     return res.status(201).send("Report Added Successfully")

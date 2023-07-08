@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react"
 import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
@@ -68,6 +69,11 @@ function LoginForm() {
 
     // router.push(res.url)
   }
+
+  const loginSocial = async (e) => {
+    await signIn('google', { redirect: true, callbackUrl: '/Patients' })
+  }
+
 
   return (
     <div className='flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
@@ -142,6 +148,12 @@ function LoginForm() {
           </div>
 
           <Button type='submit'>Log In</Button>
+
+
+          <button class="w-full bg-white shadow-sm border border-orange-300 hover:bg-orange-100 text-orange-500 hover:text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex gap-2 items-center justify-center" type="button" onClick={() => loginSocial('google')}>
+            Google
+          </button>
+
         </form>
       </div>
     </div>
