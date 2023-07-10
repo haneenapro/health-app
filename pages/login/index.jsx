@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
 import { signIn, useSession } from "next-auth/react"
@@ -71,9 +71,8 @@ function LoginForm() {
   }
 
   const loginSocial = async (e) => {
-    await signIn('google', { redirect: true, callbackUrl: '/Patients' })
+    await signIn("google", { redirect: true, callbackUrl: "/Patients" })
   }
-
 
   return (
     <div className='flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
@@ -132,6 +131,7 @@ function LoginForm() {
                 name='role'
                 value={"Doctor"}
                 onChange={handleChange}
+                checked={formData.role === "Doctor"}
               />
               <label htmlFor='doctor'>Doctor</label>
               <br></br>
@@ -142,6 +142,7 @@ function LoginForm() {
                 name='role'
                 value={"Patients"}
                 onChange={handleChange}
+                checked={formData.role === "Patients"}
               />
               <label htmlFor='Patients'>Patient</label>
             </div>
@@ -149,11 +150,22 @@ function LoginForm() {
 
           <Button type='submit'>Log In</Button>
 
-
-          <button class="w-full bg-white shadow-sm border border-orange-300 hover:bg-orange-100 text-orange-500 hover:text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex gap-2 items-center justify-center" type="button" onClick={() => loginSocial('google')}>
-            Google
-          </button>
-
+          {/* Customize this button for google login */}
+          {formData.role === "Patients" && (
+            <div>
+              <center>
+                <p>OR SignIn With</p>
+              </center>
+              <button
+                class='w-full bg-white shadow-sm border  text-dark-500 hover:text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex gap-2 items-center justify-center'
+                type='button'
+                onClick={() => loginSocial("google")}
+              >
+                Google
+              </button>
+            </div>
+          )}
+          {/* Customize this button for google login */}
         </form>
       </div>
     </div>

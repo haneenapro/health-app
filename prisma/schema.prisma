@@ -37,8 +37,8 @@ model Answer {
   questionId String
   createdAt  DateTime @default(now())
   userId     String?
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   User       User?    @relation(fields: [userId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
 model Information {
@@ -97,7 +97,32 @@ model Report {
 }
 
 model Hospital {
-  id    String @id @default(cuid())
-  title String
-  desc  String
+  id          Int          @id @default(autoincrement())
+  name        String
+  departments Department[]
+  Doctor      Doctor?      @relation(fields: [doctorId], references: [id])
+  doctorId    Int?
+  image       String?
+  address     String?
+}
+
+model Department {
+  id        Int        @id @default(autoincrement())
+  name      String
+  hospitals Hospital[]
+  Doctor    Doctor?    @relation(fields: [doctorId], references: [id])
+  doctorId  Int?
+  image     String?
+}
+
+model Doctor {
+  id          Int          @id @default(autoincrement())
+  name        String
+  departments Department[]
+  hospitals   Hospital[]
+  image       String?
+  address     String?
+  experience  String?
+  phone       Int?
+  email       String?
 }

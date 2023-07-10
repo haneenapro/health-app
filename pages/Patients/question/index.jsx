@@ -20,6 +20,7 @@ const QuestionsList = () => {
     getQuestions()
   }, [])
 
+
   if (isLoading) return <p>Loading ... </p>
 
   console.log(questions)
@@ -37,6 +38,29 @@ const QuestionsList = () => {
     const updatedQuestions = questions.filter((info) => info.id !== id)
     setQuestions(updatedQuestions)
     alert("One item deleted!!")
+  }
+
+  const handlerAddDoctor = async () => {
+    await axios.post('/api/department', {
+      name:"doctor ho ma"
+    }).then((res)=>{
+      console.log(res,"@@");
+    })
+  }
+  const handlerDeleteDoctor = async () => {
+    await axios.delete('/api/department/10').then((res)=>{
+      console.log(res,"@@");
+    })
+  }
+  const handlerUpdateDoctor = async () => {
+    await axios.put('/api/department/10', {name:"Dr. Doctor"}).then((res)=>{
+      console.log(res,"@@");
+    })
+  }
+  const handlerDoctorDepartment = async () => {
+    await axios.post('/api/update-doctor', {name:"Dr. Doctor"}).then((res)=>{
+      console.log(res,"@@");
+    })
   }
   return (
     <>
@@ -69,6 +93,7 @@ const QuestionsList = () => {
             <span aria-hidden='true'>←</span> Back
           </a>
         </div>
+        <button type="" onClick={handlerDoctorDepartment}>Add Doctor</button>
       </div>
     </>
   )

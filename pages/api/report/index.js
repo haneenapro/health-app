@@ -3,6 +3,7 @@ import { prisma } from "../../../src/db/prisma"
 export default async function handler(req, res) {
   if (req.method === "GET") {
     const reports = await prisma.report.findMany()
+    console.log("@@@@@@@@@@@@@@@@")
     console.log(reports)
     return res.send(reports)
   }

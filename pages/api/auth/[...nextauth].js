@@ -62,18 +62,26 @@ export const authOptions = {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET_KEY,
     }),
+    
   ],
   pages: {
     signIn: "/login",
     error: "/login",
   },
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, token, user }) { 
       return Promise.resolve({ ...session, user: token })
     },
-    jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
       if (user) {
-        token = { ...user }
+        const { email } = user
+        const findUser = await prisma.user.findFirst({ where: { email } })
+        if (findUser) {
+
+          token = { ...user, role: findUser.role, id: findUser.id }
+        } else {
+          token = { ...user }
+        }
       }
       return token
     },
@@ -96,10 +104,12 @@ export const authOptions = {
           }
           return { token, ..._newData, redirect: "/Patient" }
         } else {
+          let _user = { ...token }
+          _user['role'] = findUser.role
           if (findUser.role === "patient") {
-            return { token, user, redirect: "/Patient" }
+            return { token: _user, user: findUser, redirect: "/Patient" }
           } else if (findUser.role === "doctor") {
-            return { token, user, redirect: "/Doctor" }
+            return { token: _user, user: findUser, redirect: "/Doctor" }
           } else {
             return
           }

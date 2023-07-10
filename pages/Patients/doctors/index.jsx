@@ -2,10 +2,7 @@ import prisma from "../../../src/db/prisma"
 import NavBar from "../../../src/components/NavBar"
 
 export const getServerSideProps = async () => {
-  const doctors = await prisma.user.findMany({
-    where: { role: "doctor" },
-    select: { name: true, email: true },
-  })
+  const doctors = await prisma.doctor.findMany()
 
   return {
     props: {
@@ -15,7 +12,6 @@ export const getServerSideProps = async () => {
 }
 
 const DoctorsList = ({ doctors }) => {
-  console.log(doctors)
   return (
     <>
       <NavBar />

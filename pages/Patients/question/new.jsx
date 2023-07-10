@@ -23,6 +23,8 @@ function QuestionForm() {
   const router = useRouter()
   const { data: session } = useSession()
 
+  console.log(session,"@@");
+
   async function handleSubmit(event) {
     event.preventDefault()
     // Send the form data to your server for registration

@@ -14,6 +14,8 @@ import {
   File,
   Syringe,
 } from "lucide-react"
+import { useEffect } from "react"
+import axios from "axios"
 
 export default function MainPage() {
   const router = useRouter()
@@ -26,7 +28,7 @@ export default function MainPage() {
     return null
   }
 
-  console.log(session.user.role)
+  console.log(session)
   if (session.user.role === "doctor") {
     void router.push("/Doctor")
     return null

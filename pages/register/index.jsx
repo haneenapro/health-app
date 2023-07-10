@@ -9,7 +9,7 @@ function RegisterForm() {
     name: "",
     email: "",
     password: "",
-    role: "",
+    role: "Patients",
   })
 
   function handleChange(event) {
@@ -57,6 +57,10 @@ function RegisterForm() {
       redirect: true,
       callbackUrl: formData.role === "patient" ? "/Patients" : "/Doctor",
     })
+  }
+
+  const loginSocial = async (e) => {
+    await signIn("google", { redirect: true, callbackUrl: "/Patients" })
   }
 
   return (
@@ -124,8 +128,9 @@ function RegisterForm() {
                 type='radio'
                 id='doctor'
                 name='role'
-                value={"doctor"}
+                value={"Doctor"}
                 onChange={handleChange}
+                checked={formData.role === "Doctor"}
               />
               <label htmlFor='doctor'>Doctor</label>
               <br></br>
@@ -134,8 +139,9 @@ function RegisterForm() {
                 type='radio'
                 id='Patient'
                 name='role'
-                value={"patient"}
+                value={"Patients"}
                 onChange={handleChange}
+                checked={formData.role === "Patients"}
               />
               <label htmlFor='doctor'>Patient</label>
             </div>
@@ -153,6 +159,23 @@ function RegisterForm() {
           </div>
 
           <Button type='submit'>Register</Button>
+
+          {/* Customize this button for google login */}
+          {formData.role === "Patients" && (
+            <div>
+              <center>
+                <p>OR SignIn With</p>
+              </center>
+              <button
+                class='w-full bg-white shadow-sm border  text-dark-500 hover:text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex gap-2 items-center justify-center'
+                type='button'
+                onClick={() => loginSocial("google")}
+              >
+                Google
+              </button>
+            </div>
+          )}
+          {/* Customize this button for google login */}
         </form>
       </div>
     </div>
