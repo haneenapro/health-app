@@ -97,6 +97,11 @@ export default function MainPage() {
             </main>
           </div>
 
+          {/* Hospitals */}
+          <div>
+            <a href=''> <h1> Hospitals Available </h1> </a>
+          </div>
+
           {/* Next One  */}
           <div className='px-28 py-28 bg-blue-200 '>
             <div className='text-center font-bold'>
@@ -110,6 +115,8 @@ export default function MainPage() {
                 suggestion for the cure and not just temporary recovary. You can
                 save your report cards for future.
               </h2>
+
+            
             </div>
           </div>
         </div>

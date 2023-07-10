@@ -35,6 +35,13 @@ CREATE TABLE "Information" (
 );
 
 -- CreateTable
+CREATE TABLE "Department" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "doctorsAvailable" TEXT NOT NULL,
+);
+
+-- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
