@@ -43,12 +43,16 @@ function InfoForm() {
       "/api/department",
       formData
     )
+    if(result) {
+
+      router.push(`/Admin/info-department`)  //is correctn needed????
+    }
     console.log(result)
     alert("Department Added successful!")
 
-    if ((result.status = 201)) {
-      router.push(`/Admin/info-department/${result.data.information.id}`)  //is correctn needed????
-    }
+    // if ((result.status = 201)) {
+    //   router.push(`/Admin/info-department/${result.data.information.id}`)  //is correctn needed????
+    // }
   }
 
   return (

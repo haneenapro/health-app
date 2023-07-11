@@ -10,7 +10,7 @@ import GoogleProvider from "next-auth/providers/google"
 // describe("AuthOptions", () => {
 export const authOptions = {
   session: { strategy: "jwt" },
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
 
   providers: [
     CredentialsProvider({
