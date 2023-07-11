@@ -89,7 +89,7 @@ export const authOptions = {
       if (rest?.account?.provider && rest?.account?.provider === "google") {
         const { email, name } = user
         const findUser = await prisma.user.findFirst({ where: { email } })
-        const _role = "Patients"
+        const _role = "patient"
         const pw = await bcrypt.hash("test123", 10)
         if (!findUser) {
           const _newUSer = await prisma.user.create({
@@ -105,18 +105,18 @@ export const authOptions = {
         } else {
           let _user = { ...token }
           _user['role'] = findUser.role
-          if (findUser.role === "Patients") {
+          if (findUser.role === "patient") {
             return { token: _user, user: findUser, redirect: "/Patient" }
-          } else if (findUser.role === "Doctor") {
+          } else if (findUser.role === "doctor") {
             return { token: _user, user: findUser, redirect: "/Doctor" }
           } else {
             return
           }
         }
       } else {
-        if (role === "Patients") {
+        if (role === "patient") {
           return { token, user, redirect: "/Patient" }
-        } else if (role === "Doctor") {
+        } else if (role === "doctor") {
           return { token, user, redirect: "/Doctor" }
         } else {
           return
@@ -124,7 +124,7 @@ export const authOptions = {
       }
     },
   },
-  // secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET
 }
 
 // Test codes

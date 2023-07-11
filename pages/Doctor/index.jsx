@@ -16,7 +16,7 @@ export default function MainPage() {
     return null
   }
 
-  if (session.user.role === "Patients") {
+  if (session.user.role === "patient") {
     void router.push("/Patients")
     return null
   }

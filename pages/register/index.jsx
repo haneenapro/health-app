@@ -9,7 +9,7 @@ function RegisterForm() {
     name: "",
     email: "",
     password: "",
-    role: "Patients",
+    role: "patient",
   })
 
   function handleChange(event) {
@@ -128,9 +128,9 @@ function RegisterForm() {
                 type='radio'
                 id='doctor'
                 name='role'
-                value={"Doctor"}
+                value={"doctor"}
                 onChange={handleChange}
-                checked={formData.role === "Doctor"}
+                checked={formData.role === "doctor"}
               />
               <label htmlFor='doctor'>Doctor</label>
               <br></br>
@@ -139,9 +139,9 @@ function RegisterForm() {
                 type='radio'
                 id='Patient'
                 name='role'
-                value={"Patients"}
+                value={"patient"}
                 onChange={handleChange}
-                checked={formData.role === "Patients"}
+                checked={formData.role === "patient"}
               />
               <label htmlFor='doctor'>Patient</label>
             </div>
@@ -161,7 +161,7 @@ function RegisterForm() {
           <Button type='submit'>Register</Button>
 
           {/* Customize this button for google login */}
-          {formData.role === "Patients" && (
+          {formData.role === "patient" && (
             <div>
               <center>
                 <p>OR SignIn With</p>
