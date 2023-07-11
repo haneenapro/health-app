@@ -11,15 +11,15 @@ export default function MainPage() {
 
   if (status === "loading") return <div>Loading...</div>
 
-  if (status === "unauthenticated") {
-    router.push("/login")
-    return null
-  }
+  // if (status === "unauthenticated") {
+  //   router.push("/login")
+  //   return null
+  // }
 
-  if (session.user.role === "patient") {
-    void router.push("/Patients")
-    return null
-  }
+  // if (session.user.role === "Admin") {
+  //   void router.push("/Admin")
+  //   return null
+  // }
 
   return <Page />
 }

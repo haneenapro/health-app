@@ -3,7 +3,7 @@ import { prisma } from "../../../src/db/prisma"
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
-      const departments = await prisma.hospital.findMany({})
+      const departments = await prisma.department.findMany({})
 
       if (departments) return res.status(200).send(departments)
       return res.status(204).send({ message: "No data found", status: 204 })

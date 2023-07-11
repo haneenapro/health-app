@@ -4,17 +4,17 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import NavBar from "../../../src/components/NavBar"
 
-const DepartmentList = () => {
+const DoctorList = () => {
   // api route -- get all informations
   const [isLoading, setIsLoading] = useState(false)
   const [departments, setDepartments] = useState([])
 
   useEffect(() => {
-    const getDepartments = async () => {
-      const res = await axios.get("/api/department")
+    const getDoctors = async () => {
+      const res = await axios.get("/api/doctor")
       setDepartments(res.data)
       setIsLoading(false)
-      console.log(res, "Saran");
+      console.log(res, "Doctor Here");
     }
  
     // const getDepartments = async () => {
@@ -22,7 +22,7 @@ const DepartmentList = () => {
     //    console.log(res, "Saran");
     //   }
 
-    getDepartments();
+    getDoctors();
 
     setIsLoading(true)
     // getInformations()
@@ -33,9 +33,9 @@ const DepartmentList = () => {
   // console.log(informations)
 
   const handleDelete = async (id) => {
-    await axios.delete(`/api/department/${id}`)
-    const updatedDepartments = departments.filter((info) => info.id !== id)
-    setDepartments(updatedDepartments)
+    await axios.delete(`/api/doctor/${id}`)
+    const updatedDoctors = doctors.filter((info) => info.id !== id)
+    setDoctors(updatedDoctors)
     alert("One item deleted!!")
   }
 
@@ -44,16 +44,16 @@ const DepartmentList = () => {
       <NavBar />
       <div className='m-12 md:mx-24 md:my-2 py-5 md:py-10 '>
         <h1 className='text-[24px] md:text-[48px] font-semibold pb-12'>
-          All Departments{" "}
+          All Doctors{" "}
         </h1>
 
-        {departments.map((department, i) => {
+        {doctors.map((doctor, i) => {
           return (
             <>
             {/* Try for Department Front end */}
             {/* Box to Go to Doctors */}
             <a
-                href={`info-department/${department.id}`}
+                href={`info-department/${doctor.id}`}
                 key={i}
                 className='block mx-5 my-2 shadow border text-xl p-4 mb-10'
               > 
@@ -63,19 +63,22 @@ const DepartmentList = () => {
                     
                 </div>
                 <div class="flex flex-col items-center pb-10">
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="./images/neuro.jpg" alt="Bonnie image"> {department.image} </img>
-                    <h5 class="mb-1 text-xl font-medium text-gray-900 ">{department.name} </h5>
-                    <span class="text-sm text-gray-500 ">{department.doctorsAvailable}</span>
-                    {/* <span class="text-sm text-gray-500 ">{department.image}</span> */}
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="./images/neuro.jpg" alt="Bonnie image"> {doctor.image} </img>
+                    <h5 class="mb-1 text-xl font-medium text-gray-900 ">{doctor.name} </h5>
+                    <span class="text-sm text-gray-500 ">{doctor.address}</span>
+                    <span class="text-sm text-gray-500 ">{doctor.experienceYears}</span>
+                    <span class="text-sm text-gray-500 ">{doctor.PhoneNumber}</span>
+                    <span class="text-sm text-gray-500 ">{doctor.HospitalName}</span>
+
 
                     <div class="flex mt-4 space-x-3 md:mt-6">
-                        <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Consult Now</a>
+                        <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"> Check Out Timings </a>
                     </div>
                 </div>
                 </div>
               </a>
 
-{/* Previous Code */}
+ {/* Previous Code //Unchanged here  */}
               <a
                 href={`info-dynamic/${department.id}`}
                 key={i}
@@ -110,4 +113,4 @@ const DepartmentList = () => {
   )
 }
 
-export default DepartmentList
+export default DoctorList

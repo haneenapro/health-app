@@ -7,9 +7,14 @@ import { useRouter } from "next/router"
 
 function InfoForm() {
   const [formData, setFormData] = useState({
-    name: "",
-    doctorsAvailable: "",
     image: "",
+    name: "",
+    address: "",
+    experineceYears: "",
+    PhoneNumber: "",
+    HospitalName: "",
+    DepartmentId: "",
+    DepartmentName: ""
   })
 
   function handleChange(event) {
@@ -24,9 +29,9 @@ function InfoForm() {
 
   function validateForm() {
     if (
+      formData.image === "" ||
       formData.name === "" ||
-      formData.doctorsAvailable === "" ||
-      formData.image === "" 
+      formData.address === ""  //many validations left???
     ) {
       alert("All fields are required")
       return false
@@ -40,14 +45,14 @@ function InfoForm() {
     console.log(formData)
 
     const result = await axios.post(
-      "/api/department",
+      "/api/doctor",
       formData
     )
     console.log(result)
-    alert("Department Added successful!")
+    alert("Doctoro Added successful!")
 
     if ((result.status = 201)) {
-      router.push(`/Admin/info-department/${result.data.information.id}`)  //is correctn needed????
+      router.push(`/Admin/info-doctor/${result.data.information.id}`)  //is correctn needed????
     }
   }
 
@@ -59,7 +64,7 @@ function InfoForm() {
           <div>
             <div className=' flex items-center justify-left gap-x-6'>
               <a
-                href='/Admin'
+                href='/Admin' //need to push back to specific department ???
                 className='text-base font-semibold leading-7 text-gray-900'
               >
                 <span aria-hidden='true'>←</span> Back
@@ -73,9 +78,9 @@ function InfoForm() {
           <form
             onSubmit={(e) => {
               e.preventDefault()
-              // if (validateForm()) {
+              if (validateForm()) {
                 handleSubmit(e)
-              // }
+              }
             }}
             className='mt-8 space-y-6 bg-white p-6 rounded'
           >
@@ -83,16 +88,16 @@ function InfoForm() {
 
             <div className='pt-6'>
                 <Input
-                  label={"Department Image"}
+                  label={"Doctor Image"}
                   name='desc'
-                  value={formData.desc}
+                  value={formData.image}
                   onChange={handleChange}
                 />
               </div>
 
               <div className='pt-8'>
                 <Input
-                  label={"Department Name"}
+                  label={"Name"}
                   name='name'
                   value={formData.name}
                   onChange={handleChange}
@@ -101,12 +106,58 @@ function InfoForm() {
 
               <div className='pt-6'>
                 <Input
-                  label={"Department Address"}
+                  label={"Address"}
                   name='title'
-                  value={formData.title}
+                  value={formData.address}
                   onChange={handleChange}
                 />
               </div>
+
+              <div className='pt-6'>
+                <Input
+                  label={"Experience Years"}
+                  name='title'
+                  value={formData.experineceYears}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className='pt-6'>
+                <Input
+                  label={"Phone Number"}
+                  name='title'
+                  value={formData.PhoneNumber}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className='pt-6'>
+                <Input
+                  label={"Hospital Name"}
+                  name='title'
+                  value={formData.HospitalName}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className='pt-6'>
+                <Input
+                  label={"Department Id"}
+                  name='title'
+                  value={formData.DepartmentId}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className='pt-6'>
+                <Input
+                  label={"Department Name"}
+                  name='title'
+                  value={formData.DepartmentName}
+                  onChange={handleChange}
+                />
+              </div>
+
 
 
             </div>
