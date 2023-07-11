@@ -10,7 +10,7 @@ import GoogleProvider from "next-auth/providers/google"
 // describe("AuthOptions", () => {
 export const authOptions = {
   session: { strategy: "jwt" },
-  // adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
 
   providers: [
     CredentialsProvider({
@@ -80,7 +80,6 @@ export const authOptions = {
 
           token = { ...user, role: findUser.role, id: findUser.id }
         } else {
-          token = { ...user }
         }
       }
       return token
@@ -90,7 +89,7 @@ export const authOptions = {
       if (rest?.account?.provider && rest?.account?.provider === "google") {
         const { email, name } = user
         const findUser = await prisma.user.findFirst({ where: { email } })
-        const _role = "patient"
+        const _role = "Patients"
         const pw = await bcrypt.hash("test123", 10)
         if (!findUser) {
           const _newUSer = await prisma.user.create({
@@ -106,18 +105,18 @@ export const authOptions = {
         } else {
           let _user = { ...token }
           _user['role'] = findUser.role
-          if (findUser.role === "patient") {
+          if (findUser.role === "Patients") {
             return { token: _user, user: findUser, redirect: "/Patient" }
-          } else if (findUser.role === "doctor") {
+          } else if (findUser.role === "Doctor") {
             return { token: _user, user: findUser, redirect: "/Doctor" }
           } else {
             return
           }
         }
       } else {
-        if (role === "patient") {
+        if (role === "Patients") {
           return { token, user, redirect: "/Patient" }
-        } else if (role === "doctor") {
+        } else if (role === "Doctor") {
           return { token, user, redirect: "/Doctor" }
         } else {
           return
@@ -125,7 +124,7 @@ export const authOptions = {
       }
     },
   },
-  secret: process.env.NEXTAUTH_SECRET
+  // secret: process.env.NEXTAUTH_SECRET
 }
 
 // Test codes
