@@ -1,21 +1,22 @@
-import { prisma } from "../../src/db/prisma"
+import { prisma } from "../../../../src/db/prisma"
 
 
 export default async function handler(req, res) {
     //Get
+    const departmentId =req.query.department_id
+    const hospitalId =req.query.hospital_id
     if (req.method === "GET") {
-        console.log(req.query,"@@");
         try {
             const doctors = await prisma.doctor.findMany({
                 where: {
                     hospitals: {
                         some: {
-                            id: 5,
+                            id: Number(hospitalId),
                         },
                     },
                     departments: {
                         some: {
-                            id: 3
+                            id: Number(departmentId)
                         }
                     }
                 },
