@@ -1,4 +1,4 @@
-import { prisma } from "../../../src/db/prisma"
+import { prisma } from "../../../../src/db/prisma"
 
 export default async function handler(req, res) {
   const id = req.query.id
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         where: {
           hospitals: {
             some: {
-              id: id,
+              id: Number(id),
             },
           },
         },
