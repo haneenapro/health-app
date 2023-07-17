@@ -17,9 +17,7 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const information = await prisma.department.create({
-        data: {
-          name: req.body.name,
-        },
+        data: req.body,
       })
 
       return res

@@ -109,8 +109,9 @@ export const authOptions = {
             return { token: _user, user: findUser, redirect: "/Patient" }
           } else if (findUser.role === "doctor") {
             return { token: _user, user: findUser, redirect: "/Doctor" }
+          } else if (findUser.role === "admin") {
+            return { token, user, redirect: "/Admin" }
           } else {
-            console.log("!@@@");
             return
           }
         }
@@ -121,7 +122,7 @@ export const authOptions = {
         } else if (role === "doctor") {
           return { token, user, redirect: "/Doctor" }
         } else if (role === "admin") {
-          return { token, user, redirect: "/Admin" }  
+          return { token, user, redirect: "/Admin" }
         } else {
           return
         }

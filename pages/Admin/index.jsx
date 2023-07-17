@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/router"
 import NavBar from "../../src/components/NavBar"
 import { BookOpen, Eye, FilePlus2, Pencil, User } from "lucide-react"
+import Link from "next/link"
 
 export default function MainPage() {
   const router = useRouter()
@@ -11,15 +12,14 @@ export default function MainPage() {
 
   if (status === "loading") return <div>Loading...</div>
 
-  // if (status === "unauthenticated") {
-  //   router.push("/login")
-  //   return null
-  // }
+  if (status === "unauthenticated") {
+    router.push("/login")
+    return null
+  }
 
-  // if (session.user.role === "Admin") {
-  //   void router.push("/Admin")
-  //   return null
-  // }
+  if (session.user.role !== "admin") {
+    return <div>Not Authorized</div>
+  }
 
   return <Page />
 }
@@ -59,29 +59,29 @@ function Page() {
           <h2 className='m-7 text-2xl font-bold'> Dashboard </h2>{" "}
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
             {/* Styled Funtion */}
-            <a
+            <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
-              href='Doctor/info-dynamic/new'
+              href='Admin/hospital/new'
             >
               <FilePlus2 className='text-center' />
               Add Hospitals
-            </a>
+            </Link>
 
-            <a
+            <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
-              href='Admin/info-department/new'
+              href='Admin/department/new'
             >
               <Pencil className='text-center' />
               Add Departments 
-            </a>
+            </Link>
 
-            <a
+            <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
-              href='Doctor/info-dynamic'
+              href='Admin/doctor/new'
             >
               <Eye className='text-center' />
               Create Doctor Account
-            </a>
+            </Link>
           </div>
         </div>
       </main>

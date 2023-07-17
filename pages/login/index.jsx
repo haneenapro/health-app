@@ -16,6 +16,7 @@ function Login() {
   if (status === "authenticated") {
     session.user.role === "doctor" && void router.push("/Doctor")
     session.user.role === "patient" && void router.push("/Patients")
+    session.user.role === "admin" && void router.push("/Admin")
     return null
   }
 
@@ -145,6 +146,17 @@ function LoginForm() {
                 checked={formData.role === "Patients"}
               />
               <label htmlFor='Patients'>Patient</label>
+              <br></br>
+              <input
+                label={"Enter password"}
+                type='radio'
+                id='Admin'
+                name='role'
+                value={"Admin"}
+                onChange={handleChange}
+                checked={formData.role === "Admin"}
+              />
+              <label htmlFor='Patients'>Admin</label>
             </div>
           </div>
 

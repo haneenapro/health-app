@@ -103,7 +103,7 @@ model Hospital {
   image       String?
   address     String?
   description String?
-  Doctor      Doctor?      @relation(fields: [doctorId], references: [id])
+  doctors     Doctor[]
   departments Department[] @relation("DepartmentToHospital")
 }
 
@@ -112,7 +112,7 @@ model Department {
   name      String
   doctorId  Int?
   image     String?
-  Doctor    Doctor?    @relation(fields: [doctorId], references: [id])
+  doctors   Doctor[]
   hospitals Hospital[] @relation("DepartmentToHospital")
 }
 

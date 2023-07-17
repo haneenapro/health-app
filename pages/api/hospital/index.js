@@ -13,11 +13,15 @@ export default async function handler(req, res) {
     }
   }
   if (req.method === "POST") {
+    const information = await prisma.hospital.create({
+      data: req.body
+    })
+    return res
+      .status(201)
+      .send({ message: "Information Added Successfully", information })
     try {
-      const information = await prisma.department.create({
-        data: {
-          name: req.body.name,
-        },
+      const information = await prisma.hospital.create({
+        data: req.body
       })
       return res
         .status(201)
