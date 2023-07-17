@@ -62,17 +62,14 @@ export const authOptions = {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET_KEY,
     }),
-    
+
   ],
   pages: {
     signIn: "/login",
     error: "/login",
   },
   callbacks: {
-    async session({ session, token, user }) { 
-      return Promise.resolve({ ...session, user: token })
-    },
-    async jwt({ token, user, profile }) {
+    async jwt({ token, user }) {
       if (user) {
         const { email } = user
         const findUser = await prisma.user.findFirst({ where: { email } })
@@ -80,12 +77,15 @@ export const authOptions = {
 
           token = { ...user, role: findUser.role, id: findUser.id }
         } else {
+          token = { ...user }
         }
       }
       return token
     },
+    async session({ session, token }) {
+      return Promise.resolve({ ...session, user: token })
+    },
     async signIn({ token, user, ...rest }) {
-      const { role } = user
       if (rest?.account?.provider && rest?.account?.provider === "google") {
         const { email, name } = user
         const findUser = await prisma.user.findFirst({ where: { email } })
@@ -110,21 +110,26 @@ export const authOptions = {
           } else if (findUser.role === "doctor") {
             return { token: _user, user: findUser, redirect: "/Doctor" }
           } else {
+            console.log("!@@@");
             return
           }
         }
       } else {
+        const { role } = user
         if (role === "patient") {
           return { token, user, redirect: "/Patient" }
         } else if (role === "doctor") {
           return { token, user, redirect: "/Doctor" }
+        } else if (role === "admin") {
+          return { token, user, redirect: "/Admin" }  
         } else {
           return
         }
       }
     },
   },
-  secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: true
 }
 
 // Test codes

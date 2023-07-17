@@ -102,6 +102,7 @@ model Hospital {
   doctorId    Int?
   image       String?
   address     String?
+  description String?
   Doctor      Doctor?      @relation(fields: [doctorId], references: [id])
   departments Department[] @relation("DepartmentToHospital")
 }

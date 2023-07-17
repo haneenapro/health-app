@@ -3,6 +3,7 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import NavBar from "../../src/components/NavBar"
+import Link from "next/link"
 
 const HospitalList = () => {
   // api route -- get all informations
@@ -10,14 +11,14 @@ const HospitalList = () => {
   const [informations, setInformations] = useState([])
 
   useEffect(() => {
-    const getInformations = async () => {
-      const res = await axios.get("/api/information")
+    const getHospitals = async () => {
+      const res = await axios.get("/api/hospital")
       setInformations(res.data)
       setIsLoading(false)
     }
 
     setIsLoading(true)
-    getInformations()
+    getHospitals()
   }, [])
 
   if (isLoading) return <p>Loading ... </p>
@@ -56,6 +57,7 @@ const HospitalList = () => {
         </div>
 
         {/* <!-- Card --> */}
+        {informations?.map((_hospital, _index)=>(
             <div class="flex gap-x-3.5"> 
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700">
                     <a href="#" class="items-center">
@@ -63,57 +65,19 @@ const HospitalList = () => {
                     </a>
                     <div class="p-5">
                         <a href="#">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black"> Teaching Hospital </h5>
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black"> {_hospital.name} </h5>
                         </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                        <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-black-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{_hospital.description}</p>
+                        <Link href={`/department?hospitalId=${_hospital.id}`} class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-black-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Book an Appointment
                             <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                             </svg>
-                        </a>
-                    </div>
-                </div>
-
-                {/* <!-- second card  --> */}
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700">
-                    <a href="#">
-                        <img class="rounded-t-lg" src="./images/bir.jpg" alt="img" />
-                    </a>
-                    <div class="p-5">
-                        <a href="#">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black"> Bir Hospital </h5>
-                        </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                        <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-black-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Book an Appointment
-                            <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                {/* <!-- Third card  --> */}
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700">
-                    <a href="#">
-                        <img class="rounded-t-lg" src="./images/TH.jpg" alt="img" />
-                    </a>
-                    <div class="p-5">
-                        <a href="#">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black"> Kantibal Hospital </h5>
-                        </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                        <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-black-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Book an Appointment
-                            <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                            </svg>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
-
+        ))}
     </>
   )
 }
