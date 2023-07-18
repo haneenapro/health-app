@@ -61,10 +61,10 @@ function Page() {
             {/* Styled Funtion */}
             <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
-              href='Admin/hospital/new'
+              href='Admin/hospital'
             >
               <FilePlus2 className='text-center' />
-              Add Hospitals
+             Hospitals
             </Link>
 
             <Link

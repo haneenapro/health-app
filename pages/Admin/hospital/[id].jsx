@@ -1,45 +1,39 @@
-import { useState } from "react"
-import Button from "../../../components/ui/Button"
+import React, { useState } from "react"
 import NavBar from "../../../src/components/NavBar"
-import { useRouter } from "next/router"
-import Input from "../../../components/ui/Input"
-import { useSession } from "next-auth/react"
-import axios from "axios"
 import Link from "next/link"
+import prisma from "../../../src/db/prisma";
+import Input from "../../../components/ui/Input";
+import Button from "../../../components/ui/Button";
+import axios from "axios";
+import { useRouter } from "next/router";
 
-export const getServerSideProps = async () => {
+export async function getServerSideProps(context) {
+    const { id } = context.params;
+
+    const hospitalData = await prisma.hospital.findUnique({
+        where: {
+            id: Number(id)
+        },
+        include: {
+            departments: true,
+            doctors: true
+        }
+    })
     const departments = await prisma.department.findMany()
     const doctors = await prisma.doctor.findMany()
 
     return {
         props: {
+            hospitalData,
             departments,
             doctors
         },
     }
 }
-
-function CreateHospital({ departments, doctors }) {
-    const [formData, setFormData] = useState({
-        name: "",
-        address: "",
-        description: "",
-        departments: [],
-        doctors: []
-    })
-
-    console.log(doctors, "@@@");
-    const router = useRouter()
-    const { status, data: session } = useSession()
-
-    if (status === "loading") return <div>Loading...</div>
-
-    if (status === "unauthenticated" || session.user.role !== "admin") {
-        router.push("/login")
-        return null
-    }
-
-    console.log(formData, "@@@");
+const index = ({ hospitalData, departments, doctors }) => {
+    let router = useRouter()
+    const id = router.query?.id
+    const [formData, setFormData] = useState(hospitalData)
     function handleChange(event) {
         const { name, value } = event.target
         if (name === "department") {
@@ -76,7 +70,6 @@ function CreateHospital({ departments, doctors }) {
         }
     }
 
-
     function validateForm() {
         if (
             formData.name === "" ||
@@ -91,12 +84,12 @@ function CreateHospital({ departments, doctors }) {
 
     async function handleSubmit(event) {
         event.preventDefault()
-        await axios.post("/api/hospital",
+        await axios.put(`/api/hospital/${id}`,
             formData
         ).then((res) => {
-            if (res.status === 201) {
+            if (res.status === 200) {
                 alert("Information Added successful!")
-                router.push(`/Admin`)
+                router.push(`/Admin/hospital`)
             } else {
                 alert("Something went wrong")
             }
@@ -120,9 +113,10 @@ function CreateHospital({ departments, doctors }) {
                             </Link>
                         </div>
                         <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
-                            Add New Hospital
+                            Edit Hospital
                         </h2>
                     </div>
+
                     <form
                         onSubmit={(e) => {
                             e.preventDefault()
@@ -218,4 +212,4 @@ function CreateHospital({ departments, doctors }) {
     )
 }
 
-export default CreateHospital
+export default index

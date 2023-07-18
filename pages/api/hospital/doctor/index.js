@@ -18,14 +18,19 @@ export default async function handler(req, res) {
                         some: {
                             id: Number(departmentId)
                         }
-                    }
+                    },
                 },
                 include: {
                     hospitals: true,
-                    departments: true
+                    departments: true,
+                    schedules: {
+                        select: {
+                            hospitalId: true,
+                            date: true,
+                          },
+                    }
                 },
             })
-            console.log(doctors, "@@123");
             if (doctors && doctors.length > 0)
                 return res.status(200).send(doctors)
             return res.status(204).send({ message: "No data found", status: 204 })

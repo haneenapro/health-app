@@ -48,7 +48,7 @@ const index = () => {
                                     {o?.title}
                                 </h3>
                                 <h6 className='text-sm text-center mb-2'>{o?.sub_title}</h6>
-                                <Link href={`/doctors?hospital_id=1&&department_id=1`} className='bg-transparent text-center hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>
+                                <Link href={`/doctors?hospital_id=${id}&&department_id=${o.id}`} className='bg-transparent text-center hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>
                                     Consult Now
                                 </Link>
                             </div>

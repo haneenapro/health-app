@@ -19,6 +19,7 @@ model User {
   question    Question[]
   report      Report[]
   Session     Session[]
+  Payment     UserPayment[]
 }
 
 model Question {
@@ -97,27 +98,28 @@ model Report {
 }
 
 model Hospital {
-  id          Int          @id @default(autoincrement())
-  name        String
-  doctorId    Int?
-  image       String?
-  address     String?
-  description String?
-  doctors     Doctor[]
-  departments Department[] @relation("DepartmentToHospital")
+  id             Int              @id @default(autoincrement())
+  name           String
+  image          String?
+  address        String?
+  description    String?
+  doctorId       String?
+  doctors        Doctor[]
+  departments    Department[]     @relation("DepartmentToHospital")
+  DoctorSchedule DoctorSchedule[]
 }
 
 model Department {
   id        Int        @id @default(autoincrement())
   name      String
-  doctorId  Int?
   image     String?
+  doctorId  String?
   doctors   Doctor[]
   hospitals Hospital[] @relation("DepartmentToHospital")
 }
 
 model Doctor {
-  id          Int          @id @default(autoincrement())
+  id          Int              @id @default(autoincrement())
   name        String
   image       String?
   address     String?
@@ -126,4 +128,41 @@ model Doctor {
   email       String?
   departments Department[]
   hospitals   Hospital[]
+  schedules   DoctorSchedule[]
+  payments    History[]
+}
+
+model DoctorSchedule {
+  id         Int             @id @default(autoincrement())
+  hospitalId Int?
+  hospital   Hospital?       @relation(fields: [hospitalId], references: [id])
+  date       AvailableTime[]
+  doctorId   String?
+  doctors    Doctor[]
+  history    History[]
+}
+
+model AvailableTime {
+  id       Int              @id @default(autoincrement())
+  token    String?
+  date     String?
+  schedule DoctorSchedule[]
+}
+
+model UserPayment {
+  id      Int       @id @default(autoincrement())
+  userId  String?
+  User    User?     @relation(fields: [userId], references: [id])
+  history History[]
+}
+
+model History {
+  id            Int             @id @default(autoincrement())
+  doctorId      Int?
+  doctor        Doctor?         @relation(fields: [doctorId], references: [id])
+  scheduleId    Int?
+  schedule      DoctorSchedule? @relation(fields: [scheduleId], references: [id])
+  paymentAmount String?
+  status        String?
+  userPayment   UserPayment[]
 }

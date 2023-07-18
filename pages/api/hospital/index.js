@@ -3,7 +3,11 @@ import { prisma } from "../../../src/db/prisma"
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
-      const hospitals = await prisma.hospital.findMany({})
+      const hospitals = await prisma.hospital.findMany({
+        include: {
+          DoctorSchedule: true
+        }
+      })
       if (hospitals) return res.status(200).send(hospitals)
       return res.status(204).send({ message: "No data found", status: 204 })
     } catch (error) {
@@ -13,8 +17,19 @@ export default async function handler(req, res) {
     }
   }
   if (req.method === "POST") {
+    console.log(req.body,"@@");
     const information = await prisma.hospital.create({
-      data: req.body
+      data: {
+        name: req.body.name,
+        address: req.body.address,
+        description: req.body.description,
+        departments: {
+          connect: req.body.departments.map((_elm)=> {return {id: Number(_elm.id)}})
+        },
+        doctors: {
+          connect:  req.body.doctors.map((_elm)=> {return {id: Number(_elm.id)}})
+        }
+      }
     })
     return res
       .status(201)

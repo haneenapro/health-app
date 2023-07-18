@@ -41,17 +41,26 @@ export default async function handler(req, res) {
   // Update
   if (req.method === "PUT") {
     try {
-      const { name } = req.body
+      const { name, address, description, departments, doctors } = req.body
       await prisma.hospital.update({
-        where: { id: id },
+        where: { id: Number(id) },
         data: {
           name: name,
+          address: address,
+          description: description,
+          departments: {
+            set: [],
+            connect: departments.map((_elm) => { return { id: Number(_elm.id) } })
+          },
+          doctors: {
+            set: [],
+            connect: doctors.map((_elm) => { return { id: Number(_elm.id) } })
+          }
         },
       })
 
       return res.send({
         message: "Update success",
-        updatedHospital,
         status: 200,
       })
     } catch (error) {
