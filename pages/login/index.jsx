@@ -27,7 +27,7 @@ function LoginForm() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "Patients",
+    role: "patient",
   })
 
   const router = useRouter()
@@ -51,28 +51,15 @@ function LoginForm() {
       email: formData.email,
       password: formData.password,
       redirect: true,
-      callbackUrl: "/" + formData.role,
+      role: formData.role,
+      callbackUrl: "/" + formData.role.charAt(0).toUpperCase() + formData.role.slice(1),
     })
 
     console.log(res)
-
-    // const { error } = await signIn("credentials", {
-    //   email: email,
-    //   password: password,
-    //   redirect: false,
-    // })
-
-    // if (error) {
-    //   // handle error
-    // } else {
-    //   router.push(callbackUrl)
-    // }
-
-    // router.push(res.url)
   }
 
   const loginSocial = async (e) => {
-    await signIn("google", { redirect: true, callbackUrl: "/Patients" })
+    await signIn("google")
   }
 
   return (
@@ -130,9 +117,9 @@ function LoginForm() {
                 type='radio'
                 id='doctor'
                 name='role'
-                value={"Doctor"}
+                value={"doctor"}
                 onChange={handleChange}
-                checked={formData.role === "Doctor"}
+                checked={formData.role === "doctor"}
               />
               <label htmlFor='doctor'>Doctor</label>
               <br></br>
@@ -141,9 +128,9 @@ function LoginForm() {
                 type='radio'
                 id='Patients'
                 name='role'
-                value={"Patients"}
+                value={"patient"}
                 onChange={handleChange}
-                checked={formData.role === "Patients"}
+                checked={formData.role === "patient"}
               />
               <label htmlFor='Patients'>Patient</label>
               <br></br>
@@ -152,9 +139,9 @@ function LoginForm() {
                 type='radio'
                 id='Admin'
                 name='role'
-                value={"Admin"}
+                value={"admin"}
                 onChange={handleChange}
-                checked={formData.role === "Admin"}
+                checked={formData.role === "admin"}
               />
               <label htmlFor='Patients'>Admin</label>
             </div>
@@ -163,7 +150,7 @@ function LoginForm() {
           <Button type='submit'>Log In</Button>
 
           {/* Customize this button for google login */}
-          {formData.role === "Patients" && (
+          {formData.role === "patient" && (
             <div>
               <center>
                 <p>OR SignIn With</p>

@@ -2,7 +2,6 @@ import NextAuth from "next-auth"
 
 import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "../../../src/db/prisma"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import bcrypt from "bcrypt"
 
 import GoogleProvider from "next-auth/providers/google"
@@ -10,7 +9,6 @@ import GoogleProvider from "next-auth/providers/google"
 // describe("AuthOptions", () => {
 export const authOptions = {
   session: { strategy: "jwt" },
-  // adapter: PrismaAdapter(prisma),
 
   providers: [
     CredentialsProvider({
@@ -29,8 +27,6 @@ export const authOptions = {
             data: { name, email, role, password: pw },
           })
 
-
-          console.log(user, "@@@user@@@");
           if (user.role === "doctor") {
             await prisma.doctor.create({
               data: {
@@ -54,11 +50,12 @@ export const authOptions = {
         }
 
         // SIGN INN
-        const { email, password } = credentials
-
+        const { email, password, role } = credentials
         const user = await prisma.user.findFirst({ where: { email } })
 
         if (!user) throw new Error("No such user ... ")
+
+        if (user.role !== role) throw new Error("Wrong login attemp!!")
 
         const passwordMatch = await bcrypt.compare(password, user.password)
 
@@ -110,26 +107,9 @@ export const authOptions = {
           const _newUSer = await prisma.user.create({
             data: { name, email, role: _role, password: pw },
           })
-          const _newData = {
-            name: _newUSer.name,
-            email: _newUSer.email,
-            role: _newUSer.role,
-            id: _newUSer.id,
-          }
-          return { token, ..._newData, redirect: "/Patient" }
+          return { token, _newUSer, redirect: "/Patient" }
         } else {
-          console.log(findUser,"@@@@");
-          let _user = { ...token }
-          _user['role'] = findUser.role
-          if (findUser.role === "patient") {
-            return { token: _user, user: findUser, redirect: "/Patient" }
-          } else if (findUser.role === "doctor") {
-            return { token: _user, user: findUser, redirect: "/Doctor" }
-          } else if (findUser.role === "admin") {
-            return { token, user, redirect: "/Admin" }
-          } else {
-            return
-          }
+          return { token, user: findUser, redirect: "/Patient" }
         }
       } else {
         const { role } = user
@@ -146,7 +126,7 @@ export const authOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true
+  // debug: true
 }
 
 // Test codes

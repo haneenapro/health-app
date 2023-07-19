@@ -10,16 +10,23 @@ export default function MainPage() {
   const router = useRouter()
   const { status, data: session } = useSession()
 
-  if (status === "loading") return <div>Loading...</div>
-
+  
   if (status === "unauthenticated") {
     router.push("/login")
     return null
   }
-
-  if (session.user.role !== "admin") {
-    return <div>Not Authorized</div>
+  
+  if (session?.user.role === 'patient') {
+    router.push("/Patients")
+    return null
   }
+
+  if (session?.user.role === 'doctor') {
+    router.push("/Doctor")
+    return null
+  }
+
+  if (status === "loading") return <div>Loading...</div>
 
   return <Page />
 }
