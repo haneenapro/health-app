@@ -1,20 +1,31 @@
-import React from "react"
+import React, {useState} from "react"
 import NavBar from "../../../src/components/NavBar"
 import Link from "next/link"
 import { FilePlus2 } from "lucide-react"
+import axios from 'axios'
+
 
 export const getServerSideProps = async () => {
-    const hospitals = await prisma.hospital.findMany()
-    const doctors = await prisma.doctor.findMany()
+    const hospitalsData = await prisma.hospital.findMany()
 
     return {
         props: {
-            hospitals,
-            doctors,
+            hospitalsData,
         },
     }
 }
-const index = ({ hospitals }) => {
+const index = ({ hospitalsData }) => {
+    const [hospitals, setHospitals] = useState(hospitalsData || [])
+
+    async function handleDelete(e) {
+        await axios.delete(`/api/hospital/${e}`).then((res)=>{
+            alert("Succesfully deleted")
+        }).then((res)=> {
+            axios.get('/api/hospital').then((_rest)=> {
+                setHospitals(_rest.data)
+            })
+        })
+    }
     return (
         <div className="container mx-auto">
             <NavBar />
@@ -38,7 +49,7 @@ const index = ({ hospitals }) => {
                             <th class='px-6 py-3'>Name</th>
                             <th class='px-6 py-3'>Address</th>
                             <th class='px-6 py-3'>Desription</th>
-                            <th class='px-6 py-3 text-end'>Action</th>
+                            <th class='px-6 py-3 text-center'>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,10 +60,13 @@ const index = ({ hospitals }) => {
                                     <th class='px-6 py-3'>{_elm?.name}</th>
                                     <th class='px-6 py-3'>{_elm?.address}</th>
                                     <th class='px-6 py-3'>{_elm?.description}</th>
-                                    <th class='px-6 py-3 text-end'>
-                                        <Link href={`/Admin/hospital/${_elm.id}`} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-2 border border-blue-500 hover:border-transparent rounded'>
+                                    <th class='px-6 py-3 text-center'>
+                                        <Link href={`/Admin/hospital/${_elm.id}`} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 px-2 border border-blue-500 hover:border-transparent rounded'>
                                             Edit
                                         </Link>
+                                        <button className='ml-2 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white px-2 border border-red-500 hover:border-transparent rounded' onClick={(e)=> handleDelete(_elm.id)} >
+                                            Delete
+                                        </button>
                                     </th>
                                 </tr>
                             ))

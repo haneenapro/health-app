@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/router"
 import NavBar from "../../src/components/NavBar"
 import { BookOpen, Eye, FilePlus2, Pencil, User } from "lucide-react"
+import Link from "next/link"
 
 export default function MainPage() {
   const router = useRouter()
@@ -59,29 +60,43 @@ function Page() {
           <h2 className='m-7 text-2xl font-bold'> Dashboard </h2>{" "}
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
             {/* Styled Funtion */}
-            <a
+            <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Doctor/question'
             >
               <Pencil className='text-center' />
               Answer the Questions
-            </a>
+            </Link>
 
-            <a
+            <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Doctor/info-dynamic/new'
             >
               <FilePlus2 className='text-center' />
               Add Information to Blog
-            </a>
+            </Link>
 
-            <a
+            <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Doctor/info-dynamic'
             >
               <Eye className='text-center' />
               View Blog Information
-            </a>
+            </Link>
+            <Link
+              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Doctor/schedule-appoinment'
+            >
+              <Eye className='text-center' />
+              Schedule appoinment
+            </Link>
+            <Link
+              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Doctor/EditDoctor'
+            >
+              <Eye className='text-center' />
+              Edit Information
+            </Link>
           </div>
         </div>
       </main>

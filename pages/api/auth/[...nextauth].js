@@ -29,6 +29,22 @@ export const authOptions = {
             data: { name, email, role, password: pw },
           })
 
+
+          console.log(user, "@@@user@@@");
+          if (user.role === "doctor") {
+            await prisma.doctor.create({
+              data: {
+                name: user.name,
+                email: user.email,
+                User: {
+                  connect: {
+                    id: user.id
+                  }
+                }
+              }
+            })
+          }
+
           return {
             name: user.name,
             email: user.email,
@@ -74,7 +90,6 @@ export const authOptions = {
         const { email } = user
         const findUser = await prisma.user.findFirst({ where: { email } })
         if (findUser) {
-
           token = { ...user, role: findUser.role, id: findUser.id }
         } else {
           token = { ...user }
@@ -103,6 +118,7 @@ export const authOptions = {
           }
           return { token, ..._newData, redirect: "/Patient" }
         } else {
+          console.log(findUser,"@@@@");
           let _user = { ...token }
           _user['role'] = findUser.role
           if (findUser.role === "patient") {

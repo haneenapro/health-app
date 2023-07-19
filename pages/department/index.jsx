@@ -30,33 +30,33 @@ const index = () => {
     return (
         <>
             <NavBar />
-            <div className='flex flex-wrap items-center justify-center'>
-                {data?.length > 0 ? (
-                    data?.map((o, i) => {
-                        return <div className='flex-1 max-w-sm flex items-center p-4' key={i}>
-                            <div>
-                                <div className='bg-white rounded-lg flex items-center justify-center p-2'>
-                                    <Image
+            <div className="container mx-auto py-4">
+            <h2 className='my-7 text-2xl font-bold border-b border-slate-300'> Available Departments </h2>{" "}
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6'>
+                    {data?.length > 0 ? (
+                        data?.map((o, i) => {
+                            return (
+                                <div className='w-full p-4 shadow-lg flex flex-col justify-center items-center' key={i}>
+                                    <img
                                         className='rounded'
                                         src={o?.image ? o.image : ""}
-                                        width={80}
-                                        height={80}
+                                        width={100}
+                                        height={100}
                                         alt='images'
                                     />
-                                </div>
-                                <h3 className='text-center sm:font-normal lg:font-medium text-md my-2'>
-                                    {o?.title}
-                                </h3>
-                                <h6 className='text-sm text-center mb-2'>{o?.sub_title}</h6>
-                                <Link href={`/doctors?hospital_id=${id}&&department_id=${o.id}`} className='bg-transparent text-center hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>
-                                    Consult Now
-                                </Link>
-                            </div>
-                        </div>
-                    })
-                ) : (
-                    <div className='text-sm'>No data available</div>
-                )}
+                                    <h3 className='text-center text-lg text-md my-2'>
+                                        {o?.name}
+                                    </h3>
+                                    {/* <h6 className='text-sm text-center mb-2'>{o?.name}</h6> */}
+                                    <Link href={`/doctors?hospital_id=${id}&&department_id=${o.id}`} className='w-full bg-transparent text-center hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>
+                                        Consult Now
+                                    </Link>
+                                </div>)
+                        })
+                    ) : (
+                        <div className='text-sm'>No data available</div>
+                    )}
+                </div>
             </div>
         </>
     )

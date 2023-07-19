@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
 }
 
 datasource db {
@@ -13,13 +14,13 @@ model User {
   email       String        @unique
   password    String
   role        String
-  Account     Account[]
   answer      Answer[]
   information Information[]
   question    Question[]
   report      Report[]
   Session     Session[]
   Payment     UserPayment[]
+  Doctor      Doctor[]
 }
 
 model Question {
@@ -51,24 +52,6 @@ model Information {
   userId    String?
   createdAt DateTime @default(now())
   User      User?    @relation(fields: [userId], references: [id])
-}
-
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
 }
 
 model Session {
@@ -110,36 +93,42 @@ model Hospital {
 }
 
 model Department {
-  id        Int        @id @default(autoincrement())
-  name      String
-  image     String?
-  doctorId  String?
-  doctors   Doctor[]
-  hospitals Hospital[] @relation("DepartmentToHospital")
+  id             Int              @id @default(autoincrement())
+  name           String
+  image          String?
+  doctorId       String?
+  doctors        Doctor[]
+  hospitals      Hospital[]       @relation("DepartmentToHospital")
+  DoctorSchedule DoctorSchedule[]
 }
 
 model Doctor {
-  id          Int              @id @default(autoincrement())
-  name        String
-  image       String?
-  address     String?
-  experience  String?
-  phone       Int?
-  email       String?
-  departments Department[]
-  hospitals   Hospital[]
-  schedules   DoctorSchedule[]
-  payments    History[]
+  id            String           @id @default(cuid())
+  name          String
+  image         String?
+  address       String?
+  experience    String?
+  phone         Int?
+  email         String?
+  userId        String?
+  User          User?            @relation(fields: [userId], references: [id])
+  departments   Department[]
+  hospitals     Hospital[]
+  schedules     DoctorSchedule[]
+  payments      History[]
+  qualification String?
 }
 
 model DoctorSchedule {
-  id         Int             @id @default(autoincrement())
-  hospitalId Int?
-  hospital   Hospital?       @relation(fields: [hospitalId], references: [id])
-  date       AvailableTime[]
-  doctorId   String?
-  doctors    Doctor[]
-  history    History[]
+  id           Int             @id @default(autoincrement())
+  hospitalId   Int?
+  hospital     Hospital?       @relation(fields: [hospitalId], references: [id])
+  date         AvailableTime[]
+  doctorId     String?
+  doctor       Doctor?         @relation(fields: [doctorId], references: [id])
+  history      History[]
+  departmentId Int?
+  department   Department?     @relation(fields: [departmentId], references: [id])
 }
 
 model AvailableTime {
@@ -147,6 +136,7 @@ model AvailableTime {
   token    String?
   date     String?
   schedule DoctorSchedule[]
+  amount   String?
 }
 
 model UserPayment {
@@ -158,7 +148,7 @@ model UserPayment {
 
 model History {
   id            Int             @id @default(autoincrement())
-  doctorId      Int?
+  doctorId      String?
   doctor        Doctor?         @relation(fields: [doctorId], references: [id])
   scheduleId    Int?
   schedule      DoctorSchedule? @relation(fields: [scheduleId], references: [id])

@@ -27,7 +27,7 @@ export default async function handler(req, res) {
           connect: req.body.departments.map((_elm)=> {return {id: Number(_elm.id)}})
         },
         doctors: {
-          connect:  req.body.doctors.map((_elm)=> {return {id: Number(_elm.id)}})
+          connect:  req.body.doctors.map((_elm)=> {return {id: _elm.id}})
         }
       }
     })

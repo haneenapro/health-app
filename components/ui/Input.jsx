@@ -1,4 +1,4 @@
-const Input = ({ label, type = "text", name, value, onChange }) => {
+const Input = ({ label, type = "text", name, value, onChange, ...others }) => {
   return (
     <div className='flex flex-col '>
       <label>{label}</label>
@@ -9,6 +9,7 @@ const Input = ({ label, type = "text", name, value, onChange }) => {
         name={name}
         value={value}
         onChange={onChange}
+        {...others}
       />
     </div>
   )

@@ -26,6 +26,7 @@ export default async function handler(req, res) {
                     schedules: {
                         select: {
                             hospitalId: true,
+                            departmentId: true,
                             date: true,
                           },
                     }

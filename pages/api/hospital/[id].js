@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
       const hospital = await prisma.hospital.findFirst({
-        where: { id: id },
+        where: { id: Number(id) },
         select: {
           id: true,
           name: true,
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   if (req.method === "DELETE") {
     try {
       await prisma.hospital.delete({
-        where: { id: id },
+        where: { id: Number(id) },
       })
 
       return res.send({ message: "Delete success", status: 200 })
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
           },
           doctors: {
             set: [],
-            connect: doctors.map((_elm) => { return { id: Number(_elm.id) } })
+            connect: doctors.map((_elm) => { return { id: _elm.id } })
           }
         },
       })
