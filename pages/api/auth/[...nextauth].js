@@ -5,11 +5,12 @@ import { prisma } from "../../../src/db/prisma"
 import bcrypt from "bcrypt"
 
 import GoogleProvider from "next-auth/providers/google"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 // describe("AuthOptions", () => {
 export const authOptions = {
   session: { strategy: "jwt" },
-
+  adaptor: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       type: "credentials",
@@ -107,7 +108,7 @@ export const authOptions = {
           const _newUSer = await prisma.user.create({
             data: { name, email, role: _role, password: pw },
           })
-          return { token, _newUSer, redirect: "/Patient" }
+          return { token, user: _newUSer, redirect: "/Patient" }
         } else {
           return { token, user: findUser, redirect: "/Patient" }
         }

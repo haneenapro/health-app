@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["extendedWhereUnique"]
 }
 
@@ -8,19 +8,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
 model User {
   id          String        @id @default(cuid())
   name        String
   email       String        @unique
   password    String
   role        String
+  accounts    Account[]
   answer      Answer[]
+  Doctor      Doctor[]
   information Information[]
   question    Question[]
   report      Report[]
   Session     Session[]
   Payment     UserPayment[]
-  Doctor      Doctor[]
 }
 
 model Question {
@@ -39,8 +60,8 @@ model Answer {
   questionId String
   createdAt  DateTime @default(now())
   userId     String?
-  User       User?    @relation(fields: [userId], references: [id])
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  User       User?    @relation(fields: [userId], references: [id])
 }
 
 model Information {
@@ -87,9 +108,9 @@ model Hospital {
   address        String?
   description    String?
   doctorId       String?
-  doctors        Doctor[]
-  departments    Department[]     @relation("DepartmentToHospital")
   DoctorSchedule DoctorSchedule[]
+  departments    Department[]     @relation("DepartmentToHospital")
+  doctors        Doctor[]         @relation("DoctorToHospital")
 }
 
 model Department {
@@ -97,9 +118,9 @@ model Department {
   name           String
   image          String?
   doctorId       String?
-  doctors        Doctor[]
-  hospitals      Hospital[]       @relation("DepartmentToHospital")
   DoctorSchedule DoctorSchedule[]
+  doctors        Doctor[]         @relation("DepartmentToDoctor")
+  hospitals      Hospital[]       @relation("DepartmentToHospital")
 }
 
 model Doctor {
@@ -111,48 +132,48 @@ model Doctor {
   phone         Int?
   email         String?
   userId        String?
+  qualification String?
   User          User?            @relation(fields: [userId], references: [id])
-  departments   Department[]
-  hospitals     Hospital[]
   schedules     DoctorSchedule[]
   payments      History[]
-  qualification String?
+  departments   Department[]     @relation("DepartmentToDoctor")
+  hospitals     Hospital[]       @relation("DoctorToHospital")
 }
 
 model DoctorSchedule {
   id           Int             @id @default(autoincrement())
   hospitalId   Int?
-  hospital     Hospital?       @relation(fields: [hospitalId], references: [id])
-  date         AvailableTime[]
   doctorId     String?
-  doctor       Doctor?         @relation(fields: [doctorId], references: [id])
-  history      History[]
   departmentId Int?
   department   Department?     @relation(fields: [departmentId], references: [id])
+  doctor       Doctor?         @relation(fields: [doctorId], references: [id])
+  hospital     Hospital?       @relation(fields: [hospitalId], references: [id])
+  history      History[]
+  date         AvailableTime[] @relation("AvailableTimeToDoctorSchedule")
 }
 
 model AvailableTime {
   id       Int              @id @default(autoincrement())
   token    String?
   date     String?
-  schedule DoctorSchedule[]
   amount   String?
+  schedule DoctorSchedule[] @relation("AvailableTimeToDoctorSchedule")
 }
 
 model UserPayment {
   id      Int       @id @default(autoincrement())
   userId  String?
   User    User?     @relation(fields: [userId], references: [id])
-  history History[]
+  history History[] @relation("HistoryToUserPayment")
 }
 
 model History {
   id            Int             @id @default(autoincrement())
   doctorId      String?
-  doctor        Doctor?         @relation(fields: [doctorId], references: [id])
   scheduleId    Int?
-  schedule      DoctorSchedule? @relation(fields: [scheduleId], references: [id])
   paymentAmount String?
   status        String?
-  userPayment   UserPayment[]
+  schedule      DoctorSchedule? @relation(fields: [scheduleId], references: [id])
+  doctor        Doctor?         @relation(fields: [doctorId], references: [id])
+  userPayment   UserPayment[]   @relation("HistoryToUserPayment")
 }
