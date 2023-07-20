@@ -11,6 +11,7 @@ function CreateDepartment() {
     const [formData, setFormData] = useState({
         name: "",
     })
+    const [imageData, setImageData] = useState(null)
     const router = useRouter()
     const { status, data: session } = useSession()
 
@@ -42,8 +43,15 @@ function CreateDepartment() {
 
     async function handleSubmit(event) {
         event.preventDefault()
+        let newFormDate = new FormData()
+        newFormDate.append("name", formData.name)
+        newFormDate.append("file", imageData)
         await axios.post("/api/department",
-            formData
+            newFormDate, {
+            headers: {
+                'Content-Type': 'multipart/formdata'
+            },
+        }
         ).then((res) => {
             if (res.status === 201) {
                 alert("Information Added successful!")
@@ -54,6 +62,11 @@ function CreateDepartment() {
         }).catch((err) => {
             alert("Something went wrong")
         })
+    }
+
+    function imageUploadHandler(e) {
+        const file = e.target.files[0]
+        setImageData(file)
     }
 
     return (
@@ -91,6 +104,15 @@ function CreateDepartment() {
                                     name='name'
                                     value={formData.name}
                                     onChange={handleChange}
+                                />
+                            </div>
+                            <div className='pt-8'>
+                                <Input
+                                    label={"Department Image"}
+                                    name='image'
+                                    value={""}
+                                    onChange={imageUploadHandler}
+                                    type="file"
                                 />
                             </div>
                         </div>

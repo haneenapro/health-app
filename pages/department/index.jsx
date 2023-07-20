@@ -39,7 +39,7 @@ const index = () => {
                                 <div className='w-full p-4 shadow-lg flex flex-col justify-center items-center' key={i}>
                                     <img
                                         className='rounded'
-                                        src={o?.image ? o.image : ""}
+                                        src={o?.image ? '/uploads/'+o.image : ""}
                                         width={100}
                                         height={100}
                                         alt='images'
