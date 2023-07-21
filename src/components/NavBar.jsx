@@ -64,7 +64,7 @@ const NavBar = () => {
             <div className='flex lg:gap-x-12 text-sm font-semibold leading-6 text-gray-900'>
               <div className=''>
                 <a
-                  href={data.user.role === "doctor" ? "/Doctor" : "/Patients"}
+                  href={data.user.role === "doctor" ? "/Doctor" : data.user.role === "admin" ? "/Admin" : "/Patients"}
                   className=''
                 >
                   Go to dashboard

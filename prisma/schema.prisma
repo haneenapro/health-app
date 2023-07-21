@@ -111,6 +111,7 @@ model Hospital {
   DoctorSchedule DoctorSchedule[]
   departments    Department[]     @relation("DepartmentToHospital")
   doctors        Doctor[]         @relation("DoctorToHospital")
+  UserPayment    UserPayment[]
 }
 
 model Department {
@@ -121,6 +122,7 @@ model Department {
   DoctorSchedule DoctorSchedule[]
   doctors        Doctor[]         @relation("DepartmentToDoctor")
   hospitals      Hospital[]       @relation("DepartmentToHospital")
+  UserPayment    UserPayment[]
 }
 
 model Doctor {
@@ -135,9 +137,10 @@ model Doctor {
   qualification String?
   User          User?            @relation(fields: [userId], references: [id])
   schedules     DoctorSchedule[]
-  payments      History[]
   departments   Department[]     @relation("DepartmentToDoctor")
   hospitals     Hospital[]       @relation("DoctorToHospital")
+  isVerified    String?          @default("false")
+  UserPayment   UserPayment[]
 }
 
 model DoctorSchedule {
@@ -148,32 +151,32 @@ model DoctorSchedule {
   department   Department?     @relation(fields: [departmentId], references: [id])
   doctor       Doctor?         @relation(fields: [doctorId], references: [id])
   hospital     Hospital?       @relation(fields: [hospitalId], references: [id])
-  history      History[]
   date         AvailableTime[] @relation("AvailableTimeToDoctorSchedule")
+  UserPayment  UserPayment[]
 }
 
 model AvailableTime {
-  id       Int              @id @default(autoincrement())
-  token    String?
-  date     String?
-  amount   String?
-  schedule DoctorSchedule[] @relation("AvailableTimeToDoctorSchedule")
+  id          Int              @id @default(autoincrement())
+  token       String?
+  date        String?
+  amount      String?
+  schedule    DoctorSchedule[] @relation("AvailableTimeToDoctorSchedule")
+  UserPayment UserPayment[]
 }
 
 model UserPayment {
-  id      Int       @id @default(autoincrement())
-  userId  String?
-  User    User?     @relation(fields: [userId], references: [id])
-  history History[] @relation("HistoryToUserPayment")
-}
-
-model History {
-  id            Int             @id @default(autoincrement())
-  doctorId      String?
-  scheduleId    Int?
-  paymentAmount String?
-  status        String?
-  schedule      DoctorSchedule? @relation(fields: [scheduleId], references: [id])
-  doctor        Doctor?         @relation(fields: [doctorId], references: [id])
-  userPayment   UserPayment[]   @relation("HistoryToUserPayment")
+  id               Int             @id @default(autoincrement())
+  userId           String?
+  User             User?           @relation(fields: [userId], references: [id])
+  doctorId         String?
+  departmentId     Int?
+  status           String?         @default("verified")
+  doctor           Doctor?         @relation(fields: [doctorId], references: [id])
+  department       Department?     @relation(fields: [departmentId], references: [id])
+  hospitalId       Int?
+  hospital         Hospital?       @relation(fields: [hospitalId], references: [id])
+  availableTimeId  Int?
+  availableTime    AvailableTime?  @relation(fields: [availableTimeId], references: [id])
+  DoctorSchedule   DoctorSchedule? @relation(fields: [doctorScheduleId], references: [id])
+  doctorScheduleId Int?
 }

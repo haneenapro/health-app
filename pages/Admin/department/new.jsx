@@ -17,10 +17,14 @@ function CreateDepartment() {
 
     if (status === "loading") return <div>Loading...</div>
 
-    if (status === "unauthenticated" || session.user.role !== "admin") {
+    if (status === "unauthenticated") {
         router.push("/login")
         return null
     }
+    if (session.user.role !== "admin") {
+        return router.push('/')
+    }
+
 
     function handleChange(event) {
         const { name, value } = event.target
@@ -37,6 +41,8 @@ function CreateDepartment() {
         ) {
             alert("All fields are required")
             return false
+        } else if (!imageData) {
+            return alert("Image must be selected")
         }
         return true
     }
@@ -69,6 +75,8 @@ function CreateDepartment() {
         setImageData(file)
     }
 
+    console.log(imageData);
+
     return (
         <>
             <NavBar />
@@ -77,7 +85,7 @@ function CreateDepartment() {
                     <div>
                         <div className=' flex items-center justify-left gap-x-6'>
                             <Link
-                                href='/Admin'
+                                href='/Admin/department'
                                 className='text-base font-semibold leading-7 text-gray-900'
                             >
                                 <span aria-hidden='true'>←</span> Back
@@ -110,7 +118,6 @@ function CreateDepartment() {
                                 <Input
                                     label={"Department Image"}
                                     name='image'
-                                    value={""}
                                     onChange={imageUploadHandler}
                                     type="file"
                                 />

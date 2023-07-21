@@ -2,7 +2,7 @@ import React from 'react'
 
 const esewa = () => {
 
-    var path = "https://uat.esewa.com.np/epay/main";
+    var path = "https://uat.esewa.com.np/epay/main?";
     var params = {
         amt: 100,
         psc: 0,

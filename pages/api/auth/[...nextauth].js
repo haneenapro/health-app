@@ -16,48 +16,51 @@ export const authOptions = {
       type: "credentials",
       credentials: {},
       async authorize(credentials) {
-        if (credentials.register) {
-          // REGISTERRR
-          const { name, email, password, role } = credentials
-
-          if (!name | !email | !password | !role)
-            return res.status(400).send("Fill out all fields")
-
+        const { name, email, password, role } = credentials
+        // REGISTERRR
+        const user = await prisma.user.findFirst({ where: { email }})
+        if (credentials.register === "true") {
+          if (!name | !email | !password | !role) throw new Error("Fill Out All The Forms")
           const pw = await bcrypt.hash(password, 10)
-          const user = await prisma.user.create({
+          if (user) throw new Error("User already exists. Please Login")
+          const newUser = await prisma.user.create({
             data: { name, email, role, password: pw },
           })
-
-          if (user.role === "doctor") {
+          if (newUser.role === "doctor") {
             await prisma.doctor.create({
               data: {
-                name: user.name,
-                email: user.email,
+                name: newUser.name,
+                email: newUser.email,
                 User: {
                   connect: {
-                    id: user.id
+                    id: newUser.id
                   }
                 }
               }
             })
           }
-
+          //Sign In
           return {
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            id: user.id,
+            name: newUser.name,
+            email: newUser.email,
+            role: newUser.role,
+            id: newUser.id,
           }
         }
-
         // SIGN INN
-        const { email, password, role } = credentials
-        const user = await prisma.user.findFirst({ where: { email } })
 
+        
+        if (!email | !password | !role) throw new Error("Fill Out All The Forms")
         if (!user) throw new Error("No such user ... ")
-
+        
         if (user.role !== role) throw new Error("Wrong login attemp!!")
 
+        console.log(user,);
+        // if(user.role === "doctor" && user.doctor[0].isVerified === "false") {
+        //   throw new Error("Doctor is not verified yet!!!!")
+        //   return
+        // }
+        
         const passwordMatch = await bcrypt.compare(password, user.password)
 
         if (!passwordMatch)
@@ -113,15 +116,17 @@ export const authOptions = {
           return { token, user: findUser, redirect: "/Patient" }
         }
       } else {
-        const { role } = user
-        if (role === "patient") {
-          return { token, user, redirect: "/Patient" }
-        } else if (role === "doctor") {
-          return { token, user, redirect: "/Doctor" }
-        } else if (role === "admin") {
-          return { token, user, redirect: "/Admin" }
-        } else {
-          return
+        if (user) {
+          const { role } = user
+          if (role === "patient") {
+            return { token, user, redirect: "/Patient" }
+          } else if (role === "doctor") {
+            return { token, user, redirect: "/Doctor" }
+          } else if (role === "admin") {
+            return { token, user, redirect: "/Admin" }
+          } else {
+            return
+          }
         }
       }
     },

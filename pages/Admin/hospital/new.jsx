@@ -28,7 +28,6 @@ function CreateHospital({ departments, doctors }) {
         doctors: []
     })
 
-    console.log(doctors, "@@@");
     const router = useRouter()
     const { status, data: session } = useSession()
 
@@ -39,7 +38,6 @@ function CreateHospital({ departments, doctors }) {
         return null
     }
 
-    console.log(formData, "@@@");
     function handleChange(event) {
         const { name, value } = event.target
         if (name === "department") {
@@ -52,7 +50,7 @@ function CreateHospital({ departments, doctors }) {
             } else {
                 setFormData({
                     ...formData,
-                    departments: formData.departments.filter(_elm=> _elm.id != value)
+                    departments: formData.departments.filter(_elm => _elm.id != value)
                 })
             }
         } else if (name === "doctor") {
@@ -65,7 +63,7 @@ function CreateHospital({ departments, doctors }) {
             } else {
                 setFormData({
                     ...formData,
-                    doctors: formData.doctors.filter(_elm=> _elm.id != value)
+                    doctors: formData.doctors.filter(_elm => _elm.id != value)
                 })
             }
         } else {
@@ -75,7 +73,6 @@ function CreateHospital({ departments, doctors }) {
             }))
         }
     }
-
 
     function validateForm() {
         if (
@@ -209,7 +206,6 @@ function CreateHospital({ departments, doctors }) {
                                 </div>
                             </div>
                         </div>
-
                         <Button type='submit'>Submit</Button>
                     </form>
                 </div>

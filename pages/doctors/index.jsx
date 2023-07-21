@@ -8,7 +8,7 @@ const index = () => {
   let router = useRouter()
   const hospital_id = router.query?.hospital_id
   const department_id = router.query?.department_id
-  console.log(department_id,"@@@@");
+  console.log(department_id, "@@@@");
 
   const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
@@ -51,42 +51,41 @@ const index = () => {
     }
   }
 
-  var path="https://uat.esewa.com.np/epay/main";
 
-  function paymentHandler(element) {
+  async function paymentHandler(element) {
+    var path = "https://uat.esewa.com.np/epay/main";
     var form = document.createElement("form");
-      form.setAttribute("method", "POST");
-      form.setAttribute("action", path);
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", path);
 
-      var params = {
-        amt: element.amount,
-        psc: 0,
-        pdc: 0,
-        txAmt: 0,
-        tAmt: element.amount,
-        pid: element.id,
-        scd: "EPAYTEST",
-        su: "http://merchant.com.np/page/esewa_payment_success",
-        fu: "http://localhost:3000/payment/failed"
+    var params = {
+      amt: element.amount,
+      psc: 0,
+      pdc: 0,
+      txAmt: 0,
+      tAmt: element.amount,
+      pid: element.id,
+      scd: "EPAYTEST",
+      su: `http://localhost:3000/payment/success?department_id=${department_id}&hospital_id=${hospital_id}`,
+      fu: `http://localhost:3000/payment/failed`
+    }
+    for (var key in params) {
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", key);
+      hiddenField.setAttribute("value", params[key]);
+      form.appendChild(hiddenField);
     }
 
-      for (var key in params) {
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", key);
-          hiddenField.setAttribute("value", params[key]);
-          form.appendChild(hiddenField);
-      }
-
-      document.body.appendChild(form);
-      form.submit();
+    document.body.appendChild(form);
+    form.submit();
   }
 
   return (
     <>
       <NavBar />
       <div className='container mx-auto'>
-      <h2 className='m-7 text-2xl font-bold'> Available Doctors </h2>{" "}
+        <h2 className='m-7 text-2xl font-bold'> Available Doctors </h2>{" "}
         <div className='rounded m-4 p-4'>
           <div className='flex items-center justify-end'>
             <div className=''>
@@ -106,8 +105,8 @@ const index = () => {
           >
             {data?.length > 0 ? (
               data?.map((o, i) => {
-                console.log(o,"@@@");
-                let _department = o.departments.find((_elm)=> _elm.id == department_id)
+                console.log(o, "@@@");
+                let _department = o.departments.find((_elm) => _elm.id == department_id)
                 return (
                   <li
                     className='shadow-lg overflow-hidden rounded p-4 my-2 w-100 bg-slate-100 border border-slate-200'
@@ -171,7 +170,7 @@ const index = () => {
                                       <th class="px-6 py-3">{elm?.date}</th>
                                       <th class="px-6 py-3">{elm?.token}</th>
                                       <th class="px-6 py-3">{elm?.amount}</th>
-                                      <th class="px-6 py-3 text-end"><button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e)=>paymentHandler(elm)}>
+                                      <th class="px-6 py-3 text-end"><button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler(elm)}>
                                         Book Appointment
                                       </button></th>
                                     </tr>

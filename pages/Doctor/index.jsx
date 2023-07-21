@@ -17,10 +17,11 @@ export default function MainPage() {
     return null
   }
 
-  if (session.user.role === "patient") {
-    void router.push("/Patients")
+  if (session.user.role !== "doctor") {
+    alert("You are not authorized for this page")
+    void router.push("/")
     return null
-  }
+}
 
   return <Page />
 }

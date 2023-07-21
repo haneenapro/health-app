@@ -28,26 +28,6 @@ function RegisterForm() {
     if (!name | !email | !password | !role)
       return window.alert("Fill out all fields")
 
-    // const result = await axios.post(
-    //   "http://localhost:3000/api/register",
-    //   formData
-    // )
-    // console.log(result.data)
-
-    // if (result.status === 201) {
-    //   alert(result.data.message)
-
-    //   const user = result.data.user
-    //   console.log(user.role)
-
-    //   setTimeout(() => {
-    //     window.location.href = user.role === "patient" ? "/Patients" : "/Doctor"
-    //   }, 2000)
-    // } else {
-    //   // error -- failed to save ...
-    //   console.log(result)
-    // }
-
     await signIn("credentials", {
       name,
       email,

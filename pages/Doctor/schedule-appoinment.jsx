@@ -6,6 +6,8 @@ import Button from '../../components/ui/Button'
 import { unstable_getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth]'
 import axios from 'axios'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 export async function getServerSideProps({ req, res }) {
 
@@ -31,6 +33,21 @@ export async function getServerSideProps({ req, res }) {
 }
 
 const ScheduleAppoinment = ({ hospitals, doctors }) => {
+    const router = useRouter()
+    const { status, data: session } = useSession()
+
+    if (status === "loading") return <div>Loading...</div>
+
+    if (status === "unauthenticated") {
+        router.push("/login")
+        return null
+    }
+
+    if (session.user.role !== "doctor") {
+        alert("You are not authorized for this page")
+        void router.push("/")
+        return null
+    }
     const [formData2, setFormData2] = useState({})
 
     function dateHandler(e) {
@@ -46,6 +63,7 @@ const ScheduleAppoinment = ({ hospitals, doctors }) => {
         ).then((res) => {
             if (res.status === 200) {
                 alert("Information Added successful!")
+                setFormData2({})
             } else {
                 alert("Something went wrong")
             }

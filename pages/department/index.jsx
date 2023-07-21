@@ -4,12 +4,19 @@ import Image from "next/image"
 import axios from "axios"
 import NavBar from "../../src/components/NavBar"
 import Link from "next/link"
+import { useSession } from "next-auth/react"
 
 const index = () => {
+    const { status, data: session } = useSession()
     let router = useRouter()
     const id = router.query?.hospital_id
     const [data, setData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
+
+    if (status === "unauthenticated") {
+        router.push("/login")
+        return null
+      }
 
     useEffect(() => {
         if (!id) {

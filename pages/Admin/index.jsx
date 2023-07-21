@@ -10,12 +10,12 @@ export default function MainPage() {
   const router = useRouter()
   const { status, data: session } = useSession()
 
-  
+
   if (status === "unauthenticated") {
     router.push("/login")
     return null
   }
-  
+
   if (session?.user.role === 'patient') {
     router.push("/Patients")
     return null
@@ -57,7 +57,7 @@ function Page() {
             href='Doctor/profile'
           >
             <User className='text-center h-16' />
-            Dr. {session.user.name}
+            {session.user.name}
           </a>
         </div>
 
@@ -71,15 +71,15 @@ function Page() {
               href='Admin/hospital'
             >
               <FilePlus2 className='text-center' />
-             Hospitals
+              Hospitals
             </Link>
 
             <Link
               className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
-              href='Admin/department/new'
+              href='Admin/department'
             >
               <Pencil className='text-center' />
-              Add Departments 
+              Departments
             </Link>
 
             <Link
@@ -87,7 +87,7 @@ function Page() {
               href='Admin/doctor/new'
             >
               <Eye className='text-center' />
-              Create Doctor Account
+              Register Doctor
             </Link>
           </div>
         </div>
