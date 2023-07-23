@@ -81,8 +81,8 @@ export default async function handler(req, res) {
             if(res) {
                 let mailDetails = {
                     from: 'zireavai8@gmail.com',
-                    // to: information.User.email,
-                    to: 'saranbrl35@gmail.com',
+                    to: information.User.email,
+                    // to: 'saranbrl35@gmail.com',
                     subject: "Doctor Appointment",
                     html: `<div>
                     <p><h3>Your appointment has been scheduled.</h3></p>

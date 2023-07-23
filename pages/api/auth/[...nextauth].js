@@ -111,15 +111,15 @@ export const authOptions = {
           const _newUSer = await prisma.user.create({
             data: { name, email, role: _role, password: pw },
           })
-          return { token, user: _newUSer, redirect: "/Patient" }
+          return { token, user: _newUSer, redirect: "/Patients" }
         } else {
-          return { token, user: findUser, redirect: "/Patient" }
+          return { token, user: findUser, redirect: "/Patients" }
         }
       } else {
         if (user) {
           const { role } = user
           if (role === "patient") {
-            return { token, user, redirect: "/Patient" }
+            return { token, user, redirect: "/Patients" }
           } else if (role === "doctor") {
             return { token, user, redirect: "/Doctor" }
           } else if (role === "admin") {
