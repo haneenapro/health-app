@@ -27,6 +27,7 @@ function CreateHospital({ departments, doctors }) {
         departments: [],
         doctors: []
     })
+    const [imageData, setImageData] = useState(null)
 
     const router = useRouter()
     const { status, data: session } = useSession()
@@ -88,8 +89,20 @@ function CreateHospital({ departments, doctors }) {
 
     async function handleSubmit(event) {
         event.preventDefault()
+        let newFormDate = new FormData()
+        newFormDate.append("name", formData.name)
+        newFormDate.append("address", formData.address)
+        newFormDate.append("description", formData.description)
+        newFormDate.append("departments", JSON.stringify(formData.departments))
+        newFormDate.append("doctors", JSON.stringify(formData.doctors))
+        newFormDate.append("file", imageData)
         await axios.post("/api/hospital",
-            formData
+            newFormDate,
+            {
+                headers: {
+                    'Content-Type': 'multipart/formdata'
+                },
+            }
         ).then((res) => {
             if (res.status === 201) {
                 alert("Information Added successful!")
@@ -100,6 +113,12 @@ function CreateHospital({ departments, doctors }) {
         }).catch((err) => {
             alert("Something went wrong")
         })
+    }
+
+
+    function imageUploadHandler(e) {
+        const file = e.target.files[0]
+        setImageData(file)
     }
 
     return (
@@ -181,29 +200,13 @@ function CreateHospital({ departments, doctors }) {
                                     })}
                                 </div>
                             </div>
-                            <div className="pt-6">
-                                <label for="">Select Doctors</label>
-                                <select
-                                    name="doctor"
-                                    onChange={handleChange}
-                                    value=""
-                                    className='relative block bg-white w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
-                                >
-                                    <option value="">-- Select Doctors --</option>
-                                    {doctors?.map((_doctor) => (
-                                        <option value={_doctor.id}>{_doctor.name}</option>
-                                    ))}
-                                </select>
-                                <div className="mt-2 flex flex-wrap">
-                                    {formData.doctors?.map((_elm) => {
-                                        const _getName = doctors.find(_doctor => _doctor.id == _elm.id)
-                                        if (_getName) {
-                                            return (
-                                                <span className="rounded-3xl p-2 mx-2 text-white text-xs bg-gray-600">{_getName.name}</span>
-                                            )
-                                        }
-                                    })}
-                                </div>
+                            <div className='pt-8'>
+                                <Input
+                                    label={"Hospital Image"}
+                                    name='image'
+                                    onChange={imageUploadHandler}
+                                    type="file"
+                                />
                             </div>
                         </div>
                         <Button type='submit'>Submit</Button>

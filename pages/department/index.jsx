@@ -12,6 +12,7 @@ const index = () => {
     const id = router.query?.hospital_id
     const [data, setData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
+    const [searchValue, setSearchValue] = useState("")
 
     if (status === "unauthenticated") {
         router.push("/login")
@@ -38,10 +39,16 @@ const index = () => {
         <>
             <NavBar />
             <div className="container mx-auto py-4">
+            <input
+                type="search"
+                id="default-search"
+                class="block float-right p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search Department Names ..."
+                onChange={(e) => setSearchValue(e.target.value)} />
             <h2 className='my-7 text-2xl font-bold border-b border-slate-300'> Available Departments </h2>{" "}
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6'>
                     {data?.length > 0 ? (
-                        data?.map((o, i) => {
+                        data?.filter(value => value.name.toLowerCase().includes(searchValue.toLowerCase())).map((o, i) => {
                             return (
                                 <div className='w-full p-4 shadow-lg flex flex-col justify-center items-center' key={i}>
                                     <img

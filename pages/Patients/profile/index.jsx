@@ -15,7 +15,10 @@ export async function getServerSideProps({ req, res }) {
   })
 
   const session = await unstable_getServerSession(req, res, authOptions)
-
+  if (!session) {
+    res.writeHead(307, { location: `/login` });
+    res.end();
+  }
   const userData = await prisma.User.findUnique({
     where: { id: session.user.id },
     include: {
@@ -56,22 +59,22 @@ const Profile = ({ userData }) => {
 
   async function verifyUser(_data) {
     await axios
-    .post(`/api/share`, {
+      .post(`/api/share`, {
         id: _data.id,
         email: _data.User.email,
         flag: "cancle",
-    })
-    .then((res) => {
+      })
+      .then((res) => {
         if (res.status === 200) {
-            alert("User verified successfully")
-            window.location.reload(false)
+          alert("User verified successfully")
+          window.location.reload(false)
         } else {
-            alert("Something went wrong")
+          alert("Something went wrong")
         }
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         alert("Something went wrong")
-    })
+      })
   }
 
   if (status === "loading") return <p>Loading ...</p>
