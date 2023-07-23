@@ -170,7 +170,7 @@ model UserPayment {
   User             User?           @relation(fields: [userId], references: [id])
   doctorId         String?
   departmentId     Int?
-  status           String?         @default("verified")
+  status           String?         @default("notverified")
   doctor           Doctor?         @relation(fields: [doctorId], references: [id])
   department       Department?     @relation(fields: [departmentId], references: [id])
   hospitalId       Int?
@@ -179,4 +179,6 @@ model UserPayment {
   availableTime    AvailableTime?  @relation(fields: [availableTimeId], references: [id])
   DoctorSchedule   DoctorSchedule? @relation(fields: [doctorScheduleId], references: [id])
   doctorScheduleId Int?
+  appointmentType  String?
+  link             String?
 }

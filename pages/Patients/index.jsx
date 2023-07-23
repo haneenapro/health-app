@@ -70,6 +70,13 @@ function Page() {
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
             <a
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Appointment'
+            >
+              <Syringe className='text-center' />
+              Create Appointment
+            </a>
+            <a
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Patients/question/new'
             >
               <Syringe className='text-center' />

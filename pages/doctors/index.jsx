@@ -66,7 +66,7 @@ const index = () => {
       tAmt: element.amount,
       pid: element.id,
       scd: "EPAYTEST",
-      su: `http://localhost:3000/payment/success?department_id=${department_id}&hospital_id=${hospital_id}`,
+      su: `http://localhost:3000/payment/success?department_id=${department_id}&hospital_id=${hospital_id}&appointmentType=${element.appointmentType}`,
       fu: `http://localhost:3000/payment/failed`
     }
     for (var key in params) {
@@ -154,7 +154,7 @@ const index = () => {
                               <th class="px-6 py-3">Date</th>
                               <th class="px-6 py-3">Token</th>
                               <th class="px-6 py-3">Amount</th>
-                              <th class="px-6 py-3 text-end">Actions</th>
+                              <th class="px-6 py-3 text-end">Book Appointment</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -170,9 +170,14 @@ const index = () => {
                                       <th class="px-6 py-3">{elm?.date}</th>
                                       <th class="px-6 py-3">{elm?.token}</th>
                                       <th class="px-6 py-3">{elm?.amount}</th>
-                                      <th class="px-6 py-3 text-end"><button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler(elm)}>
-                                        Book Appointment
-                                      </button></th>
+                                      <th class="px-6 py-3 text-end">
+                                        <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({...elm, appointmentType: "online"})}>
+                                          Online
+                                        </button>
+                                        <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({...elm, appointmentType: "offline"})}>
+                                          Offline
+                                        </button>
+                                      </th>
                                     </tr>
                                   ))
                                 }) : "No schedule found"}

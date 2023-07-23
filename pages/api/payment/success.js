@@ -1,3 +1,4 @@
+const nodemailer = require('nodemailer');
 import { prisma } from "../../../src/db/prisma"
 
 export default async function handler(req, res) {
@@ -17,14 +18,28 @@ export default async function handler(req, res) {
         }
     }
     if (req.method === "POST") {
+
+      
+
+        
+          let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.GMAIL_SMTP_USERNAME,
+                pass: process.env.GMAIL_SMTP_PASSWORD     
+            },
+          });
+        
         // try {
             const {
                 userId,
                 hospitalId,
                 departmentId,
                 doctorId,
-                availableTimeId
+                availableTimeId,
+                appointmentType
             } = req.body
+            console.log(req.body, "@@@@@@");
             const information = await prisma.UserPayment.create({
                 data: {
                     User: {
@@ -51,9 +66,46 @@ export default async function handler(req, res) {
                         connect: {
                             id: Number(availableTimeId)
                         }
-                    }
+                    },
+                    appointmentType: appointmentType
+                },
+                include: {
+                    hospital: true,
+                    doctor: true,
+                    department: true,
+                    availableTime: true,
+                    User: true
                 }
             })
+            console.log(information,"@@@@@@@@--------");
+            if(res) {
+                let mailDetails = {
+                    from: 'zireavai8@gmail.com',
+                    // to: information.User.email,
+                    to: 'saranbrl35@gmail.com',
+                    subject: "Doctor Appointment",
+                    html: `<div>
+                    <p><h3>Your appointment has been scheduled.</h3></p>
+                    <p><strong>Hospital :</strong>${information.hospital.name}</p>
+                    <p><strong>Department :</strong>${information.department.name}</p>
+                     <p>
+                     <strong>Doctor :</strong>${information.doctor.name}</p> 
+                    <p><strong>Time :</strong>${information.availableTime.date}</p> 
+                     <h5>Further update will be provided soon!</h5>  
+                     <h4>Thank You for choosing health app!<h4></div>`
+                };
+                transporter.sendMail(mailDetails, function (err, data) {
+                    if (err) {
+                        console.log(err,"@@@@");
+                        
+                        
+                    } else {
+                        console.log("@sent success@@@");
+                       
+                    }
+                });
+        
+            }
             return res
                 .status(201)
                 .send({ message: "Information Added Successfully", information })

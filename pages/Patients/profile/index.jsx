@@ -1,19 +1,86 @@
 import { useSession } from "next-auth/react"
 import Head from "next/head"
 import NavBar from "../../../src/components/NavBar"
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "../../api/auth/[...nextauth]"
+import axios from "axios"
 
-const Profile = () => {
+export async function getServerSideProps({ req, res }) {
+
+  const hospitals = await prisma.hospital.findMany({
+    include: {
+      doctors: true,
+      departments: true
+    }
+  })
+
+  const session = await unstable_getServerSession(req, res, authOptions)
+
+  const userData = await prisma.User.findUnique({
+    where: { id: session.user.id },
+    include: {
+      Payment: {
+        select: {
+
+          doctor: true,
+          User: true,
+          id: true,
+          department: true,
+          status: true,
+          hospital: true,
+          availableTime: {
+            select: {
+              id: true,
+              token: true,
+              date: true,
+              amount: true,
+            },
+          },
+          appointmentType: true,
+          link: true
+        }
+      }
+    }
+  })
+
+  return {
+    props: {
+      hospitals,
+      userData
+    },
+  }
+}
+
+const Profile = ({ userData }) => {
   const { status, data: session } = useSession()
+
+  async function verifyUser(_data) {
+    await axios
+    .post(`/api/share`, {
+        id: _data.id,
+        email: _data.User.email,
+        flag: "cancle",
+    })
+    .then((res) => {
+        if (res.status === 200) {
+            alert("User verified successfully")
+            window.location.reload(false)
+        } else {
+            alert("Something went wrong")
+        }
+    })
+    .catch((err) => {
+        alert("Something went wrong")
+    })
+  }
 
   if (status === "loading") return <p>Loading ...</p>
   return (
     <>
-      <Head>
-        <title>User profile</title>
-      </Head>
 
       <NavBar />
-      <body className='max-w-7xl mx-auto mt-[30px] pb-[30px]'>
+
+      <div className="container mx-auto mt-6">
         <h2>User profile</h2>
 
         <div>
@@ -28,7 +95,48 @@ const Profile = () => {
             <span aria-hidden='true'>←</span> Back
           </a>
         </div>
-      </body>
+
+        <div className="mt-6">
+          <h3 className="font-bold">Appointments</h3>
+          <table className='w-full'>
+            <thead class='text-xs text-gray-700 uppercase border-b-2 border-gray-700'>
+              <tr>
+                <th class='px-6 py-3'>ID</th>
+                <th class='px-6 py-3'>Paitent Name</th>
+                <th class='px-6 py-3'>Hospital Name</th>
+                <th class='px-6 py-3'>Department Name</th>
+                <th class='px-6 py-3'>Date/Time</th>
+                <th class='px-6 py-3'>Appointment Type</th>
+                <th class='px-6 py-3'>Link</th>
+                <th class='px-6 py-3'>Status</th>
+                <th class='px-6 py-3 text-center'>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userData.Payment.length > 0
+                ? userData.Payment.map((_elm) => (
+                  <tr className='border-b border-gray-500'>
+                    <th class='px-6 py-3'>{_elm?.id}</th>
+                    <th class='px-6 py-3'>{_elm?.User.name}</th>
+                    <th class='px-6 py-3'>{_elm?.hospital.name}</th>
+                    <th class='px-6 py-3'>{_elm?.department.name}</th>
+                    <th class='px-6 py-3'>{_elm?.availableTime.date}</th>
+                    <th class='px-6 py-3'>{_elm?.appointmentType}</th>
+                    <th class='px-6 py-3'>{_elm?.link ? _elm.link : "N/A"}</th>
+                    <th class='px-6 py-3'>{_elm?.status}</th>
+                    <th class='px-6 py-3 text-center'>
+                      {
+
+                        _elm.status === "notverified" ? <button onClick={() => verifyUser(_elm)} className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white p-1 px-2 border border-red-500 hover:border-transparent rounded'>Cancle</button> : ''
+                      }
+                    </th>
+                  </tr>
+                ))
+                : "No appoinments found"}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
   )
 }
