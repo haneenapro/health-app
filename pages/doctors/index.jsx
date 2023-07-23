@@ -8,7 +8,8 @@ const index = () => {
   let router = useRouter()
   const hospital_id = router.query?.hospital_id
   const department_id = router.query?.department_id
-  console.log(department_id, "@@@@");
+  const isgeneral = router.query?.general
+  console.log(isgeneral, "@@@@");
 
   const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +20,7 @@ const index = () => {
     }
     const getDoctors = async () => {
       const res = await axios.get(
-        `/api/hospital/doctor?department_id=${department_id}&hospital_id=${hospital_id}`
+        `/api/hospital/doctor?department_id=${department_id}&hospital_id=${hospital_id}&general=${isgeneral}`
       )
       setData(res.data)
       setIsLoading(false)
@@ -80,7 +81,7 @@ const index = () => {
     document.body.appendChild(form);
     form.submit();
   }
-
+  console.log(data, "@@@@@@");
   return (
     <>
       <NavBar />
@@ -106,7 +107,8 @@ const index = () => {
             {data?.length > 0 ? (
               data?.map((o, i) => {
                 console.log(o, "@@@");
-                let _department = o.departments.find((_elm) => _elm.id == department_id)
+
+                let _department = isgeneral === "true" ? o?.departments[0] : o.departments.find((_elm) => _elm.id == department_id)
                 return (
                   <li
                     className='shadow-lg overflow-hidden rounded p-4 my-2 w-100 bg-slate-100 border border-slate-200'
@@ -142,48 +144,50 @@ const index = () => {
                             <b className='text-black font-medium'>
                               Department:{" "}
                             </b>{" "}
-                            {_department.name}
+                            {_department?.name}
                           </p>
 
                         </div>
                       </div>
-                      <div className=" overflow-x-auto w-full md:w-[800px] border border-slate-200">
-                        <table className="w-full">
-                          <thead class="text-xs text-gray-700 uppercase border-b-2 border-gray-700">
-                            <tr>
-                              <th class="px-6 py-3">Date</th>
-                              <th class="px-6 py-3">Token</th>
-                              <th class="px-6 py-3">Amount</th>
-                              <th class="px-6 py-3 text-end">Book Appointment</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {o.schedules.length > 0 ?
-                              o.schedules
-                                .filter(
-                                  (_filter) =>
-                                    _filter.hospitalId === Number(hospital_id) && _filter.departmentId === Number(department_id)
-                                )
-                                .map((_elm) => {
-                                  return _elm.date.map((elm) => (
-                                    <tr className="border-b border-gray-500">
-                                      <th class="px-6 py-3">{elm?.date}</th>
-                                      <th class="px-6 py-3">{elm?.token}</th>
-                                      <th class="px-6 py-3">{elm?.amount}</th>
-                                      <th class="px-6 py-3 text-end">
-                                        <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({...elm, appointmentType: "online"})}>
-                                          Online
-                                        </button>
-                                        <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({...elm, appointmentType: "offline"})}>
-                                          Offline
-                                        </button>
-                                      </th>
-                                    </tr>
-                                  ))
-                                }) : "No schedule found"}
-                          </tbody>
-                        </table>
-                      </div>
+                      {isgeneral !== "true" &&
+
+                        <div className=" overflow-x-auto w-full md:w-[800px] border border-slate-200">
+                          <table className="w-full">
+                            <thead class="text-xs text-gray-700 uppercase border-b-2 border-gray-700">
+                              <tr>
+                                <th class="px-6 py-3">Date</th>
+                                <th class="px-6 py-3">Token</th>
+                                <th class="px-6 py-3">Amount</th>
+                                <th class="px-6 py-3 text-end">Book Appointment</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {o.schedules.length > 0 ?
+                                o.schedules
+                                  .filter(
+                                    (_filter) =>
+                                      _filter.hospitalId === Number(hospital_id) && _filter.departmentId === Number(department_id)
+                                  )
+                                  .map((_elm) => {
+                                    return _elm.date.map((elm) => (
+                                      <tr className="border-b border-gray-500">
+                                        <th class="px-6 py-3">{elm?.date}</th>
+                                        <th class="px-6 py-3">{elm?.token}</th>
+                                        <th class="px-6 py-3">{elm?.amount}</th>
+                                        <th class="px-6 py-3 text-end">
+                                          <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({ ...elm, appointmentType: "online" })}>
+                                            Online
+                                          </button>
+                                          <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({ ...elm, appointmentType: "offline" })}>
+                                            Offline
+                                          </button>
+                                        </th>
+                                      </tr>
+                                    ))
+                                  }) : "No schedule found"}
+                            </tbody>
+                          </table>
+                        </div>}
                     </div>
                   </li>
                 )

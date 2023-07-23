@@ -54,7 +54,7 @@ const index = ({ hospitalData, departments, doctors }) => {
             if (formData.doctors.findIndex(_elm => _elm.id == value) <= -1) {
                 setFormData({
                     ...formData,
-                    doctors: [...formData.doctors, { id: Number(value) }]
+                    doctors: [...formData.doctors, { id: value }]
                 })
             } else {
                 setFormData({

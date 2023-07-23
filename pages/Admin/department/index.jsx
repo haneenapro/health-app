@@ -29,7 +29,14 @@ const index = ({ departmentData }) => {
     return (
         <div className="container mx-auto">
             <NavBar />
-            <div className='mt-6 flex justify-between items-center'>
+            <div className='mt-6 flex justify-between items-center'><div className=' flex items-center justify-left gap-x-6'>
+              <Link
+                href='/Admin'
+                className='text-base font-semibold leading-7 text-gray-900'
+              >
+                <span aria-hidden='true'>←</span> Back
+              </Link>
+            </div>
                 <h1 className='text-[24px] md:text-[48px] font-semibold pb-12'>
                     Department Lists
                 </h1>
@@ -66,7 +73,7 @@ const index = ({ departmentData }) => {
                                     </th>
                                 </tr>
                             ))
-                            : "No schedule found"}
+                            : "No departments found"}
                     </tbody>
                 </table>
             </div>
