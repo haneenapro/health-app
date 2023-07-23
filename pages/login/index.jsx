@@ -52,7 +52,7 @@ function LoginForm() {
       password: formData.password,
       redirect: true,
       role: formData.role,
-      callbackUrl: "/" + formData.role.charAt(0).toUpperCase() + formData.role.slice(1),
+      callbackUrl: formData.role === "patient" ? "/" + formData.role.charAt(0).toUpperCase() + formData.role.slice(1) + "s" : "/" + formData.role.charAt(0).toUpperCase() + formData.role.slice(1),
     })
 
     console.log(res)
