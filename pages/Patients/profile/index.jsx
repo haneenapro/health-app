@@ -16,9 +16,14 @@ export async function getServerSideProps({ req, res }) {
 
   const session = await unstable_getServerSession(req, res, authOptions)
   if (!session) {
-    res.writeHead(307, { location: `/login` });
-    res.end();
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
   }
+  
   const userData = await prisma.User.findUnique({
     where: { id: session.user.id },
     include: {

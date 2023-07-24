@@ -42,6 +42,7 @@ model User {
   report      Report[]
   Session     Session[]
   Payment     UserPayment[]
+  image       String?
 }
 
 model Question {

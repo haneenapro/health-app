@@ -16,8 +16,34 @@ import {
 } from "lucide-react"
 import { useEffect } from "react"
 import axios from "axios"
+import Link from "next/link"
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 
-export default function MainPage() {
+export async function getServerSideProps({ req, res }) {
+
+  const session = await unstable_getServerSession(req, res, authOptions)
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const userData = await prisma.User.findUnique({
+    where: { id: session.user.id },
+  })
+
+  return {
+    props: {
+      userData
+    },
+  }
+}
+
+export default function MainPage({ userData }) {
   const router = useRouter()
   const { status, data: session } = useSession()
 
@@ -34,10 +60,11 @@ export default function MainPage() {
     return null
   }
 
-  return <Page />
+  return <Page userData={userData} />
 }
 
-function Page() {
+function Page({ userData }) {
+  console.log(userData, "@@@");
   const { data: session } = useSession()
 
   return (
@@ -55,10 +82,20 @@ function Page() {
         </div>
         <div className='m-7'>
           <a
-            className='text-center w-32 h-32 font-bold justify-self-center flex flex-col items-center px-4 py-4 border drop-shadow-xl rounded-full text-black bg-gray-50 hover:bg-gray-200'
+            className='text-center w-32 h-32 font-bold justify-self-center flex flex-col items-center px-4 py-4 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
             href='Patients/profile'
           >
-            <User className='text-center h-16 capitalize' />
+            {userData?.image ?
+              <img
+                className='rounded-full'
+                src={userData?.image ? '/uploads/' + userData.image : ""}
+                width={100}
+                height={100}
+                alt='images'
+              />
+              :
+              <User className='text-center h-16 capitalize' />
+            }
             {session.user.name}
           </a>
         </div>
@@ -68,59 +105,66 @@ function Page() {
           <h2 className='m-7 text-2xl font-bold'> Dashboard </h2>{" "}
           <h2 className='text-xl font-bold pl-6'> Function Section </h2>
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
-            <a
+            <Link
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Appointment'
             >
               <Syringe className='text-center' />
               Book Appointment
-            </a>
-            <a
+            </Link>
+            <Link
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Patients/question/new'
             >
               <Syringe className='text-center' />
               Consult Doctor
-            </a>
-            <a
+            </Link>
+            <Link
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/report-next'
             >
               <FilePlus2 className='text-center' />
               Add Report
-            </a>
-            <a
+            </Link>
+            <Link
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/doctors'
             >
               <Contact className='text-center' />
               Doctors Contact
-            </a>
+            </Link>
+            <Link
+              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Patients/profile/EditProfile'
+            >
+              <Contact className='text-center' />
+              Edit Profile
+            </Link>
           </div>
           {/* Next Line */}
           <h2 className='text-xl font-bold pl-6 mt-6'> Information Section </h2>
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
-            <a
+            <Link
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Patients/question'
             >
               <HelpCircle className='text-center' />
               View Q/A
-            </a>
-            <a
+            </Link>
+            <Link
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/report-next/img-get'
             >
               <File className='text-center' />
               View Reports
-            </a>
-            <a
+            </Link>
+            <Link
               className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/info-dynamic'
             >
               <Book className='text-center' />
               View Blog
-            </a>
+            </Link>
           </div>
         </div>
       </main>

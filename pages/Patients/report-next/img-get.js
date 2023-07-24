@@ -16,6 +16,15 @@ import NavBar from "../../../src/components/NavBar"
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions)
+  
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
 
   const reports = await prisma.report.findMany({
     where: { userId: session.user.id },

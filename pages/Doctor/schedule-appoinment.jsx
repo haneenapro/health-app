@@ -19,6 +19,14 @@ export async function getServerSideProps({ req, res }) {
     })
 
     const session = await unstable_getServerSession(req, res, authOptions)
+    if (!session) {
+        return {
+          redirect: {
+            destination: '/login',
+            permanent: false,
+          },
+        }
+      }
 
     const doctors = await prisma.doctor.findMany({
         where: { userId: session.user.id },
