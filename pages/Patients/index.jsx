@@ -1,7 +1,5 @@
 import Head from "next/head"
-import Button from "../../components/ui/Button"
-import { NextPage } from "next"
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import NavBar from "../../src/components/NavBar"
 import {
@@ -14,8 +12,6 @@ import {
   File,
   Syringe,
 } from "lucide-react"
-import { useEffect } from "react"
-import axios from "axios"
 import Link from "next/link"
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]"
@@ -27,6 +23,13 @@ export async function getServerSideProps({ req, res }) {
     return {
       redirect: {
         destination: '/login',
+        permanent: false,
+      },
+    }
+  } else if (session.user.role !== "patient") {
+    return {
+      redirect: {
+        destination: '/',
         permanent: false,
       },
     }
@@ -50,13 +53,7 @@ export default function MainPage({ userData }) {
   if (status === "loading") return <div>Loading...</div>
 
   if (status === "unauthenticated") {
-    router.push("/login")
-    return null
-  }
-
-  console.log(session)
-  if (session.user.role === "doctor") {
-    void router.push("/Doctor")
+    void router.push("/login")
     return null
   }
 
@@ -64,7 +61,6 @@ export default function MainPage({ userData }) {
 }
 
 function Page({ userData }) {
-  console.log(userData, "@@@");
   const { data: session } = useSession()
 
   return (
@@ -82,12 +78,12 @@ function Page({ userData }) {
         </div>
         <div className='m-7'>
           <a
-            className='text-center w-32 h-32 font-bold justify-self-center flex flex-col items-center px-4 py-4 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
+            className='text-center w-32 h-auto font-bold justify-self-center flex flex-col items-center p-2 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
             href='Patients/profile'
           >
             {userData?.image ?
               <img
-                className='rounded-full'
+                className='rounded-2xl bg-contain'
                 src={userData?.image ? '/uploads/' + userData.image : ""}
                 width={100}
                 height={100}
@@ -96,7 +92,7 @@ function Page({ userData }) {
               :
               <User className='text-center h-16 capitalize' />
             }
-            {session.user.name}
+            {userData.name}
           </a>
         </div>
 

@@ -19,18 +19,25 @@ const apiRoute = nextConnect({
 
 apiRoute.use(upload.single('file'));
 apiRoute.put(async (req, res) => {
-    console.log(req.body, "@@@@");
-    console.log(req.query.id, "@@@@");
-    console.log(req.file, "@@@@");
     try {
-        const information = await prisma.User.update({
-            where: { id: req.query.id },
-            data: { name: req.body.name, image: req.file.filename },
-        })
+        if (req.file) {
+            const information = await prisma.User.update({
+                where: { id: req.query.id },
+                data: { name: req.body.name, image: req.file.filename },
+            })
+            return res
+                .status(201)
+                .send({ message: "Information Added Successfully", information })
+        } else {
+            const information = await prisma.User.update({
+                where: { id: req.query.id },
+                data: { name: req.body.name },
+            })
 
-        return res
-            .status(201)
-            .send({ message: "Information Added Successfully", information })
+            return res
+                .status(201)
+                .send({ message: "Information Added Successfully", information })
+        }
     } catch (error) {
         return res
             .status(500)

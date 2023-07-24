@@ -1,12 +1,14 @@
-import Link from 'next/link'
-import React, { useState } from 'react'
-import NavBar from '../../../src/components/NavBar'
-import { unstable_getServerSession } from 'next-auth'
-import { authOptions } from '../../api/auth/[...nextauth]'
-import Input from '../../../components/ui/Input'
-import Button from '../../../components/ui/Button'
-import axios from 'axios'
-import { useRouter } from 'next/router'
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
+import prisma from "../../src/db/prisma"
+import { useState } from "react"
+import NavBar from "../../src/components/NavBar"
+import Link from "next/link"
+import Input from "../../components/ui/Input"
+import Button from "../../components/ui/Button"
+import axios from "axios"
+import { useRouter } from "next/router"
+
 
 export async function getServerSideProps({ req, res }) {
 
@@ -30,7 +32,8 @@ export async function getServerSideProps({ req, res }) {
     },
   }
 }
-const EditProfile = ({ userData }) => {
+const EditAdmin = ({ userData }) => {
+  console.log(userData, "@@");
   const [formData, setFormData] = useState(userData)
   const [imageData, setImageData] = useState(null)
 
@@ -63,7 +66,7 @@ const EditProfile = ({ userData }) => {
     ).then((res) => {
         if (res.status === 201) {
             alert("Information Added successful!")
-            router.push(`/Patients`)
+            router.push(`/Admin`)
         } else {
             alert("Something went wrong")
         }
@@ -125,4 +128,4 @@ const EditProfile = ({ userData }) => {
   )
 }
 
-export default EditProfile
+export default EditAdmin

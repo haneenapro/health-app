@@ -23,7 +23,7 @@ export async function getServerSideProps({ req, res }) {
       },
     }
   }
-  
+
   const userData = await prisma.User.findUnique({
     where: { id: session.user.id },
     include: {
@@ -106,43 +106,44 @@ const Profile = ({ userData }) => {
 
         <div className="mt-6">
           <h3 className="font-bold">Appointments</h3>
-          <table className='w-full'>
-            <thead class='text-xs text-gray-700 uppercase border-b-2 border-gray-700'>
-              <tr>
-                <th class='px-6 py-3'>ID</th>
-                <th class='px-6 py-3'>Paitent Name</th>
-                <th class='px-6 py-3'>Hospital Name</th>
-                <th class='px-6 py-3'>Department Name</th>
-                <th class='px-6 py-3'>Date/Time</th>
-                <th class='px-6 py-3'>Appointment Type</th>
-                <th class='px-6 py-3'>Link</th>
-                <th class='px-6 py-3'>Status</th>
-                <th class='px-6 py-3 text-center'>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userData.Payment.length > 0
-                ? userData.Payment.map((_elm) => (
-                  <tr className='border-b border-gray-500'>
-                    <th class='px-6 py-3'>{_elm?.id}</th>
-                    <th class='px-6 py-3'>{_elm?.User.name}</th>
-                    <th class='px-6 py-3'>{_elm?.hospital.name}</th>
-                    <th class='px-6 py-3'>{_elm?.department.name}</th>
-                    <th class='px-6 py-3'>{_elm?.availableTime.date}</th>
-                    <th class='px-6 py-3'>{_elm?.appointmentType}</th>
-                    <th class='px-6 py-3'>{_elm?.link ? _elm.link : "N/A"}</th>
-                    <th class='px-6 py-3'>{_elm?.status}</th>
-                    <th class='px-6 py-3 text-center'>
-                      {
-
-                        _elm.status === "notverified" ? <button onClick={() => verifyUser(_elm)} className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white p-1 px-2 border border-red-500 hover:border-transparent rounded'>Cancle</button> : ''
-                      }
-                    </th>
-                  </tr>
-                ))
-                : "No appoinments found"}
-            </tbody>
-          </table>
+          <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-600">
+              <thead class='text-xs text-gray-700 uppercase border-b-2 border-gray-700'>
+                <tr>
+                  <th class='px-6 py-3'>ID</th>
+                  <th class='px-6 py-3'>Paitent Name</th>
+                  <th class='px-6 py-3'>Hospital Name</th>
+                  <th class='px-6 py-3'>Department Name</th>
+                  <th class='px-6 py-3'>Date/Time</th>
+                  <th class='px-6 py-3'>Appointment Type</th>
+                  <th class='px-6 py-3'>Link</th>
+                  <th class='px-6 py-3'>Status</th>
+                  <th class='px-6 py-3 text-center'>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userData.Payment.length > 0
+                  ? userData.Payment.map((_elm) => (
+                    <tr className='border-b border-gray-500'>
+                      <th class='px-6 py-3'>{_elm?.id}</th>
+                      <th class='px-6 py-3'>{_elm?.User.name}</th>
+                      <th class='px-6 py-3'>{_elm?.hospital.name}</th>
+                      <th class='px-6 py-3'>{_elm?.department.name}</th>
+                      <th class='px-6 py-3'>{_elm?.availableTime.date}</th>
+                      <th class='px-6 py-3'>{_elm?.appointmentType}</th>
+                      <th class='px-6 py-3'>{_elm?.link ? _elm.link : "N/A"}</th>
+                      <th class='px-6 py-3'>{_elm?.status}</th>
+                      <th class='px-6 py-3 text-center'>
+                        {
+                          _elm.status === "notverified" ? <button onClick={() => verifyUser(_elm)} className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white p-1 px-2 border border-red-500 hover:border-transparent rounded'>Cancle</button> : ''
+                        }
+                      </th>
+                    </tr>
+                  ))
+                  : "No appoinments found"}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>

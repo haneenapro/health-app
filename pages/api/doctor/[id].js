@@ -1,72 +1,104 @@
-import { prisma } from "../../../src/db/prisma"
+import nextConnect from "next-connect"
+import multer from "multer"
+import prisma from "../../../src/db/prisma"
 
-export default async function handler(req, res) {
-    const id = req.query.id
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: "./public/uploads",
+    filename: (req, file, cb) => cb(null, Date.now() + file.originalname),
+  }),
+})
 
-    //Get
-    if (req.method === "GET") {
-        try {
-            const doctor = await prisma.doctor.findFirst({
-                where: { id: id },
-                select: {
-                    id: true,
-                    name: true,
-                },
-            })
-            if (doctor) return res.status(200).send(doctor)
-            return res.status(204).send({ message: "No data found", status: 204 })
-        } catch (error) {
-            return res
-                .status(500)
-                .send({ message: "Something went wrong", status: 500 })
-        }
+const apiRoute = nextConnect({
+  onError(error, req, res) {
+    res
+      .status(501)
+      .json({ error: `Sorry something Happened! ${error.message}` })
+  },
+  onNoMatch(req, res) {
+    res.status(405).json({ error: `Method '${req.method}' Not Allowed` })
+  },
+})
+
+apiRoute.get(async (req, res) => {
+  try {
+    const doctor = await prisma.doctor.findFirst({
+      where: { id: id },
+      select: {
+        id: true,
+        name: true,
+      },
+    })
+    if (doctor) return res.status(200).send(doctor)
+    return res.status(204).send({ message: "No data found", status: 204 })
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "Something went wrong", status: 500 })
+  }
+})
+apiRoute.delete(async (req, res) => {
+  try {
+    await prisma.doctor.delete({
+      where: { id: Number(id) },
+    })
+
+    return res.send({ message: "Delete success", status: 200 })
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "Something went wrong", status: 500 })
+  }
+})
+
+apiRoute.use(upload.single("file")).put(async (req, res) => {
+  try {
+    if (req.file) {
+      let { name, experience, qualification, address } = req.body
+      const updatedDoctor = await prisma.doctor.update({
+        where: { id: req.query.id },
+        data: {
+          name: name,
+          experience: experience,
+          qualification: qualification,
+          address: address,
+          image: req.file.filename,
+        },
+      })
+      return res.send({
+        message: "Update success",
+        updatedDoctor,
+        status: 200,
+      })
+    } else {
+      let { name, experience, qualification, address } = req.body
+      const updatedDoctor = await prisma.doctor.update({
+        where: { id: req.query.id },
+        data: {
+          name: name,
+          experience: experience,
+          qualification: qualification,
+          address: address,
+        },
+      })
+      return res.send({
+        message: "Update success",
+        updatedDoctor,
+        status: 200,
+      })
     }
 
-    // Delete
-    if (req.method === "DELETE") {
-        try {
-          await prisma.doctor.delete({
-            where: { id: Number(id) },
-          })
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "Something went wrong", status: 500 })
+  }
+})
 
-          return res.send({ message: "Delete success", status: 200 })
-        } catch (error) {
-          return res
-            .status(500)
-            .send({ message: "Something went wrong", status: 500 })
-        }
-    }
+export default apiRoute
 
-    // Update
-    if (req.method === "PUT") {
-        const updatedDoctor = await prisma.doctor.update({
-            where: { id: id },
-            data: {...req.body},
-        })
-
-        return res.send({
-            message: "Update success",
-            updatedDoctor,
-            status: 200,
-        })
-        try {
-            const { name } = req.body
-            const updatedDoctor = await prisma.doctor.update({
-                where: { id: Number(id) },
-                data: {...req.body},
-            })
-
-            return res.send({
-                message: "Update success",
-                updatedDoctor,
-                status: 200,
-            })
-        } catch (error) {
-            return res
-                .status(500)
-                .send({ message: "Something went wrong", status: 500 })
-        }
-    }
-
-    return res.status(400).send("Not allowed")
+export const config = {
+  api: {
+    bodyParser: false, // Disallow body parsing, consume as stream
+  },
 }

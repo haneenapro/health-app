@@ -39,7 +39,7 @@ export async function getServerSideProps({ req, res }) {
             },
           },
           appointmentType: true,
-          link:true
+          link: true
         },
       },
     },
@@ -58,7 +58,7 @@ const Profile = ({ doctors }) => {
 
   async function verifyUser(_data) {
     await axios
-    .post(`/api/share`, {
+      .post(`/api/share`, {
         email: _data.User.email,
         schedule: _data.availableTime.date,
         doctor: _data.doctor.name,
@@ -66,18 +66,18 @@ const Profile = ({ doctors }) => {
         user: _data.User.name,
         department: _data.department.name,
         id: _data.id
-    })
-    .then((res) => {
+      })
+      .then((res) => {
         if (res.status === 200) {
-            alert("User verified successfully")
-            window.location.reload(false)
+          alert("User verified successfully")
+          window.location.reload(false)
         } else {
-            alert("Something went wrong")
+          alert("Something went wrong")
         }
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         alert("Something went wrong")
-    })
+      })
   }
   if (status === "loading") return <p>Loading ...</p>
   return (
@@ -101,7 +101,7 @@ const Profile = ({ doctors }) => {
               <strong>Email:</strong> {session?.user?.email}
             </p>
           </div>
-          <div className=' flex items-center justify-left gap-x-6'>
+          <div className='flex items-center justify-left gap-x-6'>
             <a
               href='/Patients'
               className='text-base font-semibold leading-7 text-gray-900'
@@ -111,44 +111,46 @@ const Profile = ({ doctors }) => {
         <div>
           <h3 className="font-bold">User Schedules</h3>
 
-          <table className='w-full'>
-            <thead class='text-xs text-gray-700 uppercase border-b-2 border-gray-700'>
-              <tr>
-                <th class='px-6 py-3'>ID</th>
-                <th class='px-6 py-3'>Paitent Name</th>
-                <th class='px-6 py-3'>Hospital Name</th>
-                <th class='px-6 py-3'>Department Name</th>
-                <th class='px-6 py-3'>Date/Time</th>
-                <th class='px-6 py-3'>Appointment Type</th>
-                <th class='px-6 py-3'>Statuss</th>
-                <th class='px-6 py-3'>Link</th>
-                <th class='px-6 py-3 text-center'>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {doctors.UserPayment.length > 0
-                ? doctors.UserPayment.map((_elm) => (
-                  <tr className='border-b border-gray-500'>
-                    <th class='px-6 py-3'>{_elm?.id}</th>
-                    <th class='px-6 py-3'>{_elm?.User.name}</th>
-                    <th class='px-6 py-3'>{_elm?.hospital.name}</th>
-                    <th class='px-6 py-3'>{_elm?.department.name}</th>
-                    <th class='px-6 py-3'>{_elm?.availableTime.date}</th>
-                    <th class='px-6 py-3'>{_elm?.appointmentType}</th>
-                    <th class='px-6 py-3'>{_elm?.status}</th>
-                    <th class='px-6 py-3'>{_elm?.link ? _elm.link : "N/A"}</th>
-                    <th class='px-6 py-3 text-center'>
-                      {(_elm?.appointmentType === "online" && _elm.status === "notverified" && _elm.status !== "canclled") ? <Link href={`/Doctor/Share?user=${_elm.id}`} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 px-2 border border-blue-500 hover:border-transparent rounded'>
-                        Share Meet Link
-                      </Link> : ""}
-                      {(_elm.appointmentType === "offline" && _elm.status === "notverified" && _elm.status !== "canclled") ? <button onClick={()=>verifyUser(_elm)} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 px-2 border border-blue-500 hover:border-transparent rounded'>Verify</button> : ""}
-                    </th>
-                  </tr>
-                ))
-                : "No schedule found"}
-            </tbody>
-          </table>
+          <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-600">
+              <thead class='text-xs text-gray-700 uppercase border-b-2 border-gray-700'>
+                <tr>
+                  <th class='px-6 py-3'>ID</th>
+                  <th class='px-6 py-3'>Paitent Name</th>
+                  <th class='px-6 py-3'>Hospital Name</th>
+                  <th class='px-6 py-3'>Department Name</th>
+                  <th class='px-6 py-3'>Date/Time</th>
+                  <th class='px-6 py-3'>Appointment Type</th>
+                  <th class='px-6 py-3'>Statuss</th>
+                  <th class='px-6 py-3'>Link</th>
+                  <th class='px-6 py-3 text-center'>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {doctors.UserPayment.length > 0
+                  ? doctors.UserPayment.map((_elm) => (
+                    <tr className='border-b border-gray-500'>
+                      <th class='px-6 py-3'>{_elm?.id}</th>
+                      <th class='px-6 py-3'>{_elm?.User.name}</th>
+                      <th class='px-6 py-3'>{_elm?.hospital.name}</th>
+                      <th class='px-6 py-3'>{_elm?.department.name}</th>
+                      <th class='px-6 py-3'>{_elm?.availableTime.date}</th>
+                      <th class='px-6 py-3'>{_elm?.appointmentType}</th>
+                      <th class='px-6 py-3'>{_elm?.status}</th>
+                      <th class='px-6 py-3'>{_elm?.link ? _elm.link : "N/A"}</th>
+                      <th class='px-6 py-3 text-center'>
+                        {(_elm?.appointmentType === "online" && _elm.status === "notverified" && _elm.status !== "canclled") ? <Link href={`/Doctor/Share?user=${_elm.id}`} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 px-2 border border-blue-500 hover:border-transparent rounded'>
+                          Share Meet Link
+                        </Link> : ""}
+                        {(_elm.appointmentType === "offline" && _elm.status === "notverified" && _elm.status !== "canclled") ? <button onClick={() => verifyUser(_elm)} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 px-2 border border-blue-500 hover:border-transparent rounded'>Verify</button> : ""}
+                      </th>
+                    </tr>
+                  ))
+                  : "No schedule found"}
+              </tbody>
+            </table>
 
+          </div>
         </div>
       </div>
     </>

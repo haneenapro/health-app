@@ -13,12 +13,12 @@ export async function getServerSideProps({ req, res }) {
     const session = await unstable_getServerSession(req, res, authOptions)
     if (!session) {
         return {
-          redirect: {
-            destination: '/login',
-            permanent: false,
-          },
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
         }
-      }
+    }
 
     const doctors = await prisma.doctor.findMany({
         where: { userId: session.user.id },
@@ -34,6 +34,7 @@ export async function getServerSideProps({ req, res }) {
 const EditDoctor = ({ doctors }) => {
     let router = useRouter()
     const [formData, setFormData] = useState(doctors[0])
+    const [imageData, setImageData] = useState(null)
     function handleChange(event) {
         const { name, value } = event.target
         setFormData((prevData) => ({
@@ -42,10 +43,22 @@ const EditDoctor = ({ doctors }) => {
         }))
     }
 
+    function imageUploadHandler(e) {
+        const file = e.target.files[0]
+        setImageData(file)
+    }
+
     async function handleSubmit(event) {
         event.preventDefault()
+        // if(!imageData) return alert("Image field is required!!")
+        let newFormData = new FormData()
+        newFormData.append("name", formData.name)
+        newFormData.append("experience", formData.experience)
+        newFormData.append("qualification", formData.qualification)
+        newFormData.append("address", formData.address)
+        newFormData.append("file", imageData)
         await axios.put(`/api/doctor/${formData.id}`,
-            formData
+            newFormData
         ).then((res) => {
             if (res.status === 200) {
                 alert("Information Added successful!")
@@ -119,6 +132,14 @@ const EditDoctor = ({ doctors }) => {
                                     value={formData.address}
                                     onChange={handleChange}
                                     required
+                                />
+                            </div>
+                            <div className='pt-8'>
+                                <Input
+                                    label={"Doctor Image"}
+                                    name='image'
+                                    onChange={imageUploadHandler}
+                                    type="file"
                                 />
                             </div>
                         </div>
