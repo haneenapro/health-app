@@ -78,12 +78,12 @@ function Page({ userData }) {
         </div>
         <div className='m-7'>
           <a
-            className='text-center w-32 h-auto font-bold justify-self-center flex flex-col items-center p-2 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
+            className='text-center w-40 h-auto font-bold justify-self-center flex flex-col items-center p-2 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
             href='Patients/profile'
           >
             {userData?.image ?
               <img
-                className='rounded-2xl bg-contain'
+              className='rounded-2xl bg-contain w-40'
                 src={userData?.image ? '/uploads/' + userData.image : ""}
                 width={100}
                 height={100}

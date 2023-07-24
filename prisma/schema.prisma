@@ -43,6 +43,7 @@ model User {
   Session     Session[]
   Payment     UserPayment[]
   image       String?
+  createdAt   DateTime      @default(now())
 }
 
 model Question {
@@ -142,6 +143,7 @@ model Doctor {
   hospitals     Hospital[]       @relation("DoctorToHospital")
   isVerified    String?          @default("false")
   UserPayment   UserPayment[]
+  createdAt     DateTime         @default(now())
 }
 
 model DoctorSchedule {

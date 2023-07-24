@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import Head from "next/head"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
@@ -10,19 +10,18 @@ import { authOptions } from "../api/auth/[...nextauth]"
 import prisma from "../../src/db/prisma"
 
 export async function getServerSideProps({ req, res }) {
-
   const session = await unstable_getServerSession(req, res, authOptions)
   if (!session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     }
-  } else if(session.user.role !== "admin") {
+  } else if (session.user.role !== "admin") {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     }
@@ -32,16 +31,39 @@ export async function getServerSideProps({ req, res }) {
     where: { id: session.user.id },
   })
 
+  const usersData = await prisma.User.findMany()
+  const doctorCount = await prisma.Doctor.findMany()
+  const patientCount = await prisma.User.findMany()
+  const appointmentCount = await prisma.UserPayment.findMany()
+
   return {
     props: {
-      userData
+      userData: JSON.parse(JSON.stringify(userData)),
+      doctorCount: doctorCount.length || 0,
+      patientCount:
+        patientCount.filter((_elm) => _elm.role === "patient").length || 0,
+      appointmentCountTotal: appointmentCount.length || 0,
+      appointmentCountNotVerified:
+        appointmentCount.filter((_elm) => _elm.status === "notverified")
+          .length || 0,
+      appointmentCountVerified:
+        appointmentCount.filter((_elm) => _elm.status === "verified").length ||
+        0,
+      appointmentCountCancelled:
+        appointmentCount.filter((_elm) => _elm.status === "canclled").length ||
+        0,
+      usersData: JSON.parse(JSON.stringify(usersData)).map((_elm) => {
+        return {
+          ..._elm,
+          createdAt: new Date(_elm.createdAt).toLocaleString()
+        }
+      }),
     },
   }
 }
-export default function MainPage({ userData }) {
+export default function MainPage(props) {
   const router = useRouter()
   const { status, data: session } = useSession()
-
 
   if (status === "unauthenticated") {
     void router.push("/login")
@@ -50,10 +72,20 @@ export default function MainPage({ userData }) {
 
   if (status === "loading") return <div>Loading...</div>
 
-  return <Page userData={userData} />
+  return <Page {...props} />
 }
 
-function Page({ userData }) {
+function Page({
+  userData,
+  doctorCount,
+  patientCount,
+  appointmentCountNotVerified,
+  appointmentCountTotal,
+  appointmentCountVerified,
+  appointmentCountCancelled,
+  usersData
+}) {
+  console.log(usersData, "@@@")
   const { data: session } = useSession()
 
   return (
@@ -73,24 +105,111 @@ function Page({ userData }) {
         <div className=''>
           <NavBar />
         </div>
-        <div className='m-7'>
+        <div className='m-7 flex sm:flex-nowrap flex-wrap gap-6 items-center'>
           <a
-            className='text-center w-32 h-auto font-bold justify-self-center flex flex-col items-center p-2 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
+            className='text-center w-40 h-auto font-bold justify-self-center flex flex-col items-center p-2 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
             href='Admin/EditAdmin'
           >
-            {userData?.image ?
+            {userData?.image ? (
               <img
-                className='rounded-2xl bg-contain'
-                src={userData?.image ? '/uploads/' + userData.image : ""}
+                className='rounded-2xl bg-contain w-40'
+                src={userData?.image ? "/uploads/" + userData.image : ""}
                 width={100}
                 height={100}
                 alt='images'
               />
-              :
+            ) : (
               <User className='text-center h-16 capitalize' />
-            }
-            {userData.name}
+            )}
+            <span className='mt-2'>{userData.name}</span>
           </a>
+          <div className='w-full grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-3'>
+            <div class='bg-white p-3 h-20 rounded-xl shadow-xl flex gap-3 items-center justify-between'>
+              <div class='flex items-center'>
+                <div>
+                  <p class='font-semibold text-base m-0 uppercase'>
+                    Total Doctors
+                  </p>
+                </div>
+              </div>
+              <div class='flex items-center'>
+                <p class='text-blue-600 font-semibold text-4xl m-0'>
+                  {doctorCount}
+                </p>
+              </div>
+            </div>
+            <div class='bg-white p-3 h-20 rounded-xl shadow-xl flex gap-3 items-center justify-between'>
+              <div class='flex items-center'>
+                <div>
+                  <p class='font-semibold text-base m-0 uppercase'>
+                    Total Patients
+                  </p>
+                </div>
+              </div>
+              <div class='flex items-center'>
+                <p class='text-black-600 font-semibold text-4xl m-0'>
+                  {patientCount}
+                </p>
+              </div>
+            </div>
+
+            <div class='bg-white p-3 h-20 rounded-xl shadow-xl flex gap-3 items-center justify-between'>
+              <div class='flex items-center'>
+                <div>
+                  <p class='font-semibold text-base m-0 uppercase'>
+                    Total Appointments
+                  </p>
+                </div>
+              </div>
+              <div class='flex items-center'>
+                <p class='text-green-600 font-semibold text-4xl m-0'>
+                  {appointmentCountTotal}
+                </p>
+              </div>
+            </div>
+            <div class='bg-white p-3 h-20 rounded-xl shadow-xl flex gap-3 items-center justify-between'>
+              <div class='flex items-center'>
+                <div className='text-ellipsis overflow-hidden'>
+                  <p class='font-semibold text-base m-0 uppercase'>
+                    Total Cancelled appointments
+                  </p>
+                </div>
+              </div>
+              <div class='flex items-center'>
+                <p class='text-red-600 font-semibold text-4xl m-0'>
+                  {appointmentCountCancelled}
+                </p>
+              </div>
+            </div>
+            <div class='bg-white p-3 h-20 rounded-xl shadow-xl flex gap-3 items-center justify-between'>
+              <div class='flex items-center'>
+                <div>
+                  <p class='font-semibold text-base m-0 uppercase'>
+                    Total Verified appointments
+                  </p>
+                </div>
+              </div>
+              <div class='flex items-center'>
+                <p class='text-gray-600 font-semibold text-4xl m-0'>
+                  {appointmentCountVerified}
+                </p>
+              </div>
+            </div>
+            <div class='bg-white p-3 h-20 rounded-xl shadow-xl flex gap-3 items-center justify-between'>
+              <div class='flex items-center'>
+                <div>
+                  <p class='font-semibold text-base m-0 uppercase'>
+                    Total Not Verified appointments
+                  </p>
+                </div>
+              </div>
+              <div class='flex items-center'>
+                <p class='text-yellow-600 font-semibold text-4xl m-0'>
+                  {appointmentCountNotVerified}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Dashboard */}
