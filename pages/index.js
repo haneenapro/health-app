@@ -3,8 +3,17 @@ import Features from "../components/Home/features"
 import Button from "../components/ui/Button"
 import NavBar from "../src/components/NavBar"
 import Footer from "../src/components/Footer"
+import { getTimeHelper } from "../components/helper/getTimerAlert"
 
 export default function MainPage() {
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
   return (
     <>
       <Head>

@@ -5,12 +5,20 @@ import Input from "../../../components/ui/Input"
 import NavBar from "../../../src/components/NavBar"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
+import { getTimeHelper } from "../../../components/helper/getTimerAlert"
 
 function QuestionForm() {
   const [formData, setFormData] = useState({
     title: "",
     question: "",
   })
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   function handleChange(event) {
     const { name, value } = event.target

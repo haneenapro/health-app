@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { getTimeHelper } from "../../../components/helper/getTimerAlert"
 
 const SingleQuestion = () => {
   // api route -- get all questions
@@ -9,6 +10,14 @@ const SingleQuestion = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [question, setQuestion] = useState([])
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   useEffect(() => {
     if (!id) {

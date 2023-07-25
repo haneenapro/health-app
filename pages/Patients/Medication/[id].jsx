@@ -53,6 +53,14 @@ const CreateMedication = ({ userData }) => {
     const [formData, setFormData] = useState(_initState)
     const [dateDate, setDateDate] = useState('')
     const _getLocalData = typeof window !== "undefined" && localStorage.getItem(userData.id)
+
+     const _getLocalData2 = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData2 && _getLocalData2 ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
     useEffect(() => {
         if (_getLocalData) {
             setFormData(JSON.parse(_getLocalData)[id])

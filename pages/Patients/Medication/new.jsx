@@ -5,6 +5,7 @@ import NavBar from '../../../src/components/NavBar'
 import Input from '../../../components/ui/Input'
 import Button from '../../../components/ui/Button'
 import Link from 'next/link'
+import { getTimeHelper } from '../../../components/helper/getTimerAlert'
 
 
 export async function getServerSideProps({ req, res }) {
@@ -49,6 +50,14 @@ const _initState = {
 const CreateMedication = ({ userData }) => {
     const [formData, setFormData] = useState(_initState)
     const [dateDate, setDateDate] = useState('')
+
+    const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+    if(_getLocalData && _getLocalData ==="patient") {
+      const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+      if(_getLocalDataUserId) {
+        getTimeHelper(_getLocalDataUserId)
+      }
+    }
 
     function handleChange(event) {
         const { name, value } = event.target
@@ -180,6 +189,9 @@ const CreateMedication = ({ userData }) => {
                                     type="datetime-local"
                                 />
                             </div>
+                            {formData.times.length > 0 ? formData.times.map((_elm)=>(
+                                <span className='mr-3 mt-2'>{new Date(_elm).toLocaleString()}</span>
+                            )) : "No Date Selected"}
                             <Button type='button' onClick={addDateHandler}>Add</Button>
                         </div>
                     </div>

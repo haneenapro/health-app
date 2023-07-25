@@ -1,5 +1,6 @@
 import prisma from "../../../src/db/prisma"
 import NavBar from "../../../src/components/NavBar"
+import { getTimeHelper } from "../../../components/helper/getTimerAlert"
 
 export const getServerSideProps = async () => {
   const doctors = await prisma.doctor.findMany()
@@ -12,6 +13,13 @@ export const getServerSideProps = async () => {
 }
 
 const DoctorsList = ({ doctors }) => {
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
   return (
     <>
       <NavBar />

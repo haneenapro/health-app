@@ -7,6 +7,7 @@ import Input from '../../../components/ui/Input'
 import Button from '../../../components/ui/Button'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { getTimeHelper } from '../../../components/helper/getTimerAlert'
 
 export async function getServerSideProps({ req, res }) {
 
@@ -42,6 +43,14 @@ const EditProfile = ({ userData }) => {
   const [imageData, setImageData] = useState(null)
 
   const router = useRouter()
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   function handleChange(event) {
     const { name, value } = event.target

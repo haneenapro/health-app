@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 export function timerData(_data) {
     let _upComingDates = []
@@ -16,13 +16,16 @@ export function timerData(_data) {
             let _filterNewDates = _upComingDates.filter(
                 (_elm) => _elm > new Date().getTime()
             )
+            
             if (_filterNewDates.length > 0) {
                 let _newTime = Math.min(..._filterNewDates)
                 if (_newTime) {
                     setTimeout(() => {
-                        alert("Time to take med")
+                        console.log();
+                        alert("Time to take medicine")
+                        clearAll(window);
                         timerData(_data)
-                    }, (_newTime - new Date().getTime()))
+                      }, _newTime - new Date().getTime());
                 } else {
                     return
                 }
@@ -37,6 +40,20 @@ export const getTimeHelper = (id) => {
         if (_getLocalData) {
             timerData(JSON.parse(_getLocalData))
         }
-    }, [_getLocalData])
+    }, [id])  
     return null
 }
+
+function clearAll(windowObject) {
+    var id = Math.max(
+      windowObject.setInterval(noop, 1000),
+      windowObject.setTimeout(noop, 1000)
+    );
+  
+    while (id--) {
+      windowObject.clearTimeout(id);
+      windowObject.clearInterval(id);
+    }
+  
+    function noop(){}
+  }

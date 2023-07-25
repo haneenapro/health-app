@@ -3,13 +3,20 @@ import { useRouter } from "next/router"
 import Image from "next/image"
 import axios from "axios"
 import NavBar from "../../src/components/NavBar"
+import { getTimeHelper } from "../../components/helper/getTimerAlert"
 
 const index = () => {
   let router = useRouter()
   const hospital_id = router.query?.hospital_id
   const department_id = router.query?.department_id
   const isgeneral = router.query?.general
-  console.log(isgeneral, "@@@@");
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(true)

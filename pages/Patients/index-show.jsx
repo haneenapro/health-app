@@ -13,6 +13,7 @@ import {
   Syringe,
 } from "lucide-react"
 import { getSession } from "next-auth/client"
+import { getTimeHelper } from "../../components/helper/getTimerAlert"
 
 async function getServerSideProps(context) {
   const session = await getSession(context)
@@ -27,6 +28,14 @@ async function getServerSideProps(context) {
 export default function MainPage() {
   const router = useRouter()
   const { status, data: session } = useSession()
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   if (status === "loading") return <div>Loading...</div>
 

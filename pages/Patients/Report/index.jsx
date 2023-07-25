@@ -3,11 +3,20 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import NavBar from "../../../src/components/NavBar"
+import { getTimeHelper } from "../../../components/helper/getTimerAlert"
 
 const ReportsList = () => {
   // api route -- get all reports
   const [isLoading, setIsLoading] = useState(false)
   const [reports, setReports] = useState([])
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   useEffect(() => {
     const getReports = async () => {

@@ -4,6 +4,7 @@ import NavBar from "../../../src/components/NavBar"
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import axios from "axios"
+import { getTimeHelper } from "../../../components/helper/getTimerAlert"
 
 export async function getServerSideProps({ req, res }) {
 
@@ -53,14 +54,22 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      hospitals,
-      userData
+      hospitals: JSON.parse(JSON.stringify(hospitals)),
+      userData: JSON.parse(JSON.stringify(userData))
     },
   }
 }
 
 const Profile = ({ userData }) => {
   const { status, data: session } = useSession()
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user") 
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   async function verifyUser(_data) {
     await axios

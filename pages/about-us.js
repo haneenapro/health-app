@@ -2,8 +2,16 @@ import Head from "next/head"
 import Members from "../components/Home/Members"
 import Footer from "../src/components/Footer"
 import NavBar from "../src/components/NavBar"
+import { getTimeHelper } from "../components/helper/getTimerAlert"
 
 export default function Home() {
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
   return (
     <>
       <Head>

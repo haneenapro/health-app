@@ -4,6 +4,7 @@ import { authOptions } from "../../api/auth/[...nextauth]"
 import NavBar from "../../../src/components/NavBar"
 import Link from "next/link"
 import { FilePlus2 } from "lucide-react"
+import { getTimeHelper } from "../../../components/helper/getTimerAlert"
 
 export async function getServerSideProps({ req, res }) {
   const session = await unstable_getServerSession(req, res, authOptions)
@@ -38,6 +39,14 @@ const MedicationLists = ({ userData }) => {
   const [dataLists, setDataLists] = useState([])
   const _getLocalData =
     typeof window !== "undefined" && localStorage.getItem(userData.id)
+
+  const _getLocalData2 = typeof window !== "undefined" && localStorage.getItem("role")
+  if (_getLocalData2 && _getLocalData2 === "patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if (_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
   useEffect(() => {
     if (_getLocalData) {
       setDataLists(JSON.parse(_getLocalData))
@@ -104,7 +113,7 @@ const MedicationLists = ({ userData }) => {
                       <th class='px-6 py-3'>{_elm?.status}</th>
                       <th class='px-6 py-3'>
                         {_elm.times.map((_elm) => (
-                            <p className="border-b-slate-900 m-0 py-2 text-black">{new Date(_elm).toLocaleString()}</p>
+                          <p className="border-b-slate-900 m-0 py-2 text-black">{new Date(_elm).toLocaleString()}</p>
                         ))}
                       </th>
                       <th class='px-6 py-3 text-center'>

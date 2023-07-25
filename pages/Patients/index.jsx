@@ -50,9 +50,19 @@ export async function getServerSideProps({ req, res }) {
 export default function MainPage({ userData }) {
   const router = useRouter()
   const { status, data: session } = useSession()
+  if (userData.id) {
+    typeof window !== "undefined" && localStorage.setItem("user", userData.id)
+    typeof window !== "undefined" && localStorage.setItem("role", "patient")
+  }
 
-  getTimeHelper(userData.id)
-  
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
+
   if (status === "loading") return <div>Loading...</div>
   return <Page userData={userData} />
 }
@@ -156,6 +166,13 @@ function Page({ userData }) {
             >
               <Book className='text-center' />
               View Blog
+            </Link>
+            <Link
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              href='/Patients/Medication'
+            >
+              <Book className='text-center' />
+              Medication Management
             </Link>
           </div>
         </div>

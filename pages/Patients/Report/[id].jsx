@@ -4,6 +4,7 @@ import axios from "axios"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import Button from "../../../components/ui/Button"
+import { getTimeHelper } from "../../../components/helper/getTimerAlert"
 
 const SingleReport = () => {
   // api route -- get all reports
@@ -12,6 +13,14 @@ const SingleReport = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [report, setReport] = useState([])
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
   useEffect(() => {
     if (!id) {

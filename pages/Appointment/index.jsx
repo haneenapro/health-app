@@ -7,6 +7,7 @@ import NavBar from "../../src/components/NavBar"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
+import { getTimeHelper } from "../../components/helper/getTimerAlert"
 
 const HospitalList = () => {
   // api route -- get all informations
@@ -15,6 +16,14 @@ const HospitalList = () => {
   const [searchValue, setSearchValue] = useState("")
   const router = useRouter()
   const { status, data: session } = useSession()
+
+  const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+  if(_getLocalData && _getLocalData ==="patient") {
+    const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+    if(_getLocalDataUserId) {
+      getTimeHelper(_getLocalDataUserId)
+    }
+  }
 
 
   if (status === "unauthenticated") {

@@ -45,6 +45,10 @@ export default function MainPage({ userData }) {
   const router = useRouter()
   const { status, data: session } = useSession()
 
+  if(userData.id) {
+    typeof window !== "undefined" && localStorage.setItem("role", "doctor")
+  }
+
   
   if (status === "unauthenticated") {
     router.push("/login")

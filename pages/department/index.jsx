@@ -5,6 +5,7 @@ import axios from "axios"
 import NavBar from "../../src/components/NavBar"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
+import { getTimeHelper } from "../../components/helper/getTimerAlert"
 
 const index = () => {
     const { status, data: session } = useSession()
@@ -13,6 +14,14 @@ const index = () => {
     const [data, setData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const [searchValue, setSearchValue] = useState("")
+
+    const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
+    if (_getLocalData && _getLocalData === "patient") {
+        const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+        if (_getLocalDataUserId) {
+            getTimeHelper(_getLocalDataUserId)
+        }
+    }
 
     if (status === "unauthenticated") {
         router.push("/login")
