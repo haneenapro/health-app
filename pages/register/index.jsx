@@ -100,7 +100,7 @@ function RegisterForm() {
               />
             </div>
 
-            <div className='pt-6'>
+            {/* <div className='pt-6'>
               <label> Choose your Role </label>
               <br></br>
               <input
@@ -124,7 +124,7 @@ function RegisterForm() {
                 checked={formData.role === "patient"}
               />
               <label htmlFor='doctor'>Patient</label>
-            </div>
+            </div> */}
 
             <div className='flex items-center justify-between pt-6'>
               <div className='text-sm'>

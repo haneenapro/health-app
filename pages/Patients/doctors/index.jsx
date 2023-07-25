@@ -6,7 +6,7 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      doctors,
+      doctors: JSON.parse(JSON.stringify(doctors))
     },
   }
 }

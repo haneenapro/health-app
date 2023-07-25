@@ -88,6 +88,7 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        console.log(user,"@@@");
         const { email } = user
         const findUser = await prisma.user.findFirst({ where: { email } })
         if (findUser) {

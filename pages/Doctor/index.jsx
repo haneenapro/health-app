@@ -37,7 +37,7 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      userData: userData.Doctor[0] || []
+      userData: JSON.parse(JSON.stringify(userData.Doctor[0] || []))
     },
   }
 }
@@ -45,13 +45,13 @@ export default function MainPage({ userData }) {
   const router = useRouter()
   const { status, data: session } = useSession()
 
-  if (status === "loading") return <div>Loading...</div>
-
+  
   if (status === "unauthenticated") {
     router.push("/login")
     return null
   }
-
+  
+  if (status === "loading") return <div>Loading...</div>
   return <Page userData={userData} />
 }
 
@@ -102,7 +102,7 @@ function Page({ userData }) {
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
             {/* Styled Funtion */}
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Doctor/question'
             >
               <Pencil className='text-center' />
@@ -110,7 +110,7 @@ function Page({ userData }) {
             </Link>
 
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Doctor/info-dynamic/new'
             >
               <FilePlus2 className='text-center' />
@@ -118,21 +118,21 @@ function Page({ userData }) {
             </Link>
 
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Doctor/info-dynamic'
             >
               <Eye className='text-center' />
               View Blog Information
             </Link>
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Doctor/schedule-appoinment'
             >
               <Eye className='text-center' />
               Schedule appoinment
             </Link>
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Doctor/EditDoctor'
             >
               <Eye className='text-center' />

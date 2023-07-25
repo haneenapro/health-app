@@ -41,7 +41,7 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      userData
+      userData: JSON.parse(JSON.stringify(userData))
     },
   }
 }
@@ -102,35 +102,35 @@ function Page({ userData }) {
           <h2 className='text-xl font-bold pl-6'> Function Section </h2>
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Appointment'
             >
               <Syringe className='text-center' />
               Book Appointment
             </Link>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Patients/question/new'
             >
               <Syringe className='text-center' />
               Consult Doctor
             </Link>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/report-next'
             >
               <FilePlus2 className='text-center' />
               Add Report
             </Link>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/doctors'
             >
               <Contact className='text-center' />
               Doctors Contact
             </Link>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/profile/EditProfile'
             >
               <Contact className='text-center' />
@@ -141,21 +141,21 @@ function Page({ userData }) {
           <h2 className='text-xl font-bold pl-6 mt-6'> Information Section </h2>
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Patients/question'
             >
               <HelpCircle className='text-center' />
               View Q/A
             </Link>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/report-next/img-get'
             >
               <File className='text-center' />
               View Reports
             </Link>
             <Link
-              className='w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/info-dynamic'
             >
               <Book className='text-center' />

@@ -218,7 +218,7 @@ function Page({
           <div className='md:flex-row m-7 flex flex-col flex-wrap gap-3'>
             {/* Styled Funtion */}
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Admin/hospital'
             >
               <FilePlus2 className='text-center' />
@@ -226,7 +226,7 @@ function Page({
             </Link>
 
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Admin/department'
             >
               <Pencil className='text-center' />
@@ -234,7 +234,7 @@ function Page({
             </Link>
 
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Admin/doctor/new'
             >
               <Eye className='text-center' />
@@ -242,7 +242,7 @@ function Page({
             </Link>
 
             <Link
-              className='font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
+              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='Admin/EditAdmin'
             >
               <Eye className='text-center' />

@@ -28,7 +28,7 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      userData
+      userData: JSON.parse(JSON.stringify(userData))
     },
   }
 }

@@ -11,14 +11,21 @@ import axios from 'axios'
 export async function getServerSideProps({ req, res }) {
 
     const session = await unstable_getServerSession(req, res, authOptions)
-    if (!session) {
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        }
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
     }
+  } else if (session.user.role !== "doctor") {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
 
     const doctors = await prisma.doctor.findMany({
         where: { userId: session.user.id },
@@ -26,7 +33,7 @@ export async function getServerSideProps({ req, res }) {
 
     return {
         props: {
-            doctors
+            doctors: JSON.parse(JSON.stringify(doctors))
         },
     }
 }

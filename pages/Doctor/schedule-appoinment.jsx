@@ -11,6 +11,23 @@ import { useRouter } from 'next/router'
 
 export async function getServerSideProps({ req, res }) {
 
+    const session = await unstable_getServerSession(req, res, authOptions)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        }
+    } else if (session.user.role !== "doctor") {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
     const hospitals = await prisma.hospital.findMany({
         include: {
             doctors: true,
@@ -18,15 +35,6 @@ export async function getServerSideProps({ req, res }) {
         }
     })
 
-    const session = await unstable_getServerSession(req, res, authOptions)
-    if (!session) {
-        return {
-          redirect: {
-            destination: '/login',
-            permanent: false,
-          },
-        }
-      }
 
     const doctors = await prisma.doctor.findMany({
         where: { userId: session.user.id },
@@ -34,8 +42,8 @@ export async function getServerSideProps({ req, res }) {
 
     return {
         props: {
-            hospitals,
-            doctors
+            hospitals: JSON.parse(JSON.stringify(hospitals)),
+            doctors: JSON.parse(JSON.stringify(doctors)),
         },
     }
 }
@@ -43,19 +51,6 @@ export async function getServerSideProps({ req, res }) {
 const ScheduleAppoinment = ({ hospitals, doctors }) => {
     const router = useRouter()
     const { status, data: session } = useSession()
-
-    if (status === "loading") return <div>Loading...</div>
-
-    if (status === "unauthenticated") {
-        router.push("/login")
-        return null
-    }
-
-    if (session.user.role !== "doctor") {
-        alert("You are not authorized for this page")
-        void router.push("/")
-        return null
-    }
     const [formData2, setFormData2] = useState({})
 
     function dateHandler(e) {
@@ -79,6 +74,7 @@ const ScheduleAppoinment = ({ hospitals, doctors }) => {
             alert("Something went wrong")
         })
     }
+    if (status === "loading") return <div>Loading...</div>
     return (
         <>
             <NavBar />
