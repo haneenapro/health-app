@@ -3,6 +3,10 @@ generator client {
   previewFeatures = ["extendedWhereUnique"]
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")

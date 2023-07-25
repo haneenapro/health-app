@@ -1,0 +1,219 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Account {
+  id String [pk]
+  userId String [not null]
+  type String [not null]
+  provider String [not null]
+  providerAccountId String [not null]
+  refresh_token String
+  access_token String
+  expires_at Int
+  token_type String
+  scope String
+  id_token String
+  session_state String
+  oauth_token_secret String
+  oauth_token String
+  user User [not null]
+
+  indexes {
+    (provider, providerAccountId) [unique]
+  }
+}
+
+Table User {
+  id String [pk]
+  name String [not null]
+  email String [unique, not null]
+  password String [not null]
+  role String [not null]
+  accounts Account [not null]
+  answer Answer [not null]
+  Doctor Doctor [not null]
+  information Information [not null]
+  question Question [not null]
+  report Report [not null]
+  Session Session [not null]
+  Payment UserPayment [not null]
+  image String
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table Question {
+  id String [pk]
+  title String [not null]
+  question String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  userId String
+  answers Answer [not null]
+  User User
+}
+
+Table Answer {
+  id String [pk]
+  answer String [not null]
+  questionId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  userId String
+  question Question [not null]
+  User User
+}
+
+Table Information {
+  id String [pk]
+  name String [not null]
+  title String [not null]
+  desc String [not null]
+  fullInfo String [not null]
+  userId String
+  createdAt DateTime [default: `now()`, not null]
+  User User
+}
+
+Table Session {
+  id String [pk]
+  sessionToken String [unique, not null]
+  userId String [not null]
+  expires DateTime [not null]
+  user User [not null]
+}
+
+Table VerificationToken {
+  identifier String [not null]
+  token String [unique, not null]
+  expires DateTime [not null]
+
+  indexes {
+    (identifier, token) [unique]
+  }
+}
+
+Table Report {
+  id String [pk]
+  title String [not null]
+  desc String [not null]
+  image String
+  userId String
+  createdAt DateTime [default: `now()`, not null]
+  User User
+}
+
+Table Hospital {
+  id Int [pk, increment]
+  name String [not null]
+  image String
+  address String
+  description String
+  doctorId String
+  DoctorSchedule DoctorSchedule [not null]
+  departments Department [not null]
+  doctors Doctor [not null]
+  UserPayment UserPayment [not null]
+}
+
+Table Department {
+  id Int [pk, increment]
+  name String [not null]
+  image String
+  doctorId String
+  DoctorSchedule DoctorSchedule [not null]
+  doctors Doctor [not null]
+  hospitals Hospital [not null]
+  UserPayment UserPayment [not null]
+}
+
+Table Doctor {
+  id String [pk]
+  name String [not null]
+  image String
+  address String
+  experience String
+  phone Int
+  email String
+  userId String
+  qualification String
+  User User
+  schedules DoctorSchedule [not null]
+  departments Department [not null]
+  hospitals Hospital [not null]
+  isVerified String [default: 'false']
+  UserPayment UserPayment [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table DoctorSchedule {
+  id Int [pk, increment]
+  hospitalId Int
+  doctorId String
+  departmentId Int
+  department Department
+  doctor Doctor
+  hospital Hospital
+  date AvailableTime [not null]
+  UserPayment UserPayment [not null]
+}
+
+Table AvailableTime {
+  id Int [pk, increment]
+  token String
+  date String
+  amount String
+  schedule DoctorSchedule [not null]
+  UserPayment UserPayment [not null]
+}
+
+Table UserPayment {
+  id Int [pk, increment]
+  userId String
+  User User
+  doctorId String
+  departmentId Int
+  status String [default: 'notverified']
+  doctor Doctor
+  department Department
+  hospitalId Int
+  hospital Hospital
+  availableTimeId Int
+  availableTime AvailableTime
+  DoctorSchedule DoctorSchedule
+  doctorScheduleId Int
+  appointmentType String
+  link String
+}
+
+Ref: Account.userId > User.id [delete: Cascade]
+
+Ref: Question.userId > User.id
+
+Ref: Answer.questionId > Question.id [delete: Cascade]
+
+Ref: Answer.userId > User.id
+
+Ref: Information.userId > User.id
+
+Ref: Session.userId > User.id [delete: Cascade]
+
+Ref: Report.userId > User.id
+
+Ref: Doctor.userId > User.id
+
+Ref: DoctorSchedule.departmentId > Department.id
+
+Ref: DoctorSchedule.doctorId > Doctor.id
+
+Ref: DoctorSchedule.hospitalId > Hospital.id
+
+Ref: UserPayment.userId > User.id
+
+Ref: UserPayment.doctorId > Doctor.id
+
+Ref: UserPayment.departmentId > Department.id
+
+Ref: UserPayment.hospitalId > Hospital.id
+
+Ref: UserPayment.availableTimeId > AvailableTime.id
+
+Ref: UserPayment.doctorScheduleId > DoctorSchedule.id
