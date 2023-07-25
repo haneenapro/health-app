@@ -22,6 +22,7 @@ export async function getServerSideProps({ req, res }) {
       userId: session.user.id,
     },
     include: {
+      User: true,
       UserPayment: {
         select: {
           doctor: true,
@@ -47,7 +48,7 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      doctors: doctors[0],
+      doctors: JSON.parse(JSON.stringify(doctors[0])),
     },
   }
 }
@@ -131,7 +132,7 @@ const Profile = ({ doctors }) => {
                   ? doctors.UserPayment.map((_elm) => (
                     <tr className='border-b border-gray-500'>
                       <th class='px-6 py-3'>{_elm?.id}</th>
-                      <th class='px-6 py-3'>{_elm?.User.name}</th>
+                      <th class='px-6 py-3'>{_elm?.User?.name}</th>
                       <th class='px-6 py-3'>{_elm?.hospital.name}</th>
                       <th class='px-6 py-3'>{_elm?.department.name}</th>
                       <th class='px-6 py-3'>{_elm?.availableTime.date}</th>
