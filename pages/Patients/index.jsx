@@ -15,21 +15,22 @@ import {
 import Link from "next/link"
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]"
+import { useEffect, useState } from "react"
+import { getTimeHelper, timerData } from "../../components/helper/getTimerAlert"
 
 export async function getServerSideProps({ req, res }) {
-
   const session = await unstable_getServerSession(req, res, authOptions)
   if (!session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     }
   } else if (session.user.role !== "patient") {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     }
@@ -41,7 +42,7 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      userData: JSON.parse(JSON.stringify(userData))
+      userData: JSON.parse(JSON.stringify(userData)),
     },
   }
 }
@@ -50,18 +51,13 @@ export default function MainPage({ userData }) {
   const router = useRouter()
   const { status, data: session } = useSession()
 
+  getTimeHelper(userData.id)
+  
   if (status === "loading") return <div>Loading...</div>
-
-  if (status === "unauthenticated") {
-    void router.push("/login")
-    return null
-  }
-
   return <Page userData={userData} />
 }
 
 function Page({ userData }) {
-  const { data: session } = useSession()
 
   return (
     <>
@@ -81,17 +77,17 @@ function Page({ userData }) {
             className='text-center w-40 h-auto font-bold justify-self-center flex flex-col items-center p-2 border drop-shadow-xl rounded-2xl text-black bg-gray-50 hover:bg-gray-200'
             href='Patients/profile'
           >
-            {userData?.image ?
+            {userData?.image ? (
               <img
-              className='rounded-2xl bg-contain w-40'
-                src={userData?.image ? '/uploads/' + userData.image : ""}
+                className='rounded-2xl bg-contain w-40'
+                src={userData?.image ? "/uploads/" + userData.image : ""}
                 width={100}
                 height={100}
                 alt='images'
               />
-              :
+            ) : (
               <User className='text-center h-16 capitalize' />
-            }
+            )}
             {userData.name}
           </a>
         </div>
