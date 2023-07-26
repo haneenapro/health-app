@@ -5,9 +5,20 @@ import React, { useEffect } from 'react'
 import prisma from '../../src/db/prisma';
 import NavBar from '../../src/components/NavBar';
 import Link from 'next/link';
+import { unstable_getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 
 export const getServerSideProps = async (context) => {
+  const session = await unstable_getServerSession(context.req, context.res, authOptions)
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
+  }
   const { oid, hospital_id, department_id } = context.query;
   const appointmentData = await prisma.DoctorSchedule.findFirst({
     where: {
@@ -51,6 +62,10 @@ const success = ({ appointmentData }) => {
         availableTimeId: appointmentData?.date[0]?.id
       }).then((res) => {
         alert("success payment")
+        // router.push(`/doctors?hospital_id=${router.query?.hospital_id}&&department_id=${router.query?.department_id}`)
+      }).catch((err)=> {
+        alert("Token Not Available")
+        // router.push(`/doctors?hospital_id=${router.query?.hospital_id}&&department_id=${router.query?.department_id}`)
       })
     }
   }, [session?.user?.id])

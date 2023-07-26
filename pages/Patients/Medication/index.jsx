@@ -110,7 +110,7 @@ const MedicationLists = ({ userData }) => {
                       <th class='px-6 py-3'>{_elm?.dosages}</th>
                       <th class='px-6 py-3'>{_elm?.frequency}</th>
                       <th class='px-6 py-3'>{_elm?.description}</th>
-                      <th class='px-6 py-3'>{_elm?.status}</th>
+                      <th class='px-6 py-3 uppercase'>{_elm?.status}</th>
                       <th class='px-6 py-3'>
                         {_elm.times.map((_elm) => (
                           <p className="border-b-slate-900 m-0 py-2 text-black">{new Date(_elm).toLocaleString()}</p>

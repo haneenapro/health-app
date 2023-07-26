@@ -66,7 +66,7 @@ const ScheduleAppoinment = ({ hospitals, doctors }) => {
         ).then((res) => {
             if (res.status === 200) {
                 alert("Information Added successful!")
-                setFormData2({})
+                router.push('/Doctor')
             } else {
                 alert("Something went wrong")
             }

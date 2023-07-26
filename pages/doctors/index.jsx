@@ -4,6 +4,26 @@ import Image from "next/image"
 import axios from "axios"
 import NavBar from "../../src/components/NavBar"
 import { getTimeHelper } from "../../components/helper/getTimerAlert"
+import { authOptions } from "../api/auth/[...nextauth]"
+import { unstable_getServerSession } from "next-auth"
+import Link from "next/link"
+
+export async function getServerSideProps({ req, res }) {
+  const session = await unstable_getServerSession(req, res, authOptions)
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: {
+      hello: "hi"
+    }
+  }
+}
 
 const index = () => {
   let router = useRouter()
@@ -11,9 +31,9 @@ const index = () => {
   const department_id = router.query?.department_id
   const isgeneral = router.query?.general
   const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
-  if(_getLocalData && _getLocalData ==="patient") {
+  if (_getLocalData && _getLocalData === "patient") {
     const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
-    if(_getLocalDataUserId) {
+    if (_getLocalDataUserId) {
       getTimeHelper(_getLocalDataUserId)
     }
   }
@@ -95,7 +115,14 @@ const index = () => {
       <div className='container mx-auto'>
         <h2 className='m-7 text-2xl font-bold'> Available Doctors </h2>{" "}
         <div className='rounded m-4 p-4'>
-          <div className='flex items-center justify-end'>
+          <div className='flex items-center justify-between'>
+          <a
+          href='#'
+          className='text-base font-semibold leading-7 text-gray-900'
+          onClick={()=> router.back()}
+        >
+          <span aria-hidden='true'>←</span> Back
+        </a>
             <div className=''>
               <label for=''>Filter: </label>
               <input
@@ -123,10 +150,9 @@ const index = () => {
                   >
                     <div className='flex items-center justify-between flex-wrap'>
                       <div className='flex gap-14'>
-
                         <img
                           className='rounded-full'
-                          src={o?.image ? o.image : "https://api.mero.doctor/images/doctor_male.png"}
+                          src={o?.image ? `/uploads/${o.image}` : "https://api.mero.doctor/images/doctor_male.png"}
                           alt={"Image"}
                           width={150}
                           height={150}
@@ -157,7 +183,6 @@ const index = () => {
                         </div>
                       </div>
                       {isgeneral !== "true" &&
-
                         <div className=" overflow-x-auto w-full md:w-[800px] border border-slate-200">
                           <table className="w-full">
                             <thead class="text-xs text-gray-700 uppercase border-b-2 border-gray-700">
@@ -182,12 +207,18 @@ const index = () => {
                                         <th class="px-6 py-3">{elm?.token}</th>
                                         <th class="px-6 py-3">{elm?.amount}</th>
                                         <th class="px-6 py-3 text-end">
-                                          <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({ ...elm, appointmentType: "online" })}>
-                                            Online
-                                          </button>
-                                          <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({ ...elm, appointmentType: "offline" })}>
-                                            Offline
-                                          </button>
+                                          {elm?.token === "0" ? <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white px-1 border border-red-500 hover:border-transparent rounded'>
+                                            Appointment Full
+                                          </button> :
+                                            <React.Fragment>
+                                              <button className='bg-transparent mr-2 hover:bg-green-500 text-green-700 font-semibold hover:text-white px-1 border border-green-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({ ...elm, appointmentType: "online" })}>
+                                                Online
+                                              </button>
+                                              <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-1 border border-blue-500 hover:border-transparent rounded' onClick={(e) => paymentHandler({ ...elm, appointmentType: "offline" })}>
+                                                Offline
+                                              </button>
+                                            </React.Fragment>
+                                          }
                                         </th>
                                       </tr>
                                     ))

@@ -47,14 +47,24 @@ const index = () => {
     return (
         <>
             <NavBar />
-            <div className="container mx-auto py-4">
+            <div className="container mx-auto py-4 mt-4">
                 <input
                     type="search"
                     id="default-search"
                     class="block float-right p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search Department Names ..."
                     onChange={(e) => setSearchValue(e.target.value)} />
-                <h2 className='my-7 text-2xl font-bold border-b border-slate-300'> Available Departments </h2>{" "}
+                <div>
+                    <h1 class="font-bold text-xl"> Availbale Departments</h1>
+                    <Link
+                        href='/Appointment'
+                        className='text-base font-semibold leading-7 text-gray-900'
+                    >
+                        <span aria-hidden='true'>←</span> Back
+                    </Link>
+                </div>
+
+                {/* <h2 className='my-7 text-2xl font-bold border-b border-slate-300'> Available Departments </h2>{" "} */}
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6'>
                     {data?.length > 0 ? (
                         data?.filter(value => value.name.toLowerCase().includes(searchValue.toLowerCase())).map((o, i) => {

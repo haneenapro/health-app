@@ -69,7 +69,7 @@ const index = ({ hospitalsData }) => {
                                     <th class='px-6 py-3'>{_elm?.name}</th>
                                     <th class='px-6 py-3'>{_elm?.address}</th>
                                     <th class='px-6 py-3'>{_elm?.description}</th>
-                                    <th class='px-6 py-3 text-center'>
+                                    <th class='px-6 py-3 text-center flex'>
                                         <Link href={`/Admin/hospital/${_elm.id}`} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 px-2 border border-blue-500 hover:border-transparent rounded'>
                                             Edit
                                         </Link>

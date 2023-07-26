@@ -34,6 +34,17 @@ const features = [
     name: "Report Section",
     desc: "You can save your Report Cards securely here.",
   },
+  {
+    image: (
+      <img
+        src='images/line-chart.png'
+        alt='img'
+        className='h-[440px] w-[300px] rounded-l-lg'
+      />
+    ),
+    name: "Medication Reminder System",
+    desc: "You can get notification according to the medication time.",
+  },
 ]
 
 const Features = () => {

@@ -49,14 +49,14 @@ const _initState = {
 
 const CreateMedication = ({ userData }) => {
     const [formData, setFormData] = useState(_initState)
-    const [dateDate, setDateDate] = useState('')
+    const [dateDate, setDateDate] = useState(null)
 
     const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
-    if(_getLocalData && _getLocalData ==="patient") {
-      const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
-      if(_getLocalDataUserId) {
-        getTimeHelper(_getLocalDataUserId)
-      }
+    if (_getLocalData && _getLocalData === "patient") {
+        const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
+        if (_getLocalDataUserId) {
+            getTimeHelper(_getLocalDataUserId)
+        }
     }
 
     function handleChange(event) {
@@ -69,13 +69,13 @@ const CreateMedication = ({ userData }) => {
 
     function addDateHandler(e) {
         let _newTime = formData.times || []
-        console.log(_newTime, "@@@")
+        if (!dateDate) return alert("No date selected")
+        if (_newTime.includes(dateDate)) return alert("Cannot assign same date")
         _newTime.unshift(dateDate)
         setFormData({
             ...formData,
             times: _newTime
         })
-
     }
     function handleChangeDate(e) {
         let { value } = e.target
@@ -83,6 +83,7 @@ const CreateMedication = ({ userData }) => {
     }
 
     async function handleSubmit(event) {
+        if (formData.times.length <= 0) return alert("No Date Selected")
         if (typeof window !== "undefined") {
             const _getLocalData = localStorage.getItem([userData.id])
             if (_getLocalData) {
@@ -100,6 +101,16 @@ const CreateMedication = ({ userData }) => {
             }
         }
     }
+    const _status = [
+        {
+            label: "On Progress",
+            value: "onprogress",
+        },
+        {
+            label: "Finished",
+            value: "finished",
+        },
+    ]
     return (
         <>
             <NavBar />
@@ -149,13 +160,19 @@ const CreateMedication = ({ userData }) => {
                                 </div>
 
                                 <div className='pt-8'>
-                                    <Input
-                                        label={"Status"}
-                                        name='status'
+                                    <label>Status</label>
+                                    <select
                                         value={formData.status}
                                         onChange={handleChange}
                                         required
-                                    />
+                                        name='status'
+                                        className='relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
+                                    >
+                                        <option value={""}>Select Status</option>
+                                        {_status.map((_elm) => (
+                                            <option value={_elm.value}>{_elm.label}</option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className='pt-8'>
                                     <label>Description</label>
@@ -182,16 +199,18 @@ const CreateMedication = ({ userData }) => {
                             <div className='mb-3'>
                                 <Input
                                     label={"Date"}
-                                    name='start_time'
-                                    value={formData.start_time}
+                                    name='dateDate'
+                                    value={dateDate}
                                     onChange={handleChangeDate}
                                     required
                                     type="datetime-local"
                                 />
                             </div>
-                            {formData.times.length > 0 ? formData.times.map((_elm)=>(
-                                <span className='mr-3 mt-2'>{new Date(_elm).toLocaleString()}</span>
-                            )) : "No Date Selected"}
+                            <div className='my-3 flex flex-wrap gap-4'>
+                                {formData.times.length > 0 ? formData.times.map((_elm) => (
+                                    <span className='rounded-2xl bg-slate-700 p-2 text-slate-50'>{new Date(_elm).toLocaleString()}</span>
+                                )) : "No Date Selected"}
+                            </div>
                             <Button type='button' onClick={addDateHandler}>Add</Button>
                         </div>
                     </div>

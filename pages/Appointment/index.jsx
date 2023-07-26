@@ -8,7 +8,26 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { getTimeHelper } from "../../components/helper/getTimerAlert"
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 
+
+export async function getServerSideProps({ req, res }) {
+  const session = await unstable_getServerSession(req, res, authOptions)
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: {
+      hello: "hi"
+    }
+  }
+}
 const HospitalList = () => {
   // api route -- get all informations
   const [isLoading, setIsLoading] = useState(false)
@@ -18,9 +37,9 @@ const HospitalList = () => {
   const { status, data: session } = useSession()
 
   const _getLocalData = typeof window !== "undefined" && localStorage.getItem("role")
-  if(_getLocalData && _getLocalData ==="patient") {
+  if (_getLocalData && _getLocalData === "patient") {
     const _getLocalDataUserId = typeof window !== "undefined" && localStorage.getItem("user")
-    if(_getLocalDataUserId) {
+    if (_getLocalDataUserId) {
       getTimeHelper(_getLocalDataUserId)
     }
   }
@@ -49,14 +68,20 @@ const HospitalList = () => {
   return (
     <>
       <NavBar />
-
-      <div className="container mx-auto">
+      <div className="container mx-auto ">
         {/* Hospital List */}
         <div class="mb-5 flex justify-between mt-8">
-          <h1 class="font-bold text-xl"> Choose Hospitals </h1>
+          <div>
+            <h1 class="font-bold text-xl"> Choose Hospitals </h1>
+            <Link
+              href='/Patients'
+              className='text-base font-semibold leading-7 text-gray-900'
+            >
+              <span aria-hidden='true'>←</span> Back
+            </Link>
+          </div>
 
           {/* <!-- Search Bar --> */}
-
           <form>
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative ">
@@ -74,25 +99,22 @@ const HospitalList = () => {
               {/* <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button> */}
             </div>
           </form>
+
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-2 md:px-0">
           {/* <!-- Card --> */}
           {informations?.filter(value => value.name.toLowerCase().includes(searchValue.toLowerCase())).map((_hospital, _index) => (
-            <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700 flex flex-col items-start justify-between p-2">
-              <a href="#" class="mx-auto">
-                <img
-                  className='rounded'
-                  src={_hospital?.image ? '/uploads/' + _hospital.image : ""}
-                  width={100}
-                  height={100}
-                  alt='images'
-                />
-              </a>
-              <div class="p-5">
-                <a href="#">
-                  <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black"> {_hospital.name} </h5>
-                </a>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{_hospital.description}</p>
+            <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700 flex flex-col items-start justify-between p-4">
+              <img
+                className='rounded w-80 h-60 mx-auto'
+                src={_hospital?.image ? '/uploads/' + _hospital.image : ""}
+                width={500}
+                height={500}
+                alt='images'
+              />
+              <h5 class="mb-2 p-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black"> {_hospital.name} </h5>
+              <div class="px-2">
+                <p class="font-normal text-gray-700 dark:text-gray-400">{_hospital.description ? _hospital.description.length > 80 ? _hospital.description.slice(0, 80) + ' ...' : _hospital.description : ""}</p>
                 <Link href={`/department?hospital_id=${_hospital.id}`} class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-black-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                   Book an Appointment
                   <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">

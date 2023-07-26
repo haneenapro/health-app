@@ -24,9 +24,9 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            hospitalData,
+            hospitalData: JSON.parse(JSON.stringify(hospitalData)),
             departments,
-            doctors
+            doctors: JSON.parse(JSON.stringify(doctors))
         },
     }
 }
