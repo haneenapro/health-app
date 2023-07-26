@@ -7,6 +7,7 @@ const features = [
         src='images/info.png'
         alt='img'
         className='h-[440px] w-[300px] rounded-l-lg'
+        style={{objectFit: "cover"}}
       />
     ),
     name: "Information Section",
@@ -15,9 +16,10 @@ const features = [
   {
     image: (
       <img
-        src='images/qa.png'
+        src='images/q-a.jpg'
         alt='img'
         className='h-[440px] w-[300px] rounded-l-lg'
+        style={{objectFit: "cover"}}
       />
     ),
     name: "Q/A Section",
@@ -26,24 +28,26 @@ const features = [
   {
     image: (
       <img
-        src='images/line-chart.png'
+      src='images/cunsultant.png'
         alt='img'
         className='h-[440px] w-[300px] rounded-l-lg'
+        style={{objectFit: "cover"}}
       />
     ),
-    name: "Report Section",
-    desc: "You can save your Report Cards securely here.",
+    name: "Book Consultation",
+    desc: "You can book your consultation online or offline.",
   },
   {
     image: (
       <img
-        src='images/line-chart.png'
+        src='images/reminder.jpg'
         alt='img'
         className='h-[440px] w-[300px] rounded-l-lg'
+        style={{objectFit: "cover"}}
       />
     ),
     name: "Medication Reminder System",
-    desc: "You can get notification according to the medication time.",
+    desc: "You can get notification reminder",
   },
 ]
 

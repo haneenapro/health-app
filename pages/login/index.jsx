@@ -4,6 +4,7 @@ import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
 import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/router"
+import { toast } from "react-toastify"
 
 function Login() {
   const { status, data: session } = useSession()
@@ -34,7 +35,7 @@ function LoginForm() {
   
   useEffect(()=>{
     if(router.query.error) {
-      alert(router.query.error)
+      toast(router.query.error, { type: "error" });
     }
   },[router.query.error])
 
@@ -51,7 +52,7 @@ function LoginForm() {
 
     const { email, password, role } = formData
 
-    if (!email | !password | !role) return window.alert("Fill out all fields")
+    if (!email | !password | !role) return toast("All the fields are required!!", { type: "error" });
 
     const res = await signIn("credentials", {
       email: formData.email,

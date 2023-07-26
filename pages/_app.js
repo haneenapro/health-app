@@ -1,7 +1,8 @@
 import { SessionProvider } from "next-auth/react"
 import "../styles/globals.css"
 import "../styles/info.css"
-import { getTimeHelper } from "../components/helper/getTimerAlert"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({
   Component,
@@ -9,6 +10,18 @@ export default function App({
 }) {
   return (
     <SessionProvider session={session}>
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Component {...pageProps} />
     </SessionProvider>
   )

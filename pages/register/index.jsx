@@ -3,6 +3,7 @@ import { signIn } from "next-auth/react"
 import React, { useState } from "react"
 import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
+import { toast } from "react-toastify"
 
 function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -26,8 +27,8 @@ function RegisterForm() {
     const { name, email, password, role } = formData
 
     if (!name | !email | !password | !role)
-      return window.alert("Fill out all fields")
-
+      return toast("All the fields are required!!", { type: "error" });
+    if(password.length <=5) return toast("Password must have 5 letters", { type: "error" });
     await signIn("credentials", {
       name,
       email,
