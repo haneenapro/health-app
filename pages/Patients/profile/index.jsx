@@ -23,6 +23,13 @@ export async function getServerSideProps({ req, res }) {
         permanent: false,
       },
     }
+  } else if (session.user.role !== "patient") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
   }
 
   const userData = await prisma.User.findUnique({

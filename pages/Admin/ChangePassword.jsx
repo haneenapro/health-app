@@ -20,7 +20,7 @@ export async function getServerSideProps({ req, res }) {
         permanent: false,
       },
     }
-} else if (session.user.role !== "admin") {
+  } else if (session.user.role !== "admin") {
     return {
       redirect: {
         destination: "/",
@@ -39,10 +39,11 @@ export async function getServerSideProps({ req, res }) {
     },
   }
 }
-const EditAdmin = ({ userData }) => {
-  console.log(userData, "@@");
-  const [formData, setFormData] = useState(userData)
-  const [imageData, setImageData] = useState(null)
+const ChangePassword = ({ userData }) => {
+  const [formData, setFormData] = useState({
+    current_password: "",
+    new_password: "",
+  })
 
   const router = useRouter()
 
@@ -54,33 +55,46 @@ const EditAdmin = ({ userData }) => {
     }))
   }
 
-  function imageUploadHandler(e) {
-    const file = e.target.files[0]
-    setImageData(file)
-  }
-
   async function handleSubmit(event) {
     event.preventDefault()
-    let newFormDate = new FormData()
-    newFormDate.append("name", formData.name)
-    newFormDate.append("file", imageData)
-    await axios.put(`/api/user/${userData.id}`,
-        newFormDate, {
-        headers: {
-            'Content-Type': 'multipart/formdata'
-        },
-    }
-    ).then((res) => {
+    await axios
+      .post(`/api/forgetpassword`, { ...formData, email: userData.email })
+      .then((res) => {
         if (res.status === 201) {
-            alert("Information Added successful!")
-            router.push(`/Admin`)
+          alert("Password changed successfully")
+          router.push(`/Admin`)
         } else {
-            alert("Something went wrong")
+          alert("Something went wrong")
         }
-    }).catch((err) => {
-        alert("Something went wrong")
-    })
-}
+      })
+      .catch((err) => {
+        if (err.response.data.message) {
+          alert(err.response.data.message)
+        } else {
+          alert("Something went wrong")
+        }
+      })
+  }
+  async function resetPassword() {
+    await axios
+      .post(`/api/forgetpassword`, { isReset: "true", email: userData.email })
+      .then((res) => {
+        if (res.status === 201) {
+          alert("Please check your mail and login again!")
+          signOut()
+        } else {
+          alert("Something went wrong")
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.message) {
+          alert(err.response.data.message)
+        } else {
+          alert("Something went wrong")
+        }
+      })
+  }
+
 
   return (
     <>
@@ -96,8 +110,8 @@ const EditAdmin = ({ userData }) => {
                 <span aria-hidden='true'>←</span> Back
               </Link>
             </div>
-            <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
-              Edit User Details
+            <h2 className='mt-6 text-center text-2xl font-bold tracking-tight text-gray-900'>
+              Change Password / Reset Password
             </h2>
           </div>
           <form
@@ -110,24 +124,36 @@ const EditAdmin = ({ userData }) => {
             <div className='-space-y-px rounded-md shadow-sm py-3'>
               <div className='pt-8'>
                 <Input
-                  label={"Name"}
-                  name='name'
-                  value={formData.name}
+                  label={"Current Password"}
+                  name='current_password'
+                  value={formData.current_password}
                   onChange={handleChange}
                   required
+                  placeholder='*******'
                 />
               </div>
               <div className='pt-8'>
                 <Input
-                  label={"User Image"}
-                  name='image'
-                  onChange={imageUploadHandler}
-                  type="file"
+                  label={"New Password"}
+                  name='new_password'
+                  type='password'
+                  value={formData.new_password}
+                  onChange={handleChange}
+                  required
+                  placeholder='*******'
                 />
               </div>
             </div>
 
             <Button type='submit'>Submit</Button>
+            <center>OR</center>
+            <button
+              className='group relative flex w-full justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
+              type='button'
+              onClick={resetPassword}
+            >
+              Reset Password
+            </button>
           </form>
         </div>
       </div>
@@ -135,4 +161,4 @@ const EditAdmin = ({ userData }) => {
   )
 }
 
-export default EditAdmin
+export default ChangePassword
