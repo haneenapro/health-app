@@ -31,6 +31,12 @@ function LoginForm() {
   })
 
   const router = useRouter()
+  
+  useEffect(()=>{
+    if(router.query.error) {
+      alert(router.query.error)
+    }
+  },[router.query.error])
 
   function handleChange(event) {
     const { name, value } = event.target

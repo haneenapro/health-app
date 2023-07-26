@@ -124,7 +124,6 @@ export default function MainPage() {
         <div className='main-features'>
           <div className='py-10 px-5 my-[50px]'>
             <h2 className='font-bold text-2xl text-center'>Main Features </h2>
-
             <Features />
           </div>
         </div>

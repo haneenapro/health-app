@@ -24,7 +24,7 @@ const NavBar = () => {
 
   return (
     <div className='px-6 pt-6 pb-3 lg:px-8 shadow-lg bg-gradient-to-r from-blue-400 via-[indigo-600] to-blue-100'>
-      <nav className='flex items-center justify-between' aria-label='Global'>
+      <nav className='flex items-center justify-between ' aria-label='Global'>
         <div className='flex lg:flex-1'>
           <a href='/' className='-m-1.5 p-1.5'>
             <span className='sr-only'>Health Consultation System </span>
