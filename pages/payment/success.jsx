@@ -62,10 +62,10 @@ const success = ({ appointmentData }) => {
         availableTimeId: appointmentData?.date[0]?.id
       }).then((res) => {
         alert("success payment")
-        // router.push(`/doctors?hospital_id=${router.query?.hospital_id}&&department_id=${router.query?.department_id}`)
+        router.push(`/doctors?hospital_id=${router.query?.hospital_id}&&department_id=${router.query?.department_id}`)
       }).catch((err)=> {
         alert("Token Not Available")
-        // router.push(`/doctors?hospital_id=${router.query?.hospital_id}&&department_id=${router.query?.department_id}`)
+        router.push(`/doctors?hospital_id=${router.query?.hospital_id}&&department_id=${router.query?.department_id}`)
       })
     }
   }, [session?.user?.id])
