@@ -20,6 +20,7 @@ export const getServerSideProps = async (context) => {
     }
   }
   const { oid, hospital_id, department_id } = context.query;
+  console.log(oid.split('.').pop(),"@@@oid");
   const appointmentData = await prisma.DoctorSchedule.findFirst({
     where: {
       hospital: {
@@ -30,7 +31,7 @@ export const getServerSideProps = async (context) => {
       },
       date: {
         some: {
-          id: Number(oid)
+          id: Number(oid.split('.').pop())
         }
       },
     },
@@ -38,7 +39,7 @@ export const getServerSideProps = async (context) => {
       date: true
     }
   })
-  let newFilterData = appointmentData.date.filter((_elm) => _elm.id === Number(oid))
+  let newFilterData = appointmentData.date.filter((_elm) => _elm.id === Number(oid.split('.').pop()))
   appointmentData['date'] = newFilterData
   return {
     props: {
@@ -51,6 +52,7 @@ const success = ({ appointmentData }) => {
   const { status, data: session } = useSession()
   let router = useRouter()
   const id = router.query
+  console.log(router.query.oid,"@@@");
   useEffect(() => {
     if (session?.user?.id) {
       axios.post('/api/payment/success', {

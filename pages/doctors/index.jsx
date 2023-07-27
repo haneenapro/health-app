@@ -92,7 +92,7 @@ const index = () => {
       pdc: 0,
       txAmt: 0,
       tAmt: element.amount,
-      pid: element.id,
+      pid: new Date().getTime() + '.' + element.id,
       scd: "EPAYTEST",
       su: `http://localhost:3000/payment/success?department_id=${department_id}&hospital_id=${hospital_id}&appointmentType=${element.appointmentType}`,
       fu: `http://localhost:3000/payment/failed`

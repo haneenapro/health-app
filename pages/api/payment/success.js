@@ -39,6 +39,7 @@ export default async function handler(req, res) {
             availableTimeId,
             appointmentType
         } = req.body
+        console.log(availableTimeId,"@@avai");
         const _tokenFind = await prisma.AvailableTime.findUnique({ where: { id: Number(availableTimeId) } })
         if (_tokenFind && Number(_tokenFind.token) >= 1) {
             await prisma.AvailableTime.update({
