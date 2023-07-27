@@ -4,6 +4,10 @@ import React, { useState } from "react"
 import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
 import { toast } from "react-toastify"
+import { GoogleLogin } from "@react-oauth/google"
+
+
+import jwt_decode from "jwt-decode";
 
 function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -28,7 +32,7 @@ function RegisterForm() {
 
     if (!name | !email | !password | !role)
       return toast("All the fields are required!!", { type: "error" });
-    if(password.length <=5) return toast("Password must have 5 letters", { type: "error" });
+    if (password.length <= 5) return toast("Password must have 5 letters", { type: "error" });
     await signIn("credentials", {
       name,
       email,
@@ -147,6 +151,36 @@ function RegisterForm() {
               <center>
                 <p>OR SignIn With</p>
               </center>
+              <center>
+                <GoogleLogin
+                  onSuccess={credentialResponse => {
+                    if (credentialResponse.credential) {
+                      var decoded = jwt_decode(credentialResponse.credential);
+                      console.log(decoded, "@@cred")
+                      signIn("credentials", {
+                        name: decoded.name,
+                        email: decoded.email,
+                        password: "healthapp123",
+                        role: "patient",
+                        register: true,
+                        redirect: true,
+                        callbackUrl: "/Patients",
+                      })
+                    }
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                  useOneTap
+                />
+              </center>
+            </div>
+          )}
+          {/* {formData.role === "patient" && (
+            <div>
+              <center>
+                <p>OR SignIn With</p>
+              </center>
               <button
                 class='w-full bg-white shadow-sm border  text-dark-500 hover:text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex gap-2 items-center justify-center'
                 type='button'
@@ -155,7 +189,7 @@ function RegisterForm() {
                 Google
               </button>
             </div>
-          )}
+          )} */}
           {/* Customize this button for google login */}
         </form>
       </div>

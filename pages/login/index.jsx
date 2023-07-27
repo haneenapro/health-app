@@ -6,6 +6,9 @@ import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
+
 function Login() {
   const { status, data: session } = useSession()
   const router = useRouter()
@@ -32,12 +35,12 @@ function LoginForm() {
   })
 
   const router = useRouter()
-  
-  useEffect(()=>{
-    if(router.query.error) {
+
+  useEffect(() => {
+    if (router.query.error) {
       toast(router.query.error, { type: "error" });
     }
-  },[router.query.error])
+  }, [router.query.error])
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -157,7 +160,7 @@ function LoginForm() {
           <Button type='submit'>Log In</Button>
 
           {/* Customize this button for google login */}
-          {formData.role === "patient" && (
+          {/* {formData.role === "patient" && (
             <div>
               <center>
                 <p>OR SignIn With</p>
@@ -169,6 +172,35 @@ function LoginForm() {
               >
                 Google
               </button>
+            </div>
+          )} */}
+          {formData.role === "patient" && (
+            <div>
+              <center>
+                <p>OR SignIn With</p>
+              </center>
+              <center>
+              <GoogleLogin
+                onSuccess={credentialResponse => {
+                  if (credentialResponse.credential) {
+                    var decoded = jwt_decode(credentialResponse.credential);
+                    console.log(decoded, "@@cred")
+                    signIn("credentials", {
+                      email: decoded.email,
+                      password: "healthapp123",
+                      redirect: true,
+                      role: 'patient',
+                      callbackUrl: "/Patients",
+                    })
+                  }
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+                useOneTap
+              />
+              </center>
+              
             </div>
           )}
           {/* Customize this button for google login */}

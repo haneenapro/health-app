@@ -54,7 +54,7 @@ const features = [
 const Features = () => {
   return (
     <div>
-      <div className='flex flex-col gap-2 justify-between px-20 md:flex-row'>
+      <div className='flex flex-col gap-6 justify-between px-20 md:flex-row'>
         {features.map((feature, index) => {
           return (
             <Card

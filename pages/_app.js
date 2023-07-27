@@ -3,6 +3,7 @@ import "../styles/globals.css"
 import "../styles/info.css"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function App({
   Component,
@@ -22,7 +23,10 @@ export default function App({
         pauseOnHover
         theme="colored"
       />
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+
       <Component {...pageProps} />
+      </GoogleOAuthProvider>
     </SessionProvider>
   )
 }
