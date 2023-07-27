@@ -43,15 +43,17 @@ export default function Home() {
 
               <div className='basis-1/2 text-center bg-[#ccc7da] px-5 py-3 pl-[50px] ml-[100px] '>
                 <h2 className='font-bold text-2xl '> Iccha Pandey </h2>
-                <p className='text-left my-5 '>
+                <p className='text-black text-left my-5 tracking-wide'>
                   Iccha is the CEO of our company. She is a hardworking and
                   talented person. She has double bachelors degree.She is a
-                  hardworking and talented person. She has a degree in Business
+                  in Dubai currently. She has a degree in Business
                   Administration. She also has two years experience in the
                   health field. She wanted to work in the health sector since
                   early childhood. Her mother used to be ill sometimes. At that
                   point in time she thought to found an organisation and work
-                  for the good cause of the people.
+                  for the good cause of the people. Her hard work and work ethics is an 
+                  inspiration to everyone. She is a friendly person. She travels seldom.
+                  She is part of other two companies as well.
                 </p>
               </div>
             </div>

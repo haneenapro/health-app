@@ -119,15 +119,9 @@ function Page({ userData }) {
               href='Patients/question/new'
             >
               <Syringe className='text-center' />
-              Consult Doctor
+              Ask health Question
             </Link>
-            <Link
-              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
-              href='/Patients/report-next'
-            >
-              <FilePlus2 className='text-center' />
-              Add Report
-            </Link>
+            
             <Link
               className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/doctors'
@@ -160,13 +154,7 @@ function Page({ userData }) {
               <HelpCircle className='text-center' />
               View Q/A
             </Link>
-            <Link
-              className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
-              href='/Patients/report-next/img-get'
-            >
-              <File className='text-center' />
-              View Reports
-            </Link>
+            
             <Link
               className='w-full sm:w-[300px] font-bold justify-self-center flex flex-col gap-4 items-center px-10 py-20 border drop-shadow-xl rounded-md text-blue-800 bg-white hover:bg-indigo-600 hover:text-white'
               href='/Patients/info-dynamic'

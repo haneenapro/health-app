@@ -100,7 +100,7 @@ const QuestionsList = () => {
             <span aria-hidden='true'>←</span> Back
           </a>
         </div>
-        <button type="" onClick={handlerDoctorDepartment}>Add Doctor</button>
+        {/* <button type="" onClick={handlerDoctorDepartment}>Add Doctor</button> */}
       </div>
     </>
   )

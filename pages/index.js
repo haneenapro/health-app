@@ -63,8 +63,7 @@ export default function MainPage() {
                     </h1>
                     <p className='mt-6 text-lg leading-8 text-gray-600'>
                       This system is a health based system. Here people can find
-                      information blog, ask question to a health professional
-                      and save reports.
+                      information blog, book consultation with doctor, set medication reminder and much more.
                     </p>
                     <div className='mt-10 flex items-center justify-center gap-x-6'>
                       <a
@@ -109,14 +108,12 @@ export default function MainPage() {
           <div className='px-28 py-28 bg-blue-200 '>
             <div className='text-center font-bold'>
               <h1 className='text-xl font-bold md:text-2xl text-center'>
-                Professionals here are ready to provide you more Health
-                Information
+                Professionals here are ready to assist you. 
               </h1>
-              <h2 className='text-sm md:text-xl pt-4'>
-                In this world where it is difficult to trust professionals, here
-                you can ask professionals suggestions and international
-                suggestion for the cure and not just temporary recovary. You can
-                save your report cards for future.
+              <h2 className='text-xs md:text-xl pt-4'>
+                In this world where it is time consuming to go to hospitals, 
+                a busy schedule which makes people forget to take their medicine, 
+                we introduce you to our health consultation system.
               </h2>
             </div>
           </div>
